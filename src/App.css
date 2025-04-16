@@ -36,3 +36,81 @@
     transform: rotate(360deg);
   }
 }
+
+/* Additional styles for React components */
+
+/* Fixes for React-specific implementations */
+.navbar .nav-link {
+  cursor: pointer;
+}
+
+/* Sponsor category titles */
+.sponsor-category {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  color: #0e1b4d;
+}
+
+/* Sponsor tiers styling */
+.platinum-sponsors {
+  margin-bottom: 40px;
+}
+
+.gold-sponsors {
+  margin-bottom: 30px;
+}
+
+.silver-sponsors {
+  margin-bottom: 20px;
+}
+
+.sponsors-call-to-action {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f6f7fd;
+}
+
+.sponsor-btn {
+  display: inline-block;
+  background: #f82249;
+  color: #fff;
+  border-radius: 50px;
+  margin: 10px;
+  padding: 10px 25px;
+  transition: all 0.4s ease;
+  font-weight: 600;
+}
+
+.sponsor-btn:hover {
+  background: #e0072f;
+  color: #fff;
+}
+
+/* Schedule tabs styling fix for React */
+.nav-tabs .nav-link {
+  border: none;
+  cursor: pointer;
+}
+
+.tab-pane:not(.active) {
+  display: none;
+}
+
+.tab-pane.active.show {
+  display: block;
+}
+
+/* Contact form styling additions */
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+  background-image: none;
+}
