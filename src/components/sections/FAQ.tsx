@@ -85,7 +85,7 @@ const Faq = () => {
                 </div>
                 <div id="faq4" className="collapse" data-bs-parent=".faq-list">
                   <p>
-                    Thanks to our generous <a href="">sponsors</a>, we have
+                    Thanks to our generous <a href="#sponsors">sponsors</a>, we have
                     organised a lunch and afternoon tea for attendees.
                   </p>
                 </div>
