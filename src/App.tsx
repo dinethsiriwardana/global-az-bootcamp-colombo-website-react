@@ -25,8 +25,11 @@ function App() {
     });
   }, []);
 
+  // Get the base URL from the environment or use root
+  const baseUrl = process.env.PUBLIC_URL || "";
+
   return (
-    <Router>
+    <Router basename={baseUrl}>
       <div className="App">
         <Header />
         <Routes>

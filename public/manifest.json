@@ -1,19 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Global Azure Bootcamp 2025",
+  "name": "Global Azure Bootcamp 2025",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "public/assets/img/GlobalAzure2025.svg",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "public/assets/img/GlobalAzure2025-500.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "public/assets/img/GlobalAzure2025-500.png",
       "type": "image/png",
       "sizes": "512x512"
     }
