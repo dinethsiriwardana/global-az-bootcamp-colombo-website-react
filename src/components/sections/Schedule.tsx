@@ -36,6 +36,8 @@ const Schedule = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [frozen, setFrozen] = useState<boolean>(false);
+  const [frozenUntil, setFrozenUntil] = useState<number | null>(null);
 
   // Format time from "2025-05-10T10:00:00" to "10:00 AM"
   const formatTime = (dateTimeString: string): string => {
@@ -90,6 +92,41 @@ const Schedule = () => {
 
     fetchScheduleData();
   }, []);
+
+  // Handler for track click
+  const handleTrackClick = (index: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    setActiveTrack(index);
+
+    // Freeze for 1 minute (60000 milliseconds)
+    setFrozen(true);
+    setFrozenUntil(Date.now() + 60000);
+  };
+
+  // Check if freeze time has expired
+  useEffect(() => {
+    if (!frozen || !frozenUntil) return;
+
+    const checkFrozenTimeout = setTimeout(() => {
+      if (Date.now() >= frozenUntil) {
+        setFrozen(false);
+        setFrozenUntil(null);
+      }
+    }, 1000); // Check every second
+
+    return () => clearTimeout(checkFrozenTimeout);
+  }, [frozen, frozenUntil]);
+
+  // Auto-rotate through tracks when not frozen
+  useEffect(() => {
+    if (frozen || tracks.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setActiveTrack((current) => (current + 1) % tracks.length);
+    }, 5000); // Rotate every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [frozen, tracks.length]);
 
   // Group sessions by time slot for the active track
   const getSessionsByTime = () => {
@@ -161,13 +198,12 @@ const Schedule = () => {
           {tracks.map((track, index) => (
             <li className="nav-item" key={index}>
               <a
-                className={`nav-link ${index === activeTrack ? "active" : ""}`}
+                className={`nav-link ${index === activeTrack ? "active" : ""} ${
+                  frozen && index === activeTrack ? "frozen" : ""
+                }`}
                 href={`#track-${track.id}`}
                 role="tab"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveTrack(index);
-                }}
+                onClick={(e) => handleTrackClick(index, e)}
               >
                 <div className="track-name">{track.name}</div>
               </a>
@@ -179,7 +215,7 @@ const Schedule = () => {
           <div className="col-lg-8 tab-pane active show" role="tabpanel">
             {getSessionsByTime().map((session, index) => (
               <div
-                className="row schedule-item align-items-center  justify-content-start"
+                className="row schedule-item align-items-center justify-content-start"
                 key={index}
               >
                 <div className="col-md-3">
