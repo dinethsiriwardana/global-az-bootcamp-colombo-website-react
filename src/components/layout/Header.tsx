@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,39 +45,81 @@ const Header = () => {
         >
           <ul>
             <li>
-              <a className="nav-link scrollto active" href="#hero">
-                Home
-              </a>
+              {isHomePage ? (
+                <a className="nav-link scrollto active" href="#hero">
+                  Home
+                </a>
+              ) : (
+                <Link className="nav-link" to="/">
+                  Home
+                </Link>
+              )}
             </li>
             <li>
-              <a className="nav-link scrollto" href="#about">
-                About
-              </a>
+              {isHomePage ? (
+                <a className="nav-link scrollto" href="#about">
+                  About
+                </a>
+              ) : (
+                <Link className="nav-link" to="/#about">
+                  About
+                </Link>
+              )}
             </li>
             <li>
-              <a className="nav-link scrollto" href="#speakers">
-                Speakers
-              </a>
+              {isHomePage ? (
+                <a className="nav-link scrollto" href="#speakers">
+                  Speakers
+                </a>
+              ) : (
+                <Link className="nav-link" to="/#speakers">
+                  Speakers
+                </Link>
+              )}
             </li>
             <li>
-              <a className="nav-link scrollto" href="#schedule">
-                Schedule
-              </a>
+              {isHomePage ? (
+                <a className="nav-link scrollto" href="#schedule">
+                  Schedule
+                </a>
+              ) : (
+                <Link className="nav-link" to="/#schedule">
+                  Schedule
+                </Link>
+              )}
             </li>
             <li>
-              <a className="nav-link scrollto" href="#venue">
-                Venue
-              </a>
+              {isHomePage ? (
+                <a className="nav-link scrollto" href="#venue">
+                  Venue
+                </a>
+              ) : (
+                <Link className="nav-link" to="/#venue">
+                  Venue
+                </Link>
+              )}
             </li>
             <li>
-              <a className="nav-link scrollto" href="#sponsors">
-                Sponsors
-              </a>
+              {isHomePage ? (
+                <a className="nav-link scrollto" href="#sponsors">
+                  Sponsors
+                </a>
+              ) : (
+                <Link className="nav-link" to="/#sponsors">
+                  Sponsors
+                </Link>
+              )}
             </li>
             <li>
-              <a className="nav-link scrollto" href="#contact">
-                Contact
-              </a>
+              {isHomePage ? (
+                <a className="nav-link scrollto" href="#contact">
+                  Contact
+                </a>
+              ) : (
+                <Link className="nav-link" to="/#contact">
+                  Contact
+                </Link>
+              )}
             </li>
             <li>
               <Link className="nav-link" to="/codeofconduct">
@@ -85,7 +129,9 @@ const Header = () => {
             <li>
               <a
                 className="buy-tickets scrollto text-decoration-none px-3"
-                href="https://lu.ma/0m4wdoer"
+                href="https://forms.office.com/r/GW90BFyq7B"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Register
               </a>

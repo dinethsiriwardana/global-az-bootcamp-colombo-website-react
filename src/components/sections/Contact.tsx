@@ -26,11 +26,32 @@ const Contact = () => {
     setSubmitResult(null);
 
     try {
-      // In a real application, this would send the data to a server
-      // For now, we'll just simulate a successful submission
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Azure Logic App endpoint
+      const logicAppUrl =
+        "https://prod-91.southeastasia.logic.azure.com:443/workflows/bca4172c20bf424da78129dfaff3b907/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ic2tFG_jNV70dQDMSduo5U8zDuNN-3mjLKD_VaN4HoM";
 
-      console.log("Form submitted:", data);
+      // Map form data to the expected schema
+      const formattedData = {
+        name: data.name,
+        email: data.email,
+        Subject: data.subject, // Note: Case matches the schema requirement
+        Message: data.message, // Note: Case matches the schema requirement
+      };
+
+      // Send POST request to Logic App
+      const response = await fetch(logicAppUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formattedData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      console.log("Form submitted successfully:", data);
       setSubmitResult({
         status: "success",
         message: "Your message has been sent. Thank you!",
@@ -47,6 +68,12 @@ const Contact = () => {
     }
   };
 
+  // Function to reset the form and submission result
+  const handleNewMessage = () => {
+    setSubmitResult(null);
+    reset();
+  };
+
   return (
     <section id="contact" className="section-bg">
       <div className="container" data-aos="fade-up">
@@ -60,7 +87,10 @@ const Contact = () => {
             <div className="contact-address">
               <i className="bi bi-geo-alt"></i>
               <h3>Address</h3>
-              <address>Colombo, Sri Lanka</address>
+              <address>
+                Microsoft IT Pro community,<br></br>
+                Colombo, Sri Lanka
+              </address>
             </div>
           </div>
 
@@ -69,7 +99,12 @@ const Contact = () => {
               <i className="bi bi-phone"></i>
               <h3>Phone Number</h3>
               <p>
-                <a href="tel:+9411234567">+94 11 234 567</a>
+                <a
+                  href="tel:++94 77 772 4539"
+                  style={{ textDecoration: "none" }}
+                >
+                  +94 77 772 4539<br></br>Pathum Udana
+                </a>
               </p>
             </div>
           </div>
@@ -79,103 +114,115 @@ const Contact = () => {
               <i className="bi bi-envelope"></i>
               <h3>Email</h3>
               <p>
-                <a href="mailto:info@globalazure.lk">info@globalazure.lk</a>
+                <a
+                  href="mailto:info@globalazure.lk"
+                  style={{ textDecoration: "none" }}
+                >
+                  info@globalazure.lk
+                </a>
               </p>
             </div>
           </div>
         </div>
 
         <div className="form">
-          <form onSubmit={handleSubmit(onSubmit)} className="php-email-form">
-            <div className="row">
-              <div className="form-group col-md-6">
+          {submitResult?.status === "success" ? (
+            <div className="text-center success-message py-5">
+              <div className="mb-4">
+                <i className="bi bi-check-circle-fill text-success fs-1"></i>
+                <h3 className="mt-3">{submitResult.message}</h3>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit(onSubmit)} className="php-email-form">
+              <div className="row">
+                <div className="form-group col-md-6">
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
+                    placeholder="Your Name"
+                    {...register("name", {
+                      required: "Please enter your name",
+                    })}
+                  />
+                  {errors.name && (
+                    <div className="invalid-feedback">
+                      {errors.name.message}
+                    </div>
+                  )}
+                </div>
+                <div className="form-group col-md-6 mt-3 mt-md-0">
+                  <input
+                    type="email"
+                    className={`form-control ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
+                    placeholder="Your Email"
+                    {...register("email", {
+                      required: "Please enter your email",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Invalid email address",
+                      },
+                    })}
+                  />
+                  {errors.email && (
+                    <div className="invalid-feedback">
+                      {errors.email.message}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="form-group mt-3">
                 <input
                   type="text"
-                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                  placeholder="Your Name"
-                  {...register("name", { required: "Please enter your name" })}
-                />
-                {errors.name && (
-                  <div className="invalid-feedback">{errors.name.message}</div>
-                )}
-              </div>
-              <div className="form-group col-md-6 mt-3 mt-md-0">
-                <input
-                  type="email"
-                  className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                  placeholder="Your Email"
-                  {...register("email", {
-                    required: "Please enter your email",
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Invalid email address",
-                    },
+                  className={`form-control ${
+                    errors.subject ? "is-invalid" : ""
+                  }`}
+                  placeholder="Subject"
+                  {...register("subject", {
+                    required: "Please enter a subject",
                   })}
                 />
-                {errors.email && (
-                  <div className="invalid-feedback">{errors.email.message}</div>
+                {errors.subject && (
+                  <div className="invalid-feedback">
+                    {errors.subject.message}
+                  </div>
                 )}
               </div>
-            </div>
-            <div className="form-group mt-3">
-              <input
-                type="text"
-                className={`form-control ${errors.subject ? "is-invalid" : ""}`}
-                placeholder="Subject"
-                {...register("subject", { required: "Please enter a subject" })}
-              />
-              {errors.subject && (
-                <div className="invalid-feedback">{errors.subject.message}</div>
-              )}
-            </div>
-            <div className="form-group mt-3">
-              <textarea
-                className={`form-control ${errors.message ? "is-invalid" : ""}`}
-                rows={5}
-                placeholder="Message"
-                {...register("message", {
-                  required: "Please enter your message",
-                })}
-              ></textarea>
-              {errors.message && (
-                <div className="invalid-feedback">{errors.message.message}</div>
-              )}
-            </div>
-
-            {submitResult && (
-              <div
-                className={`my-3 ${
-                  submitResult.status === "success"
-                    ? "text-success"
-                    : "text-danger"
-                }`}
-              >
-                <div className={`loading ${isSubmitting ? "" : "d-none"}`}>
-                  Loading
-                </div>
-                <div
-                  className={`error-message ${
-                    submitResult.status === "error" ? "" : "d-none"
+              <div className="form-group mt-3">
+                <textarea
+                  className={`form-control ${
+                    errors.message ? "is-invalid" : ""
                   }`}
-                >
-                  {submitResult.message}
-                </div>
-                <div
-                  className={`sent-message ${
-                    submitResult.status === "success" ? "" : "d-none"
-                  }`}
-                >
-                  {submitResult.message}
-                </div>
+                  rows={5}
+                  placeholder="Message"
+                  {...register("message", {
+                    required: "Please enter your message",
+                  })}
+                ></textarea>
+                {errors.message && (
+                  <div className="invalid-feedback">
+                    {errors.message.message}
+                  </div>
+                )}
               </div>
-            )}
+              <br></br>
+              {submitResult?.status === "error" && (
+                <div className="my-3 text-danger">
+                  <div className="error-message">{submitResult.message}</div>
+                </div>
+              )}
 
-            <div className="text-center">
-              <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : "Send Message"}
-              </button>
-            </div>
-          </form>
+              <div className="text-center">
+                <button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </section>

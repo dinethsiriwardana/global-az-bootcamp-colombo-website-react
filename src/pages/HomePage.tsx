@@ -9,6 +9,7 @@ import Venue from "../components/sections/Venue";
 import Sponsors from "../components/sections/Sponsors";
 // import Contact from "../components/sections/Contact";
 import Faq from "../components/sections/FAQ";
+import Contact from "../components/sections/Contact";
 
 const HomePage = () => {
   return (
@@ -21,6 +22,7 @@ const HomePage = () => {
         <Venue />
         <Sponsors />
         <Faq />
+        <Contact />
       </main>
     </div>
   );

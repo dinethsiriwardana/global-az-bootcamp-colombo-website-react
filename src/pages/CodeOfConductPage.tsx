@@ -9,88 +9,14 @@ const CodeOfConductPage = () => {
 
   return (
     <div>
-      <header
-        id="header"
-        className="d-flex align-items-center"
-        style={{ background: "rgba(6, 12, 34, 0.8)" }}
-      >
-        <div className="container-fluid container-xxl d-flex align-items-center">
-          <div id="logo" className="me-auto">
-            {/* Uncomment below if you prefer to use a text logo */}
-            {/* <h1><a href="index.html">The<span>Event</span></a></h1> */}
-            <a href="index.html" className="scrollto">
-              <img
-                src="assets/img/GlobalAzure2025-762.png"
-                alt="Global Azure Bootcamp Logo"
-                title=""
-              />
-            </a>
-          </div>
-
-          <nav id="navbar" className="navbar order-last order-lg-0">
-            <ul>
-              <li>
-                <a className="nav-link scrollto" href="./index.html#hero">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a className="nav-link scrollto" href="./index.html#about">
-                  About
-                </a>
-              </li>
-              <li>
-                <a className="nav-link scrollto" href="./index.html#speakers">
-                  Speakers
-                </a>
-              </li>
-              <li>
-                <a className="nav-link scrollto" href="./index.html#schedule">
-                  Schedule
-                </a>
-              </li>
-              <li>
-                <a className="nav-link scrollto" href="./index.html#venue">
-                  Venue
-                </a>
-              </li>
-              <li>
-                <a className="nav-link scrollto" href="./index.html#supporters">
-                  Sponsors
-                </a>
-              </li>
-              <li>
-                <a className="nav-link scrollto active" href="#code-of-conduct">
-                  Code of Conduct
-                </a>
-              </li>
-              <li>
-                <a className="nav-link scrollto" href="./2024.html">
-                  2024 Event
-                </a>
-              </li>
-            </ul>
-            <i className="bi bi-list mobile-nav-toggle"></i>
-          </nav>
-          {/* .navbar */}
-          <a
-            className="buy-tickets scrollto"
-            href="https://www.meetup.com/Colombo-azure-nights/events/297604687/"
-          >
-            Register
-          </a>
-        </div>
-      </header>
-      {/* End Header */}
-
-      <main id="main">
-        <br />
-        <br />
+      <main id="main" style={{ backgroundColor: "#0e1b4d", color: "white" }}>
+        <br></br>
+        <br></br>
         {/* =======  F.A.Q Section ======= */}
         <section id="faq">
           <div className="container" data-aos="fade-up">
             <div className="section-header">
-              <h2>Code of Conduct</h2>
+              <h2 className="text-white">Code of Conduct</h2>
             </div>
 
             <div
@@ -99,11 +25,11 @@ const CodeOfConductPage = () => {
               data-aos-delay="100"
             >
               <div className="col-lg-9">
-                <ul className="faq-list">
+                <ul className="faq-list text-white">
                   <li>
                     <div
                       data-bs-toggle="collapse"
-                      className="collapsed question"
+                      className="collapsed question text-white"
                       data-bs-target="#faq1"
                     >
                       Who does this Code of Conduct apply to?
@@ -112,7 +38,7 @@ const CodeOfConductPage = () => {
                     </div>
                     <div
                       id="faq1"
-                      className="collapse"
+                      className="collapse text-white"
                       data-bs-parent=".faq-list"
                     >
                       <p>
@@ -132,7 +58,7 @@ const CodeOfConductPage = () => {
                     <div
                       data-bs-toggle="collapse"
                       data-bs-target="#faq2"
-                      className="collapsed question"
+                      className="collapsed question text-white"
                     >
                       The Quick Version
                       <i className="bi bi-chevron-down icon-show"></i>
@@ -140,7 +66,7 @@ const CodeOfConductPage = () => {
                     </div>
                     <div
                       id="faq2"
-                      className="collapse"
+                      className="collapse text-white"
                       data-bs-parent=".faq-list"
                     >
                       <p>
@@ -165,7 +91,7 @@ const CodeOfConductPage = () => {
                     <div
                       data-bs-toggle="collapse"
                       data-bs-target="#faq3"
-                      className="collapsed question"
+                      className="collapsed question text-white"
                     >
                       The Less Quick Version
                       <i className="bi bi-chevron-down icon-show"></i>
@@ -173,7 +99,7 @@ const CodeOfConductPage = () => {
                     </div>
                     <div
                       id="faq3"
-                      className="collapse"
+                      className="collapse text-white"
                       data-bs-parent=".faq-list"
                     >
                       <p>
@@ -233,87 +159,6 @@ const CodeOfConductPage = () => {
         {/* End  F.A.Q Section */}
       </main>
       {/* End #main */}
-
-      {/* ======= Footer ======= */}
-      <footer id="footer">
-        <div className="footer-top">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-3 col-md-6 footer-info">
-                <img
-                  src="assets/img/GlobalAzure2025-500.png"
-                  alt="GlobalAzureLogo"
-                />
-                <p>
-                  Global Azure 2025 is here! Over 3 days, communities around the
-                  world are organizing localized hybrid events and live streams
-                  for everyone around the world to join and learn about Azure
-                  from the best-in-class community leaders.
-                </p>
-              </div>
-
-              <div className="col-lg-3 col-md-6 footer-links">
-                <h4>Useful Links</h4>
-                <ul>
-                  <li>
-                    <i className="bi bi-chevron-right"></i>
-                    <a href="./index.html#hero">Home</a>
-                  </li>
-                  <li>
-                    <i className="bi bi-chevron-right"></i>
-                    <a href="./index.html#speakers">Speakers</a>
-                  </li>
-                  <li>
-                    <i className="bi bi-chevron-right"></i>
-                    <a href="./index.html#schedule">Sessions</a>
-                  </li>
-                  <li>
-                    <i className="bi bi-chevron-right"></i>
-                    <a href="#code-of-conduct">Code of Conduct</a>
-                  </li>
-                  <li>
-                    <i className="bi bi-chevron-right"></i>
-                    <a href="./index.html#venue">Getting There</a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* <div className="col-lg-3 col-md-6 footer-contact">
-              <h4>Contact Us</h4>
-              <p>
-                A108 Adam Street <br/>
-                New York, NY 535022<br/>
-                United States <br/>
-                <strong>Phone:</strong> +1 5589 55488 55<br/>
-                <strong>Email:</strong> info@example.com<br/>
-              </p>
-
-              <div className="social-links">
-                <a href="#" className="twitter"><i className="bi bi-twitter"></i></a>
-                <a href="#" className="facebook"><i className="bi bi-facebook"></i></a>
-                <a href="#" className="instagram"><i className="bi bi-instagram"></i></a>
-                <a href="#" className="google-plus"><i className="bi bi-instagram"></i></a>
-                <a href="#" className="linkedin"><i className="bi bi-linkedin"></i></a>
-              </div>
-
-            </div> */}
-            </div>
-          </div>
-        </div>
-
-        <div className="container">
-          <div className="credits">
-            {/*
-          All the links in the footer should remain intact.
-          You can delete the links only if you purchased the pro version.
-          Licensing information: https://bootstrapmade.com/license/
-          Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=TheEvent
-        */}
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-          </div>
-        </div>
-      </footer>
-      {/* End  Footer */}
 
       <a
         href="#code-of-conduct"
