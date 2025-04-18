@@ -15,7 +15,7 @@ const Hero = () => {
         </h1>
         <p className="mb-4 pb-0">10th May, 2025</p>
         <a
-          href="https://forms.office.com/r/GW90BFyq7B"
+          // href="https://forms.office.com/r/GW90BFyq7B"
           className="about-btn scrollto disabled"
           target="_blank"
           rel="noopener noreferrer"
