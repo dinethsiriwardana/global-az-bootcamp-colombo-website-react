@@ -40,14 +40,15 @@ const Faq = () => {
                   data-bs-target="#faq2"
                   className="collapsed question"
                 >
-                  How do I get there?
+                  How do I attend the event?
                   <i className="bi bi-chevron-down icon-show"></i>
                   <i className="bi bi-chevron-up icon-close"></i>
                 </div>
                 <div id="faq2" className="collapse" data-bs-parent=".faq-list">
                   <p>
-                    We are currently canvasing for venues in which 2025 will be
-                    hosted. If you have a suggestion, please reach out!
+                    Once registrations are open, you will need to register to
+                    secure your spot. You can choose to attend either in person
+                    or online. Please note that in-person seats are limited.
                   </p>
                 </div>
               </li>
@@ -85,8 +86,8 @@ const Faq = () => {
                 </div>
                 <div id="faq4" className="collapse" data-bs-parent=".faq-list">
                   <p>
-                    Thanks to our generous <a href="#sponsors">sponsors</a>, we have
-                    organised a lunch and afternoon tea for attendees.
+                    Thanks to our generous <a href="#sponsors">sponsors</a>, we
+                    have organised a lunch and afternoon tea for attendees.
                   </p>
                 </div>
               </li>
@@ -116,15 +117,15 @@ const Faq = () => {
                   data-bs-target="#faq6"
                   className="collapsed question"
                 >
-                  Will sessions be streamed online??
+                  Will the sessions be available online?
                   <i className="bi bi-chevron-down icon-show"></i>
                   <i className="bi bi-chevron-up icon-close"></i>
                 </div>
                 <div id="faq6" className="collapse" data-bs-parent=".faq-list">
                   <p>
-                    The 2025 event will be an in person event. Sessions will be
-                    recorded and slides collected to attendees to access post
-                    event!
+                    Yes, Microsoft Teams Live will be available for all
+                    registered online participants, allowing you to attend the
+                    sessions virtually.
                   </p>
                 </div>
               </li>

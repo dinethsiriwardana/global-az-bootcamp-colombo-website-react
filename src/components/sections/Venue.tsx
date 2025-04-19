@@ -19,18 +19,18 @@ const Venue = () => {
               title="Google Map of Event Location"
             ></iframe>
           </div>
-
           <div className="col-lg-6 venue-info">
             <div className="row justify-content-center align-items-center">
               <div className="col-11 col-lg-8 position-relative">
                 <h3>Microsoft Sri Lanka</h3>
                 <p>
-                  We are currently canvasing for venues in which 2025 will be
-                  hosted. If you have a suggestion, please reach out!
+                  We are hosting this event at Microsoft Sri Lanka. Join us for
+                  an amazing experience!
                 </p>
               </div>
             </div>
           </div>
+          3
         </div>
         <br></br>
         <br></br>
