@@ -16,9 +16,9 @@ const About = () => {
               enthusiasts to share knowledge and experiences.
             </p>
             <p>
-              In Sri Lanka, we are excited to be part of this worldwide
-              celebration. Join us to connect with fellow Azure professionals,
-              participate in insightful sessions, and enhance your skills.
+              n Sri Lanka, the Microsoft IT Pro Community is proud to be part of
+              this movement. Join us to connect with fellow Azure professionals,
+              participate in insightful sessions, and enhance your Azure skills.
               Whether you're a seasoned expert or just starting your Azure
               journey, there's something for everyone at Global Azure 2025.
             </p>
@@ -26,10 +26,17 @@ const About = () => {
           <div className="col-lg-2 text-center text-lg-start">
             <h3>Where</h3>
             <p>Microsoft Sri Lanka</p>
-          </div>
-          <div className="col-lg-2 text-center text-lg-start">
             <h3>When</h3>
             <p>Saturday 10th May</p>
+          </div>
+          <div className="col-lg-2 text-lg-start">
+            <h3>Hosted By</h3>
+            <br></br>
+            <img
+              src="/assets/img/itpro.png"
+              alt="Global Azure 2025"
+              height="80"
+            />
           </div>
         </div>
       </div>
