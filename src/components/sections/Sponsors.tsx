@@ -5,7 +5,7 @@ interface Sponsor {
   name: string;
   logo: string;
   url: string;
-  tier: "platinum" | "gold" | "silver" | "bronze";
+  tier: "platinum" | "gold" | "silver" | "bronze" | "venue";
 }
 
 interface SponsorsByTier {
@@ -13,13 +13,40 @@ interface SponsorsByTier {
   gold: Sponsor[];
   silver: Sponsor[];
   bronze: Sponsor[];
+  venue: Sponsor[];
 }
 
 const TIER_CONFIG = {
-  platinum: { colClass: "col-lg-4 col-md-6", delay: 100 },
-  gold: { colClass: "col-lg-3 col-md-4 col-6", delay: 200 },
-  silver: { colClass: "col-lg-2 col-md-3 col-4", delay: 300 },
-  bronze: { colClass: "col-lg-2 col-md-3 col-4", delay: 400 },
+  platinum: {
+    colClass: "col-lg-4 col-md-6",
+    delay: 100,
+    logoWidth: 300,
+    logoHeight: 180,
+  },
+  gold: {
+    colClass: "col-lg-3 col-md-4 col-6",
+    delay: 200,
+    logoWidth: 240,
+    logoHeight: 150,
+  },
+  silver: {
+    colClass: "col-lg-2 col-md-3 col-4",
+    delay: 300,
+    logoWidth: 180,
+    logoHeight: 120,
+  },
+  bronze: {
+    colClass: "col-lg-2 col-md-3 col-4",
+    delay: 400,
+    logoWidth: 150,
+    logoHeight: 100,
+  },
+  venue: {
+    colClass: "col-lg-2 col-md-2 col-3",
+    delay: 500,
+    logoWidth: 150,
+    logoHeight: 80,
+  },
 };
 
 const Sponsors = () => {
@@ -67,6 +94,13 @@ const Sponsors = () => {
         url: "https://lodgeservice.com",
         tier: "silver",
       },
+      {
+        id: 7,
+        name: "Microsoft",
+        logo: "/assets/img/sponsors/microsoft.png",
+        url: "https://www.microsoft.com/en-lk/",
+        tier: "venue",
+      },
     ],
     []
   );
@@ -78,7 +112,13 @@ const Sponsors = () => {
         acc[sponsor.tier].push(sponsor);
         return acc;
       },
-      { platinum: [], gold: [], silver: [], bronze: [] } as SponsorsByTier
+      {
+        platinum: [],
+        gold: [],
+        silver: [],
+        bronze: [],
+        venue: [],
+      } as SponsorsByTier
     );
   }, [sponsors]);
 
@@ -87,7 +127,7 @@ const Sponsors = () => {
     const tierSponsors = sponsorsByTier[tierName];
     if (tierSponsors.length === 0) return null;
 
-    const { colClass, delay } = TIER_CONFIG[tierName];
+    const { colClass, delay, logoWidth, logoHeight } = TIER_CONFIG[tierName];
     const capitalizedTier =
       tierName.charAt(0).toUpperCase() + tierName.slice(1);
 
@@ -105,6 +145,9 @@ const Sponsors = () => {
                 src={sponsor.logo}
                 className="img-fluid"
                 alt={sponsor.name}
+                width={logoWidth}
+                height={logoHeight}
+                style={{ objectFit: "contain" }}
               />
             </a>
           </div>
@@ -125,6 +168,7 @@ const Sponsors = () => {
         {renderSponsorTier("gold")}
         {renderSponsorTier("silver")}
         {renderSponsorTier("bronze")}
+        {renderSponsorTier("venue")}
 
         <div
           className="row no-gutters sponsors-call-to-action"

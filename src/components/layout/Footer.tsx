@@ -17,6 +17,7 @@ const Footer = () => {
                 user communities around the world to learn about Azure and the
                 cloud computing topics.
               </p>
+              
             </div>
 
             <div className="col-lg-4 col-md-6 footer-links  text-start  text-decoration-none">
