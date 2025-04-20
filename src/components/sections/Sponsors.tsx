@@ -44,7 +44,7 @@ const TIER_CONFIG = {
   venue: {
     colClass: "col-lg-2 col-md-2 col-3",
     delay: 500,
-    logoWidth: 150,
+    logoWidth: 120,
     logoHeight: 80,
   },
 };
@@ -137,7 +137,9 @@ const Sponsors = () => {
         data-aos="zoom-in"
         data-aos-delay={delay}
       >
-        <h3 className="sponsor-category">{capitalizedTier} Sponsors</h3>
+        <h3 className="sponsor-category">
+          {capitalizedTier} {tierSponsors.length === 1 ? "Sponsor" : "Sponsors"}
+        </h3>
         {tierSponsors.map((sponsor) => (
           <div className={colClass} key={sponsor.id}>
             <a href={sponsor.url} target="_blank" rel="noopener noreferrer">
