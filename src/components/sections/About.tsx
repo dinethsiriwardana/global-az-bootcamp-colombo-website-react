@@ -16,11 +16,12 @@ const About = () => {
               enthusiasts to share knowledge and experiences.
             </p>
             <p>
-              n Sri Lanka, the Microsoft IT Pro Community is proud to be part of
-              this movement. Join us to connect with fellow Azure professionals,
-              participate in insightful sessions, and enhance your Azure skills.
-              Whether you're a seasoned expert or just starting your Azure
-              journey, there's something for everyone at Global Azure 2025.
+              In Sri Lanka, the Microsoft IT Pro Community is proud to be part
+              of this movement. Join us to connect with fellow Azure
+              professionals, participate in insightful sessions, and enhance
+              your Azure skills. Whether you're a seasoned expert or just
+              starting your Azure journey, there's something for everyone at
+              Global Azure 2025.
             </p>
           </div>
           <div className="col-lg-2 text-center text-lg-start">
