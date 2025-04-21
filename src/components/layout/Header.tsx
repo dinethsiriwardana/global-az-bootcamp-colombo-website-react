@@ -126,7 +126,7 @@ const Header = () => {
                 Code of Conduct
               </Link>
             </li>
-            {/* <li>
+            <li>
               <a
                 className="buy-tickets scrollto text-decoration-none px-3"
                 href="https://forms.office.com/r/GW90BFyq7B"
@@ -135,7 +135,7 @@ const Header = () => {
               >
                 Register
               </a>
-            </li> */}
+            </li>
           </ul>
           <i
             className={`bi ${

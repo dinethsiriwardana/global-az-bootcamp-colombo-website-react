@@ -14,16 +14,16 @@ const Hero = () => {
           <span>Colombo</span>
         </h1>
         <p className="mb-4 pb-0">10th May, 2025</p>
+
         <a
-          // href="https://forms.office.com/r/GW90BFyq7B"
-          className="about-btn scrollto disabled"
+          href="https://forms.office.com/r/GW90BFyq7B"
+          className=" about-btn buy-tickets scrollto"
           target="_blank"
           rel="noopener noreferrer"
-          aria-disabled="true"
-          onClick={(e) => e.preventDefault()}
         >
-          Registration Opens Soon
+          Register Now
         </a>
+
         <a href="#about" className="about-btn scrollto">
           Event Details
         </a>
