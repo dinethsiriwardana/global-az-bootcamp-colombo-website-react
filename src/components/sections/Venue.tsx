@@ -30,7 +30,6 @@ const Venue = () => {
               </div>
             </div>
           </div>
-          3
         </div>
         <br></br>
         <br></br>
