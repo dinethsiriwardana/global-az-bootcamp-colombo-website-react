@@ -88,7 +88,7 @@ const Contact = () => {
               <i className="bi bi-geo-alt"></i>
               <h3>Address</h3>
               <address>
-                Microsoft IT Pro community,<br></br>
+                Microsoft IT Pro Community,<br></br>
                 Colombo, Sri Lanka
               </address>
             </div>
