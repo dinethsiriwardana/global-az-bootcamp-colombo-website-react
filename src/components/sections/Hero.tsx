@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Hero = () => {
+  // Randomly select a background image when the component mounts
+  useEffect(() => {
+    const images = ["bg.jpg", "bg2.png"];
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+
+    // Set the background image for the hero section
+    const heroElement = document.getElementById("hero");
+    if (heroElement) {
+      heroElement.style.background = `url('assets/img/${randomImage}') top center`;
+      heroElement.style.backgroundSize = "cover";
+    }
+  }, []);
+
   return (
     <section id="hero">
       <div className="hero-container" data-aos="zoom-in" data-aos-delay="100">
@@ -14,7 +27,6 @@ const Hero = () => {
           <span>Colombo</span>
         </h1>
         <p className="mb-4 pb-0">10th May, 2025</p>
-
         <a
           href="https://forms.office.com/r/GW90BFyq7B"
           className=" about-btn buy-tickets scrollto"
