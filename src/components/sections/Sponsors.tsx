@@ -91,7 +91,7 @@ const Sponsors = () => {
         id: 6,
         name: "Lodge",
         logo: "/assets/img/sponsors/lodge.png",
-        url: "https://lodgeservice.com",
+        url: "https://lodgepro.com.au/",
         tier: "silver",
       },
       {
