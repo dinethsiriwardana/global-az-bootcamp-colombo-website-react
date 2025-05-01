@@ -27,14 +27,17 @@ const Hero = () => {
           <span>Colombo</span>
         </h1>
         <p className="mb-4 pb-0">10th May, 2025</p>
-        <a
-          href="https://forms.office.com/r/GW90BFyq7B"
+        {/* <a
+          href="#"
           className=" about-btn buy-tickets scrollto"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Register Now
-        </a>
+          Registration Closed
+        </a> */}
+        <div className=" about-btn buy-tickets scrollto">
+          Registration Closed
+        </div>
 
         <a href="#about" className="about-btn scrollto">
           Event Details
