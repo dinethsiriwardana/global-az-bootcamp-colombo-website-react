@@ -67,7 +67,7 @@ const Faq = () => {
                   <p>
                     Our Call for Speakers will open on April 1st 2025. If you're
                     a Sri Lankan and looking to contribute to community events,
-                    please feel free to reach out via
+                    please feel free to reach out via 
                     <a href="mailto:info@globalazure.lk">info@globalazure.lk</a>
                     and we can book you a dedicated session at our user group!
                   </p>
@@ -104,7 +104,7 @@ const Faq = () => {
                 </div>
                 <div id="faq5" className="collapse" data-bs-parent=".faq-list">
                   <p>
-                    Yes! If your organisation is interested in sponsoring,
+                    Yes! If your organization is interested in sponsoring,
                     please reach our to our organisers via
                     <a href="mailto:info@globalazure.lk">info@globalazure.lk</a>
                   </p>
