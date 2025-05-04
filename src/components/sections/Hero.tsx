@@ -36,7 +36,7 @@ const Hero = () => {
           Registration Closed
         </a> */}
         <div className=" about-btn buy-tickets scrollto">
-          Registration's Closed
+          First Round Confirmation Emails Have Been Sent
         </div>
 
         <a href="#about" className="about-btn scrollto">

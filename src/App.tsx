@@ -18,6 +18,7 @@ import CodeOfConductPage from "./pages/CodeOfConductPage";
 
 // Import AOS for animations
 import AOS from "aos";
+import RegistrationPage from "./pages/RegistrationPage";
 
 // ScrollToTop component to handle anchor links
 const ScrollToTop = () => {
@@ -42,6 +43,18 @@ const ScrollToTop = () => {
   return null;
 };
 
+// FooterWrapper component to conditionally render Footer
+const FooterWrapper = () => {
+  const location = useLocation();
+
+  // Don't render Footer on the registrations page
+  if (location.pathname === "/registrations") {
+    return null;
+  }
+
+  return <Footer />;
+};
+
 function App() {
   useEffect(() => {
     // Initialize AOS animation library
@@ -64,8 +77,9 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/codeofconduct" element={<CodeOfConductPage />} />
+          <Route path="/registrations" element={<RegistrationPage />} />
         </Routes>
-        <Footer />
+        <FooterWrapper />
       </div>
     </Router>
   );
