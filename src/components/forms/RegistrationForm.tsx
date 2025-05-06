@@ -137,7 +137,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Organization</Form.Label>
+          <Form.Label>Organization Name</Form.Label>
           <Form.Control
             type="text"
             name="organization"
@@ -151,7 +151,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Position</Form.Label>
+          <Form.Label>Current Position</Form.Label>
           <Form.Control
             type="text"
             name="position"
@@ -165,7 +165,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Select Track</Form.Label>
+          <Form.Label>Preferred Track</Form.Label>
           <Form.Select
             name="track"
             value={formData.track}
