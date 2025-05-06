@@ -101,7 +101,7 @@ const Hero = () => {
             setShowModal(true);
           }}
         >
-          Register Now
+          Go Virtual
         </a>
 
         <a href="#about" className="about-btn scrollto">
