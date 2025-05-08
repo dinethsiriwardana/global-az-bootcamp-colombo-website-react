@@ -103,19 +103,19 @@ const RegistrationPage = () => {
                   border: "1px solid rgba(255, 255, 255, 0.18)",
                 }}
               >
-                <h4 className="text-center mb-4" style={{ color: "#fff" }}>
-                  Verify Your Registration
+                <h4 className="text-center" style={{ color: "#fff" }}>
+                  Verification Closed
                 </h4>
 
-                {result && (
+                {/* {result && (
                   <Alert
                     variant={result.status === "success" ? "success" : "danger"}
                   >
                     {result.message}
                   </Alert>
-                )}
+                )} */}
 
-                <Form onSubmit={handleSubmit}>
+                {/* <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="email"
@@ -192,7 +192,7 @@ const RegistrationPage = () => {
                       )}
                     </Button>
                   </div>
-                </Form>
+                </Form> */}
               </div>
             </Col>
           </Row>
