@@ -308,6 +308,7 @@ const Speakers: React.FC = () => {
             </SwiperSlide>
           );
         })}
+        <br></br>
         <div className="swiper-pagination"></div>
       </Swiper>
     </section>

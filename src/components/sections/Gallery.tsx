@@ -12,38 +12,38 @@ interface GalleryImage {
   id: number;
   src: string;
   alt: string;
+  thumbnail?: string; // Optional thumbnail path
 }
 
-const galleryImages: GalleryImage[] = [
-  {
-    id: 1,
-    src: "https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80",
-    alt: "Beautiful landscape",
-  },
-  {
-    id: 5,
-    src: "https://images.unsplash.com/photo-1526281216101-e55f00f0db7a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80",
+/**
+ * Function to load gallery images from a folder
+ * @param folderPath Path relative to the public folder
+ * @param fileExtension File extension of images to include
+ * @returns Array of GalleryImage objects
+ */
+const loadGalleryImages = (
+  folderPath: string = "/assets/img/gallery/",
+  fileExtension: string = "jpeg"
+): GalleryImage[] => {
+  // For a production app, you might want to fetch this list from an API
+  // but for this demo, we'll use a predefined list of available images
+  const totalImages = 10; // Update this based on how many images are in your folder
 
-    alt: "Foggy road through forest",
-  },
-  {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1608481337062-4093bf3ed404?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80",
-    alt: "Beautiful landscape",
-  },
-  {
-    id: 3,
-    src: "https://images.unsplash.com/photo-1605973029521-8154da591bd7?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80",
+  // Generate array of image objects
+  return Array.from({ length: totalImages }, (_, i) => {
+    const imageNumber = i + 1;
+    const imagePath = `${folderPath}${imageNumber}.${fileExtension}`;
 
-    alt: "Mountain landscape",
-  },å
-  {
-    id: 4,
-    src: "https://images.unsplash.com/photo-1526281216101-e55f00f0db7a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80",
+    return {
+      id: imageNumber,
+      src: imagePath,
+      alt: `Azure Bootcamp Colombo Gallery Image ${imageNumber}`,
+    };
+  });
+};
 
-    alt: "Foggy road through forest",
-  },
-];
+// Load gallery images from the specified folder
+const galleryImages: GalleryImage[] = loadGalleryImages();
 
 const Gallery = () => {
   const [hasError, setHasError] = useState<boolean>(false);
@@ -199,6 +199,7 @@ const Gallery = () => {
         {galleryImages.map((image) => (
           <a
             key={image.id}
+            href={image.src}
             // data-lg-size={`${image.width}-${image.height}`}
             className="gallery-item"
             data-src={image.src}

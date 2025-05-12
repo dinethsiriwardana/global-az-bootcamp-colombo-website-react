@@ -1,0 +1,62 @@
+.counter-banner {
+  padding: 80px 0;
+  background-color: #f6f7fd;
+}
+
+.counter-row {
+  margin-top: 50px;
+}
+
+.counter-item {
+  margin-bottom: 30px;
+}
+
+.counter-box {
+  transition: all 0.3s ease;
+  padding: 30px 15px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+}
+
+.counter-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.counter-num {
+  font-size: 64px;
+  font-weight: 700;
+  color: #f82249;
+  margin-bottom: 10px;
+  font-family: "Raleway", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.counter-suffix {
+  font-size: 32px;
+  margin-left: 2px;
+}
+
+.counter-text {
+  font-size: 24px;
+  color: #0e1b4d;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .counter-num {
+    font-size: 48px;
+  }
+
+  .counter-suffix {
+    font-size: 24px;
+  }
+
+  .counter-text {
+    font-size: 20px;
+  }
+}

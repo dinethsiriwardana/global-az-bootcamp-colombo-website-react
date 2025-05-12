@@ -109,6 +109,25 @@ const Header = () => {
               {isHomePage ? (
                 <a
                   className="nav-link scrollto"
+                  href="#counter-stats"
+                  onClick={closeMobileNav}
+                >
+                  Event Statistics
+                </a>
+              ) : (
+                <Link
+                  className="nav-link"
+                  to="/#counter-stats"
+                  onClick={closeMobileNav}
+                >
+                  Event Statistics
+                </Link>
+              )}
+            </li>
+            <li>
+              {isHomePage ? (
+                <a
+                  className="nav-link scrollto"
                   href="#gallery"
                   onClick={closeMobileNav}
                 >

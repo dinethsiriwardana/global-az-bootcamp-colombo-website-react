@@ -10,6 +10,7 @@ import Faq from "../components/sections/FAQ";
 import Contact from "../components/sections/Contact";
 import Gallery from "../components/sections/Gallery";
 import Venue from "../components/sections/Venue";
+import CounterBanner from "../components/sections/CounterBanner";
 
 const HomePage = () => {
   return (
@@ -18,9 +19,9 @@ const HomePage = () => {
         <Hero />
         <About />
         <Speakers />
+        <CounterBanner />
         {/* <Schedule /> */}
         <Venue />
-        <Gallery />
         <Sponsors />
         {/* <Faq /> */}
         <Contact />
