@@ -8,20 +8,18 @@ const About = () => {
           <div className="col-lg-8 text-center text-lg-start">
             <h2>About The Event</h2>
             <p className="pe-lg-7">
-              Global Azure 2025 is here! On May 10th, communities around the
-              world will organize localized hybrid events and live streams,
-              offering everyone the opportunity to join and learn about Azure
-              from top community leaders. This global event will take place
-              simultaneously across various locations, bringing together Azure
-              enthusiasts to share knowledge and experiences.
+              Global Azure 2025 took place on May 10th, with communities
+              worldwide organizing localized hybrid events and live streams.
+              This global event brought together Azure enthusiasts, offering
+              everyone the opportunity to join and learn from top community
+              leaders.
             </p>
             <p>
-              In Sri Lanka, the Microsoft IT Pro Community is proud to be part
-              of this movement. Join us to connect with fellow Azure
-              professionals, participate in insightful sessions, and enhance
-              your Azure skills. Whether you're a seasoned expert or just
-              starting your Azure journey, there's something for everyone at
-              Global Azure 2025.
+              In Sri Lanka, the Microsoft IT Pro Community proudly participated
+              in this movement. Participants connected with fellow Azure
+              professionals, engaged in insightful sessions, and enhanced their
+              Azure skills. Whether seasoned experts or beginners on their Azure
+              journey, attendees found something valuable at Global Azure 2025.
             </p>
           </div>
           <div className="col-lg-2 text-center text-lg-start">

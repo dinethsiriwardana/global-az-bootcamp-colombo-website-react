@@ -4,12 +4,13 @@ import React from "react";
 import Hero from "../components/sections/Hero";
 import About from "../components/sections/About";
 import Speakers from "../components/sections/Speakers";
-import Schedule from "../components/sections/Schedule";
-import Venue from "../components/sections/Venue";
 import Sponsors from "../components/sections/Sponsors";
 // import Contact from "../components/sections/Contact";
 import Faq from "../components/sections/FAQ";
 import Contact from "../components/sections/Contact";
+import Gallery from "../components/sections/Gallery";
+import AttendeeGallery from "../components/sections/AttendeeGallery";
+import Venue from "../components/sections/Venue";
 
 const HomePage = () => {
   return (
@@ -18,10 +19,12 @@ const HomePage = () => {
         <Hero />
         <About />
         <Speakers />
-        <Schedule />
+        {/* <Schedule /> */}
         <Venue />
+        <Gallery />
+        <AttendeeGallery />
         <Sponsors />
-        <Faq />
+        {/* <Faq /> */}
         <Contact />
       </main>
     </div>
