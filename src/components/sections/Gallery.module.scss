@@ -1,0 +1,73 @@
+@import url("https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery.css");
+@import url("https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lg-zoom.css");
+@import url("https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lg-share.css");
+
+.masonryGalleryWrapper {
+  margin: 0 auto;
+  max-width: 1400px; /* Wider container for 4 columns */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.masonryGalleryDemo {
+  margin: 0 auto;
+
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
+/* Applying these styles globally to ensure they're accessible to Masonry */
+:global(.grid-sizer),
+:global(.gallery-item) {
+  width: calc(25% - 12px);
+  margin-bottom: 15px;
+
+  @media (max-width: 1024px) {
+    width: calc(33.33% - 10px);
+  }
+
+  @media (max-width: 768px) {
+    width: calc(50% - 10px);
+  }
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+}
+
+:global(.gallery-item) {
+  float: left;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  &:hover img {
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* LightGallery customizations */
+:global(.lg-backdrop) {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+:global(.lg-toolbar),
+:global(.lg-outer) {
+  background-color: transparent;
+}

@@ -9,7 +9,6 @@ import Sponsors from "../components/sections/Sponsors";
 import Faq from "../components/sections/FAQ";
 import Contact from "../components/sections/Contact";
 import Gallery from "../components/sections/Gallery";
-import AttendeeGallery from "../components/sections/AttendeeGallery";
 import Venue from "../components/sections/Venue";
 
 const HomePage = () => {
@@ -22,7 +21,6 @@ const HomePage = () => {
         {/* <Schedule /> */}
         <Venue />
         <Gallery />
-        <AttendeeGallery />
         <Sponsors />
         {/* <Faq /> */}
         <Contact />

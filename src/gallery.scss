@@ -1,0 +1,88 @@
+@import url("https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery.css");
+@import url("https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lg-zoom.css");
+@import url("https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lg-share.css");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  padding: 40px;
+  background-image: linear-gradient(#e8f0ff 0%, white 52.08%);
+  color: #0e3481;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.header__title {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.header__description {
+  font-size: 1.25rem;
+  padding-top: 1rem;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.header__description2 {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 620px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.header__button {
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  color: #007bff;
+  background-color: transparent;
+  border: 1px solid #007bff;
+  text-decoration: none;
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+}
+
+.header__button:hover {
+  color: #0056b3;
+  background-color: transparent;
+  border-color: #0056b3;
+}
+
+.masonry-gallery-demo {
+  margin: 0 auto;
+
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  .grid-sizer,
+  .lg-item {
+    width: 33.33%;
+  }
+
+  .lg-item {
+    float: left;
+    margin-bottom: 10px;
+  }
+
+  .lg-item img {
+    display: block;
+    max-width: 100%;
+  }
+}
