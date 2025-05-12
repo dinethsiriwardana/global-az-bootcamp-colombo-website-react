@@ -1,0 +1,211 @@
+// Combined sessions data for Global Azure Bootcamp
+export interface CombinedSession {
+  ID: string;
+  Title: string;
+  Description: string;
+  Track: string;
+  FirstName: string;
+  LastName: string;
+  TagLine: string | null;
+  LinkedIn: string;
+  StartsAt: string;
+  EndsAt: string;
+  Room: string;
+}
+
+export const combinedSessions: CombinedSession[] = [
+  {
+    ID: "926190",
+    Title: "Navigating Your Cloud Career in an AI-Driven World",
+    Description:
+      "As artificial intelligence continues to revolutionize the digital world, cloud professionals find themselves leading one of the most significant technological shifts of our time. This session delves into how AI is reshaping roles, required skill sets, and career trajectories across the cloud ecosystem.",
+    Track: "General",
+    FirstName: "Prabhath",
+    LastName: "Mannapperuma",
+    TagLine: "Partner Technology Strategist - Microsoft",
+    LinkedIn: "https://www.linkedin.com/in/dprabhath",
+    StartsAt: "2025-05-10T09:20:00",
+    EndsAt: "2025-05-10T09:40:00",
+    Room: "Apps & DevOps",
+  },
+  {
+    ID: "853866",
+    Title:
+      "Azure Certification Roadmap: Learning Paths, Discounts & Smart Strategies to Succeed",
+    Description:
+      "This session is to embark on your Azure certification journey with a clear roadmap! This session covers the recommended learning paths for key Azure certifications, strategies to prepare effectively, and how to leverage Microsoft's discounts, exam vouchers, and learning resources. Whether you're aiming for Azure Administrator, Security Engineer, or Solutions Architect Expert, discover cost-effective ways to get certified and boost your cloud career.",
+    Track: "Infra and security",
+    FirstName: "Rizmi",
+    LastName: "Razik",
+    TagLine:
+      "Head of Hybrid Cloud Engineering (Azure Practice Lead) @ Dijital Team",
+    LinkedIn: "https://www.linkedin.com/in/rizmi-razik-9a6b4551/",
+    StartsAt: "2025-05-10T10:00:00",
+    EndsAt: "2025-05-10T11:00:00",
+    Room: "Infra & Security",
+  },
+  {
+    ID: "889727",
+    Title: "Azure Platform Monitoring - A Distributed and Extensible Solution",
+    Description:
+      "A distributed solution designed to empower CSPs by seamlessly transferring monitoring data to a centralized monitoring tool, dashboard, or any chosen destination. This solution leverages a range of Azure native platform services, enabling highly customizable and in-depth monitoring capabilities.",
+    Track: "App and DevOps",
+    FirstName: "Ijaz",
+    LastName: "Rameez",
+    TagLine: "Senior DevOps Engineer at Advania Pvt Ltd",
+    LinkedIn: "https://www.linkedin.com/in/ijazrameez",
+    StartsAt: "2025-05-10T10:00:00",
+    EndsAt: "2025-05-10T11:00:00",
+    Room: "Apps & DevOps",
+  },
+  {
+    ID: "888888",
+    Title: "Leverage your Business Analytics with Microsoft Fabric",
+    Description:
+      "Explore how Microsoft Fabric helps organizations unify their data analytics infrastructure. This session covers Fabric's end-to-end analytics solution that combines data engineering, data factory, data science, real-time analytics, and business intelligence capabilities.",
+    Track: "Data & AI",
+    FirstName: "Supun",
+    LastName: "Sudheera",
+    TagLine: "Data Analytics Specialist",
+    LinkedIn: "https://www.linkedin.com/in/supun-jayalath/",
+    StartsAt: "2025-05-10T13:00:00",
+    EndsAt: "2025-05-10T14:00:00",
+    Room: "Data & AI",
+  },
+  {
+    ID: "887398",
+    Title:
+      "Automate the employee identity lifecycle with Microsoft Entra ID Governance",
+    Description:
+      "Discover how to automate the employee joiner, mover, and leaver processes to ensure that new employees, and those with job changes, are productive immediately - while maximizing security by applying least privilege access principles. Learn how to enforce recurring reviews so that access is removed when it's no longer needed. And understand how to automatically remove all access when employees leave the organization.",
+    Track: "Infra and security",
+    FirstName: "Pathum",
+    LastName: "Udana",
+    TagLine:
+      "Microsoft MVP & Principal Engineer - Identity and Access Management at Wiley",
+    LinkedIn: "https://www.linkedin.com/in/pathumudana/",
+    StartsAt: "2025-05-10T11:00:00",
+    EndsAt: "2025-05-10T12:00:00",
+    Room: "Infra & Security",
+  },
+  {
+    ID: "887399",
+    Title:
+      "Supercharging AI Agents with MCP: Seamless Integration of Azure Services",
+    Description:
+      "Learn how to leverage the Model Context Protocol (MCP) to enhance AI agents with Azure services. This session demonstrates how to create intelligent agents capable of interacting with various Azure resources, processing data, and providing valuable insights.",
+    Track: "Data & AI",
+    FirstName: "Nisal",
+    LastName: "Mihiranga",
+    TagLine:
+      "Head of AI & Data Science at Zone24x7, Microsoft MVP - AI, MCT, AI Architect",
+    LinkedIn: "https://www.linkedin.com/in/nisalm/",
+    StartsAt: "2025-05-10T11:00:00",
+    EndsAt: "2025-05-10T12:00:00",
+    Room: "Data & AI",
+  },
+  {
+    ID: "916048",
+    Title: "Understanding Data API Builder",
+    Description:
+      "Data API builder is designed for developers. Data API builder features a cross-platform CLI, native OpenAPI, Swagger for REST endpoints. Lets create quick API endpoints for your frontend using Data API Builder.",
+    Track: "App and DevOps",
+    FirstName: "Fiqri",
+    LastName: "Ismail",
+    TagLine: "Archtect | Author | Microsoft MVP | Traveller | Speaker",
+    LinkedIn: "https://www.linkedin.com/in/fiqriismail/",
+    StartsAt: "2025-05-10T11:00:00",
+    EndsAt: "2025-05-10T12:00:00",
+    Room: "Apps & DevOps",
+  },
+  {
+    ID: "875341",
+    Title: "Mastering Azure Bicep",
+    Description:
+      "In these sessions I will be talking about different deployment methods around Azure Bicep including deployment pipelines PowerShell deployments and also deployment stacks",
+    Track: "Infra and security",
+    FirstName: "Danidu",
+    LastName: "Weerasinghe",
+    TagLine: "Azure MVP, Consultant @ Arinco",
+    LinkedIn: "https://www.linkedin.com/in/danidu-weerasinghe-b5615b42/",
+    StartsAt: "2025-05-10T13:00:00",
+    EndsAt: "2025-05-10T14:00:00",
+    Room: "Infra & Security",
+  },
+  {
+    ID: "884684",
+    Title: "Deploying API-First Apps with Azure API Management",
+    Description:
+      "In this session, I will walk you through the API-First approach and how to deploy and manage APIs using Azure API Management (APIM). I will start with the fundamentals of API-First development and why it's essential for modern applications. Then, I'll explore APIM's key features, including security, rate limiting, and monitoring. Through a hands-on demo, I will show you how to deploy an API using Azure Functions and integrate it with APIM. Finally, I'll share best practices for securing and optimizing APIs in the cloud, helping you build scalable and well-managed APIs.",
+    Track: "App and DevOps",
+    FirstName: "Dineth",
+    LastName: "Siriwardhana",
+    TagLine: "Gold Microsoft Learn Student Ambassador",
+    LinkedIn: "https://www.linkedin.com/in/dinethsiriwardana/",
+    StartsAt: "2025-05-10T13:00:00",
+    EndsAt: "2025-05-10T14:00:00",
+    Room: "Apps & DevOps",
+  },
+  {
+    ID: "887395",
+    Title:
+      "Reinforcement Learning in Action: Smart Decisions with Azure Machine Learning",
+    Description:
+      "Dive into the world of reinforcement learning and discover how to implement intelligent decision-making systems using Azure Machine Learning. This hands-on session demonstrates how to build, train, and deploy reinforcement learning models for real-world applications.",
+    Track: "Data & AI",
+    FirstName: "Uditha",
+    LastName: "Bandara",
+    TagLine: "AI Technology Disruptor",
+    LinkedIn: "https://www.linkedin.com/in/udithabandara/",
+    StartsAt: "2025-05-10T10:00:00",
+    EndsAt: "2025-05-10T11:00:00",
+    Room: "Data & AI",
+  },
+  {
+    ID: "855373",
+    Title: "Catch It Before It Breaks: SAST & DAST for DevSecOps in Azure",
+    Description:
+      "This session is about how we can integrate security to Azure DevOps and improve it to next level DevSecOps environment. This session explain about SAST, DAST and Other security Integrations with Azure DevOps.",
+    Track: "App and DevOps",
+    FirstName: "Pasindu",
+    LastName: "Wijesinghe",
+    TagLine: "Associate Engineer Network & Security",
+    LinkedIn:
+      "https://www.linkedin.com/in/pasindu-malshika-wijesinghe?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    StartsAt: "2025-05-10T14:00:00",
+    EndsAt: "2025-05-10T15:00:00",
+    Room: "Apps & DevOps",
+  },
+  {
+    ID: "864380",
+    Title:
+      "Architecting Enterprise-Scale Azure Networks: Secure, Resilient & Mission-Critical Connectivity",
+    Description:
+      "In cloud-driven world, enterprises demand networking architectures that ensure security, resilience, and high availability while maintaining seamless global connectivity. This deep-dive session will explore how to architect enterprise-scale Azure networks with a focus on secure private connectivity, hybrid cloud integration, and mission-critical workload protection.",
+    Track: "Infra and security",
+    FirstName: "Thisara",
+    LastName: "Perera",
+    TagLine: "Cloud Solutions Architect @ Crayon Microsoft Certified Trainer",
+    LinkedIn: "https://www.linkedin.com/in/thisara-perera",
+    StartsAt: "2025-05-10T14:00:00",
+    EndsAt: "2025-05-10T15:00:00",
+    Room: "Infra & Security",
+  },
+  {
+    ID: "887396",
+    Title:
+      "Talk to Your Data: Building a Smart Sales Agent with Azure SQL and AI",
+    Description:
+      "Learn how to create an intelligent conversational agent that can analyze sales data stored in Azure SQL databases. This session covers integrating Azure OpenAI Service with Azure SQL to enable natural language interactions with your business data.",
+    Track: "Data & AI",
+    FirstName: "Dinesh",
+    LastName: "Priyankara",
+    TagLine: "dinesQL Pte Ltd.",
+    LinkedIn: "https://www.linkedin.com/in/dineshpriyankara/",
+    StartsAt: "2025-05-10T14:00:00",
+    EndsAt: "2025-05-10T15:00:00",
+    Room: "Data & AI",
+  },
+];
+
+export default combinedSessions;

@@ -1,0 +1,91 @@
+@import "~lightgallery/scss/lightgallery";
+@import "~lightgallery/scss/lg-zoom";
+@import "~lightgallery/scss/lg-share";
+
+.masonry-gallery-container {
+  padding: 0 15px;
+
+  .grid-sizer,
+  .gallery-item {
+    width: 25%; // 4 items per row on desktop
+
+    @media (max-width: 991px) {
+      width: 33.333%; // 3 items per row on tablets
+    }
+
+    @media (max-width: 767px) {
+      width: 50%; // 2 items per row on mobile
+    }
+
+    @media (max-width: 480px) {
+      width: 100%; // 1 item per row on small mobile
+    }
+  }
+
+  .gallery-item {
+    padding: 4px;
+    display: block;
+    transition: all 0.3s ease;
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+  }
+}
+
+// Portrait images
+.gallery-item.portrait {
+  @media (min-width: 768px) {
+    height: 550px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+// Landscape images are the default
+
+// Fix lightGallery styles
+.lg-backdrop {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.lg-toolbar,
+.lg-outer {
+  background-color: transparent;
+}
+
+#gallery {
+  padding: 60px 0;
+
+  .section-header {
+    margin-bottom: 30px;
+    text-align: center;
+
+    h2 {
+      font-size: 32px;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 16px;
+      color: #777;
+    }
+  }
+}

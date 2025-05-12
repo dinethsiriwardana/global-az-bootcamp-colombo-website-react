@@ -36,7 +36,7 @@ const Hero = () => {
         </h1>
         <p className="mb-4 pb-0">10th May, 2025</p>
         {/* Replacing the anchor tag with a button to fix the accessibility warning */}
-        <Button
+        {/* <Button
           className="about-btn buy-tickets scrollto"
           onClick={() => setShowModal(true)}
           style={{
@@ -58,7 +58,7 @@ const Hero = () => {
 
         <a href="#about" className="about-btn scrollto">
           Event Details
-        </a>
+        </a> */}
       </div>
 
       {/* Registration Modal */}

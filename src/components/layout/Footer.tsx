@@ -17,7 +17,6 @@ const Footer = () => {
                 user communities around the world to learn about Azure and the
                 cloud computing topics.
               </p>
-              
             </div>
 
             <div className="col-lg-4 col-md-6 footer-links  text-start  text-decoration-none">
@@ -39,6 +38,12 @@ const Footer = () => {
                   <i className="bi bi-chevron-right"></i>{" "}
                   <a href="#speakers" className="text-decoration-none">
                     Speakers
+                  </a>
+                </li>
+                <li>
+                  <i className="bi bi-chevron-right"></i>{" "}
+                  <a href="#counter-stats" className="text-decoration-none">
+                    Event Statistics
                   </a>
                 </li>
                 <li>

@@ -20,6 +20,13 @@ const Header = () => {
     setMobileNavOpen(!mobileNavOpen);
   };
 
+  // Close mobile nav when a link is clicked
+  const closeMobileNav = () => {
+    if (mobileNavOpen) {
+      setMobileNavOpen(false);
+    }
+  };
+
   return (
     <header
       id="header"
@@ -29,10 +36,11 @@ const Header = () => {
     >
       <div className="container-fluid container-xxl d-flex align-items-center">
         <div id="logo" className="me-auto">
-          <Link to="/">
+          <Link to="/" onClick={closeMobileNav}>
             <img
               src="/assets/img/GlobalAzure2025-500.png"
               alt="Global Azure 2025 Logo"
+              className="img-fluid"
             />
           </Link>
         </div>
@@ -46,83 +54,158 @@ const Header = () => {
           <ul>
             <li>
               {isHomePage ? (
-                <a className="nav-link scrollto active" href="#hero">
+                <a
+                  className="nav-link scrollto active"
+                  href="#hero"
+                  onClick={closeMobileNav}
+                >
                   Home
                 </a>
               ) : (
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/" onClick={closeMobileNav}>
                   Home
                 </Link>
               )}
             </li>
             <li>
               {isHomePage ? (
-                <a className="nav-link scrollto" href="#about">
+                <a
+                  className="nav-link scrollto"
+                  href="#about"
+                  onClick={closeMobileNav}
+                >
                   About
                 </a>
               ) : (
-                <Link className="nav-link" to="/#about">
+                <Link
+                  className="nav-link"
+                  to="/#about"
+                  onClick={closeMobileNav}
+                >
                   About
                 </Link>
               )}
             </li>
             <li>
               {isHomePage ? (
-                <a className="nav-link scrollto" href="#speakers">
+                <a
+                  className="nav-link scrollto"
+                  href="#speakers"
+                  onClick={closeMobileNav}
+                >
                   Speakers
                 </a>
               ) : (
-                <Link className="nav-link" to="/#speakers">
+                <Link
+                  className="nav-link"
+                  to="/#speakers"
+                  onClick={closeMobileNav}
+                >
                   Speakers
                 </Link>
               )}
             </li>
             <li>
               {isHomePage ? (
-                <a className="nav-link scrollto" href="#schedule">
-                  Schedule
+                <a
+                  className="nav-link scrollto"
+                  href="#counter-stats"
+                  onClick={closeMobileNav}
+                >
+                  Event Statistics
                 </a>
               ) : (
-                <Link className="nav-link" to="/#schedule">
-                  Schedule
+                <Link
+                  className="nav-link"
+                  to="/#counter-stats"
+                  onClick={closeMobileNav}
+                >
+                  Event Statistics
                 </Link>
               )}
             </li>
             <li>
               {isHomePage ? (
-                <a className="nav-link scrollto" href="#venue">
+                <a
+                  className="nav-link scrollto"
+                  href="#gallery"
+                  onClick={closeMobileNav}
+                >
+                  Gallery
+                </a>
+              ) : (
+                <Link
+                  className="nav-link"
+                  to="/#gallery"
+                  onClick={closeMobileNav}
+                >
+                  Gallery
+                </Link>
+              )}
+            </li>
+            {/* <li>
+              {isHomePage ? (
+                <a
+                  className="nav-link scrollto"
+                  href="#venue"
+                  onClick={closeMobileNav}
+                >
                   Venue
                 </a>
               ) : (
-                <Link className="nav-link" to="/#venue">
+                <Link
+                  className="nav-link"
+                  to="/#venue"
+                  onClick={closeMobileNav}
+                >
                   Venue
                 </Link>
               )}
-            </li>
+            </li> */}
             <li>
               {isHomePage ? (
-                <a className="nav-link scrollto" href="#sponsors">
+                <a
+                  className="nav-link scrollto"
+                  href="#sponsors"
+                  onClick={closeMobileNav}
+                >
                   Sponsors
                 </a>
               ) : (
-                <Link className="nav-link" to="/#sponsors">
+                <Link
+                  className="nav-link"
+                  to="/#sponsors"
+                  onClick={closeMobileNav}
+                >
                   Sponsors
                 </Link>
               )}
             </li>
             <li>
               {isHomePage ? (
-                <a className="nav-link scrollto" href="#contact">
+                <a
+                  className="nav-link scrollto"
+                  href="#contact"
+                  onClick={closeMobileNav}
+                >
                   Contact
                 </a>
               ) : (
-                <Link className="nav-link" to="/#contact">
+                <Link
+                  className="nav-link"
+                  to="/#contact"
+                  onClick={closeMobileNav}
+                >
                   Contact
                 </Link>
               )}
             </li>
             <li>
-              <Link className="nav-link" to="/codeofconduct">
+              <Link
+                className="nav-link"
+                to="/codeofconduct"
+                onClick={closeMobileNav}
+              >
                 Code of Conduct
               </Link>
             </li>
@@ -132,6 +215,7 @@ const Header = () => {
                 href="https://forms.office.com/r/GW90BFyq7B"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={closeMobileNav}
               >
                 Register
               </a>
