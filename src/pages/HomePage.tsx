@@ -21,7 +21,7 @@ const HomePage = () => {
         <Speakers />
         <CounterBanner />
         {/* <Schedule /> */}
-        <Venue />
+        {/* <Venue /> */}
         <Sponsors />
         {/* <Faq /> */}
         <Contact />
