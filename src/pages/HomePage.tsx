@@ -19,7 +19,7 @@ const HomePage = () => {
         <Hero />
         <About />
         <Speakers />
-        <CounterBanner />
+        {/* <CounterBanner /> */}
         {/* <Schedule /> */}
         {/* <Venue /> */}
         <Sponsors />
