@@ -3,17 +3,17 @@
   "name": "Global Azure Bootcamp 2025",
   "icons": [
     {
-      "src": "public/assets/img/GlobalAzure2025.svg",
+      "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "public/assets/img/GlobalAzure2025-500.png",
+      "src": "assets/img/GlobalAzure2025-500.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "public/assets/img/GlobalAzure2025-500.png",
+      "src": "assets/img/GlobalAzure2025-500.png",
       "type": "image/png",
       "sizes": "512x512"
     }
