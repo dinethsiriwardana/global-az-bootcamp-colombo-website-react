@@ -71,3 +71,31 @@
 :global(.lg-outer) {
   background-color: transparent;
 }
+
+/* Error and loading states */
+.galleryError {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff9f9;
+  border: 1px solid #ffdddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+
+  p {
+    color: #e53935;
+    margin: 0;
+  }
+}
+
+.galleryLoading {
+  text-align: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 20px;
+
+  p {
+    color: #1976d2;
+    margin: 0;
+  }
+}

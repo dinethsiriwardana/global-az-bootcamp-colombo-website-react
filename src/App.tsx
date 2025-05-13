@@ -70,7 +70,13 @@ function App() {
   const baseUrl = process.env.PUBLIC_URL || "";
 
   return (
-    <Router basename={baseUrl}>
+    <Router
+      basename={baseUrl}
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <ScrollToTop />
       <div className="App">
         <Header />

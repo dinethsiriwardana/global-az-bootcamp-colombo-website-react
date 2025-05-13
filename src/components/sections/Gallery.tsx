@@ -48,12 +48,16 @@ const galleryImages: GalleryImage[] = loadGalleryImages();
 const Gallery = () => {
   const [hasError, setHasError] = useState<boolean>(false);
   const [retryCount, setRetryCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
   const MAX_RETRIES = 3;
 
   useEffect(() => {
     // Make sure we only run this after the DOM has been fully loaded
     const initMasonry = () => {
       try {
+        // Show loading state
+        setLoading(true);
+
         // Ensure the DOM element exists
         const container = document.querySelector(
           `.${styles.masonryGalleryDemo}`
@@ -88,35 +92,37 @@ const Gallery = () => {
           msnry.layout();
           // Reset error state on success
           setHasError(false);
-        }); // Handle any failures with image loading
+          // Hide loading state
+          setLoading(false);
+        });
+
+        // Handle any failures with image loading
         imgLoad.on("fail", (instance, img) => {
           if (img && img.img) {
-            console.error(`Image failed to load: ${img.img.src}`);
+            console.error(`Failed to load image: ${img.img.src}`);
           } else {
-            console.error("Image failed to load (image object unavailable)");
+            console.error("Failed to load an image");
           }
-          setHasError(true);
+          // Do not set error state here, let individual image error handlers handle it
         });
       } catch (error) {
-        console.error("Error initializing masonry:", error);
+        console.error("Failed to initialize Masonry:", error);
         setHasError(true);
+        setLoading(false);
 
-        // Retry initialization if we haven't reached max retries
         if (retryCount < MAX_RETRIES) {
-          setRetryCount((prevCount) => prevCount + 1);
+          setRetryCount((prev) => prev + 1);
         }
       }
     };
 
-    // Wait a short time to ensure all DOM elements are ready
+    // Run after a small delay to ensure DOM is ready
     const timer = setTimeout(() => {
       initMasonry();
-    }, 100);
+    }, 300);
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [retryCount]); // Re-run when retryCount changes
+    return () => clearTimeout(timer);
+  }, [retryCount]);
 
   // Complete the retry mechanism implementation
   useEffect(() => {
@@ -180,6 +186,12 @@ const Gallery = () => {
 
   return (
     <div className={styles.masonryGalleryWrapper}>
+      {loading && (
+        <div className={styles.galleryLoading}>
+          <p>Loading gallery...</p>
+        </div>
+      )}
+
       {hasError && retryCount >= MAX_RETRIES && (
         <div className={styles.galleryError}>
           <p>
@@ -193,6 +205,16 @@ const Gallery = () => {
         elementClassNames={styles.masonryGalleryDemo}
         plugins={[lgZoom, lgShare, lgHash]}
         speed={500}
+        mode="lg-fade"
+        selector=".gallery-item"
+        licenseKey="0000-0000-000-0000" // Add license key if you have one
+        download={false} // Disable download button if not needed
+        counter={true}
+        mobileSettings={{
+          controls: true,
+          showCloseIcon: true,
+          download: false,
+        }}
       >
         <div className="grid-sizer"></div>
 
@@ -203,6 +225,7 @@ const Gallery = () => {
             // data-lg-size={`${image.width}-${image.height}`}
             className="gallery-item"
             data-src={image.src}
+            data-sub-html={`<h4>${image.alt}</h4>`}
           >
             <img
               alt={image.alt}
