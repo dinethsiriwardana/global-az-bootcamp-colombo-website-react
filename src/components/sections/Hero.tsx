@@ -30,6 +30,7 @@ const Hero = () => {
           alt="Global Azure Bootcamp Logo"
           title="Global Azure Bootcamp Logo"
           className="img-fluid"
+          loading="lazy"
         />
         <h1 className="mb-4 pb-0">
           <span>Colombo</span>

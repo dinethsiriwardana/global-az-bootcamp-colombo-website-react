@@ -237,7 +237,7 @@ const FullGalleryPage: React.FC = () => {
             mode="lg-fade"
             selector=".gallery-item"
             licenseKey="0000-0000-000-0000"
-            download={false}
+            download={true}
             counter={true}
             mobileSettings={{
               controls: true,
@@ -259,6 +259,7 @@ const FullGalleryPage: React.FC = () => {
                   alt={image.alt}
                   className="img-responsive"
                   src={image.src}
+                  loading="lazy"
                   onError={() => handleImageError(image.id)}
                 />
               </a>

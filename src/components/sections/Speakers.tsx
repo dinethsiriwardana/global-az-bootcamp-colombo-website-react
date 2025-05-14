@@ -269,6 +269,7 @@ const Speakers: React.FC = () => {
                   src={speaker.profilePicture}
                   alt={speaker.fullName}
                   className="img-fluid"
+                  loading="lazy"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.onerror = null;

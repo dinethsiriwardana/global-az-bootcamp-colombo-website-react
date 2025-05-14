@@ -270,6 +270,7 @@ const Gallery = () => {
               alt={image.alt}
               className="img-responsive"
               src={image.src}
+              loading="lazy"
               onError={(e) => handleImageError(image.id, e)}
             />
           </a>
