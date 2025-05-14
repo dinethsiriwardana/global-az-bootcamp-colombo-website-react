@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import LightGallery from "lightgallery/react";
 import lgZoom from "lightgallery/plugins/zoom";
 import styles from "./Gallery.module.scss";
@@ -6,6 +7,7 @@ import lgShare from "lightgallery/plugins/share";
 import lgHash from "lightgallery/plugins/hash";
 import Masonry from "masonry-layout";
 import imagesLoaded from "imagesloaded";
+import { Button } from "react-bootstrap";
 
 // Image source data
 interface GalleryImage {
@@ -23,23 +25,52 @@ interface GalleryImage {
  */
 const loadGalleryImages = (
   folderPath: string = "/assets/img/gallery/",
-  fileExtension: string = "jpeg"
+  fileExtension: string = "jpg"
 ): GalleryImage[] => {
   // For a production app, you might want to fetch this list from an API
-  // but for this demo, we'll use a predefined list of available images
-  const totalImages = 10; // Update this based on how many images are in your folder
+  // but for this demo, we'll use the actual file names from the gallery folder
 
-  // Generate array of image objects
-  return Array.from({ length: totalImages }, (_, i) => {
-    const imageNumber = i + 1;
-    const imagePath = `${folderPath}${imageNumber}.${fileExtension}`;
+  // Array of actual image filenames in the gallery folder (without extension)
+  const imageFileNames = [
+    "DSC_2026",
+    "DSC_2032",
+    "DSC_2038",
+    "DSC_2063",
+    "DSC_2094",
+    "DSC_2118",
+    "DSC_2140",
+    "DSC_2143",
+    "DSC_2161",
+    "DSC_2176",
+    "DSC_2199",
+    "DSC_2223",
+    "DSC_2241",
+    "DSC_2271",
+    "DSC_2309",
+    "DSC_2366",
+    "DSC_2381",
+    "DSC_2407",
+    "DSC_2478",
+    "DSC_2511",
+    "DSC_2542",
+    "DSC_2554",
+    "DSC_2564",
+  ];
 
-    return {
-      id: imageNumber,
-      src: imagePath,
-      alt: `Azure Bootcamp Colombo Gallery Image ${imageNumber}`,
-    };
-  });
+  const initialImagesToShow = imageFileNames.length; // Show all images
+
+  // Generate array of image objects using actual filenames
+  return imageFileNames
+    .map((fileName, index) => {
+      const imagePath = `${folderPath}${fileName}.${fileExtension}`;
+
+      return {
+        id: index + 1,
+        src: imagePath,
+        alt: `Azure Bootcamp Colombo Gallery Image ${index + 1}`,
+      };
+    })
+    .slice(0, initialImagesToShow); // Only return the initial set of images
 };
 
 // Load gallery images from the specified folder
@@ -174,11 +205,18 @@ const Gallery = () => {
   }, [hasError, retryCount]);
 
   // Handle image loading errors
-  const handleImageError = (imageId: number) => {
+  const handleImageError = (
+    imageId: number,
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
     console.error(`Failed to load image with ID: ${imageId}`);
-    setHasError(true);
 
-    // Increment retry count if we haven't exceeded max retries
+    // Set a fallback image if original fails to load
+    const imgElement = e.target as HTMLImageElement;
+    imgElement.src = "/assets/img/about-bg.jpg"; // Use a default fallback image that exists in your project
+
+    // We still want to log the error but don't need to trigger a full retry of the gallery
+    // as we're handling the fallback at the individual image level
     if (retryCount < MAX_RETRIES) {
       setRetryCount((prevCount) => prevCount + 1);
     }
@@ -189,6 +227,7 @@ const Gallery = () => {
       {loading && (
         <div className={styles.galleryLoading}>
           <p>Loading gallery...</p>
+          <div className={styles.loaderSpinner}></div>
         </div>
       )}
 
@@ -231,11 +270,34 @@ const Gallery = () => {
               alt={image.alt}
               className="img-responsive"
               src={image.src}
-              onError={() => handleImageError(image.id)}
+              onError={(e) => handleImageError(image.id, e)}
             />
           </a>
         ))}
       </LightGallery>
+
+      <div className="text-center mt-4 mb-5">
+        <Link to="/gallery">
+          <Button
+            className="about-btn buy-tickets scrollto"
+            style={{
+              background: "#f82249",
+              color: "#fff",
+              fontFamily: "'Raleway', sans-serif",
+              fontWeight: 500,
+              fontSize: "14px",
+              letterSpacing: "1px",
+              padding: "12px 32px",
+              borderRadius: "50px",
+              transition: "0.5s",
+              lineHeight: 1,
+              border: "2px solid #f82249",
+            }}
+          >
+            See All Images
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };

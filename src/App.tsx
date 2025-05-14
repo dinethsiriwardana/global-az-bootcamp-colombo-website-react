@@ -15,6 +15,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import HomePage from "./pages/HomePage";
 import CodeOfConductPage from "./pages/CodeOfConductPage";
+import FullGalleryPage from "./pages/FullGalleryPage";
 
 // Import AOS for animations
 import AOS from "aos";
@@ -84,6 +85,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/codeofconduct" element={<CodeOfConductPage />} />
           <Route path="/registrations" element={<RegistrationPage />} />
+          <Route path="/gallery" element={<FullGalleryPage />} />
         </Routes>
         <FooterWrapper />
       </div>
