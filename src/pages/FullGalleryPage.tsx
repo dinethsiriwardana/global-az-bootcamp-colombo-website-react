@@ -44,7 +44,7 @@ const loadAllGalleryImages = (
 
 const FullGalleryPage: React.FC = () => {
   const allGalleryImages = loadAllGalleryImages();
-  const imagesPerPage = 50;
+  const imagesPerPage = 30;
   const [visibleImages, setVisibleImages] = useState<GalleryImage[]>(
     allGalleryImages.slice(0, imagesPerPage)
   );
@@ -210,11 +210,7 @@ const FullGalleryPage: React.FC = () => {
           <div className="col-12">
             <br></br>
             {/* <h2 className="text-center mb-4">Full Photo Gallery</h2> */}
-            <p className="text-center">
-              <Link to="/" className="btn btn-outline-primary mb-4">
-                {/* &laquo; Back to Home */}
-              </Link>
-            </p>
+            <p className="text-center"></p>
           </div>
         </div>
 
