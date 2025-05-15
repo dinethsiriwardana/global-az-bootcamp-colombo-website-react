@@ -25,7 +25,7 @@ interface GalleryImage {
  * @returns Array of GalleryImage objects
  */
 const loadAllGalleryImages = (
-  folderPath: string = "/assets/img/fullgallery/",
+  folderPath: string = "/assets/img/fullgallery/fullgallery",
   fileExtension: string = "jpg",
   totalImages: number = 407 // Set a large number as default or update based on actual count
 ): GalleryImage[] => {
