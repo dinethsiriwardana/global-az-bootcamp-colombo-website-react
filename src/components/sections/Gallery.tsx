@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import LightGallery from "lightgallery/react";
 import lgZoom from "lightgallery/plugins/zoom";
@@ -80,6 +80,8 @@ const Gallery = () => {
   const [hasError, setHasError] = useState<boolean>(false);
   const [retryCount, setRetryCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [imagesLoadedCount, setImagesLoadedCount] = useState<number>(0);
+  const masonryRef = useRef<any>(null); // Using any as Masonry doesn't export its type
   const MAX_RETRIES = 3;
 
   useEffect(() => {
@@ -106,14 +108,26 @@ const Gallery = () => {
           transitionDuration: "0.4s", // Smooth transitions when layout changes
         });
 
+        // Save the masonry instance in the ref
+        masonryRef.current = msnry;
+
         // Trigger an initial layout
-        msnry.layout();
-
-        // Use imagesLoaded to handle layout after images are fully loaded
+        msnry.layout();        // Use imagesLoaded to handle layout after images are fully loaded
         const imgLoad = imagesLoaded(container);
+        
+        // Reset image load count
+        setImagesLoadedCount(0);        // Reposition items when each image loads
+        imgLoad.on("progress", (instance, image) => {
+          // Update the count of loaded images
+          setImagesLoadedCount((prev) => prev + 1);
 
-        // Reposition items when each image loads
-        imgLoad.on("progress", () => {
+          // Show the image that just loaded
+          if (image && image.img) {
+            const imgElement = image.img;
+            imgElement.classList.add('loaded');
+            imgElement.style.opacity = "1";
+          }
+
           // Layout Masonry after each image loads
           msnry.layout();
         });
@@ -222,11 +236,27 @@ const Gallery = () => {
     }
   };
 
+  // Handle individual image load
+  const handleImageLoad = (
+    imageId: number,
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    // If masonry needs to be refreshed after an image loads
+    if (masonryRef.current) {
+      masonryRef.current.layout();
+    }
+  };
+
   return (
     <div className={styles.masonryGalleryWrapper}>
       {loading && (
         <div className={styles.galleryLoading}>
-          <p>Loading gallery...</p>
+          <p>
+            Getting images ready... 
+            {imagesLoadedCount > 0 && (
+              <span>({Math.round((imagesLoadedCount / galleryImages.length) * 100)}% complete)</span>
+            )}
+          </p>
           <div className={styles.loaderSpinner}></div>
         </div>
       )}
@@ -261,21 +291,32 @@ const Gallery = () => {
           <a
             key={image.id}
             href={image.src}
-            // data-lg-size={`${image.width}-${image.height}`}
             className="gallery-item"
             data-src={image.src}
             data-sub-html={`<h4>${image.alt}</h4>`}
+            style={{ display: "block" }} // Always display the container
           >
             <img
               alt={image.alt}
-              className="img-responsive"
+              className={`img-responsive ${!loading ? 'loaded' : ''}`}
               src={image.src}
               loading="lazy"
               onError={(e) => handleImageError(image.id, e)}
+              onLoad={(e) => handleImageLoad(image.id, e)}
+              style={{
+                transition: "opacity 0.3s ease, transform 0.3s ease",
+              }}
             />
           </a>
         ))}
       </LightGallery>
+
+      {/* Floating loading progress indicator */}
+      {loading && imagesLoadedCount > 0 && (
+        <div className={styles.loadingProgress}>
+          {imagesLoadedCount} of {galleryImages.length} loaded ({Math.round((imagesLoadedCount / galleryImages.length) * 100)}%)
+        </div>
+      )}
 
       <div className="text-center mt-4 mb-5">
         <Link to="/gallery">
