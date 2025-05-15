@@ -25,7 +25,7 @@ interface GalleryImage {
  * @returns Array of GalleryImage objects
  */
 const loadAllGalleryImages = (
-  folderPath: string = "/assets/img/fullgallery/fullgallery",
+  folderPath: string = "/assets/img/fullgallery/",
   fileExtension: string = "jpg",
   totalImages: number = 407 // Set a large number as default or update based on actual count
 ): GalleryImage[] => {
@@ -214,7 +214,7 @@ const FullGalleryPage: React.FC = () => {
           </div>
         </div>
 
-        {/* <div className={styles.masonryGalleryWrapper}>
+        <div className={styles.masonryGalleryWrapper}>
           {loading && (
             <div className={styles.galleryLoading}>
               <p>Loading gallery...</p>
@@ -237,7 +237,7 @@ const FullGalleryPage: React.FC = () => {
             mode="lg-fade"
             selector=".gallery-item"
             licenseKey="0000-0000-000-0000"
-            download={true}
+            download={false}
             counter={true}
             mobileSettings={{
               controls: true,
@@ -259,7 +259,6 @@ const FullGalleryPage: React.FC = () => {
                   alt={image.alt}
                   className="img-responsive"
                   src={image.src}
-                  loading="lazy"
                   onError={() => handleImageError(image.id)}
                 />
               </a>
@@ -289,7 +288,7 @@ const FullGalleryPage: React.FC = () => {
               </button>
             </div>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   );
