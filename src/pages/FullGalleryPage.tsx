@@ -214,7 +214,7 @@ const FullGalleryPage: React.FC = () => {
           </div>
         </div>
 
-        <div className={styles.masonryGalleryWrapper}>
+        {/* <div className={styles.masonryGalleryWrapper}>
           {loading && (
             <div className={styles.galleryLoading}>
               <p>Loading gallery...</p>
@@ -289,7 +289,7 @@ const FullGalleryPage: React.FC = () => {
               </button>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
