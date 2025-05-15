@@ -15,8 +15,6 @@ interface GalleryImage {
   src: string;
   alt: string;
   thumbnail?: string;
-  isLoaded?: boolean;
-  isVisible?: boolean;
 }
 
 /**
@@ -40,8 +38,6 @@ const loadAllGalleryImages = (
       id: imageNumber,
       src: imagePath,
       alt: `Azure Bootcamp Colombo Gallery Image ${imageNumber}`,
-      isLoaded: false,
-      isVisible: false,
     };
   });
 };
