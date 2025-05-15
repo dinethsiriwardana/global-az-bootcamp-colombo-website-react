@@ -27,7 +27,7 @@ interface GalleryImage {
 const loadAllGalleryImages = (
   folderPath: string = "/assets/img/fullgallery/",
   fileExtension: string = "jpg",
-  totalImages: number = 637 // Set a large number as default or update based on actual count
+  totalImages: number = 407 // Set a large number as default or update based on actual count
 ): GalleryImage[] => {
   // Generate array of image objects
   return Array.from({ length: totalImages }, (_, i) => {
@@ -44,7 +44,7 @@ const loadAllGalleryImages = (
 
 const FullGalleryPage: React.FC = () => {
   const allGalleryImages = loadAllGalleryImages();
-  const imagesPerPage = 30;
+  const imagesPerPage = 15;
   const [visibleImages, setVisibleImages] = useState<GalleryImage[]>(
     allGalleryImages.slice(0, imagesPerPage)
   );
