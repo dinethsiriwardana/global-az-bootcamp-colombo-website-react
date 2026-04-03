@@ -8,7 +8,7 @@ const About = () => {
           <div className="col-lg-8 text-center text-lg-start">
             <h2>About The Event</h2>
             <p className="pe-lg-7">
-              Global Azure 2026 took place on May 10th, with communities
+              Global Azure 2026 took place on April 26th, with communities
               worldwide organizing localized hybrid events and live streams.
               This global event brought together Azure enthusiasts, offering
               everyone the opportunity to join and learn from top community
