@@ -26,11 +26,12 @@ const Hero = () => {
     <section id="hero">
       <div className="hero-container" data-aos="zoom-in" data-aos-delay="100">
         <img
-          src="assets/img/GlobalAzure2025-500.png"
+          src="assets/img/globalazure2026.png"
           alt="Global Azure Bootcamp Logo"
           title="Global Azure Bootcamp Logo"
           className="img-fluid"
           loading="lazy"
+          style={{ maxWidth: '600px', height: 'auto' }}
         />
         <h1 className="mb-4 pb-0">
           <span>Colombo</span>

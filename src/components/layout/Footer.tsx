@@ -22,7 +22,7 @@ const Footer = () => {
             <div className="col-lg-4 col-md-6 footer-links  text-start  text-decoration-none">
               <h4>Useful Links</h4>
               <ul>
-                <li>
+                {/* <li>
                   <i className="bi bi-chevron-right text-decoration-none"></i>{" "}
                   <a href="#hero" className="text-decoration-none">
                     Home
@@ -64,12 +64,13 @@ const Footer = () => {
                     Sponsors
                   </a>
                 </li>
+                */}
                 <li>
                   <i className="bi bi-chevron-right"></i>{" "}
-                  <a href="#contact" className="text-decoration-none">
-                    Contact
+                  <a href="/2025" className="text-decoration-none">
+                    Global Azure 2025
                   </a>
-                </li>
+                </li> 
                 <li>
                   <i className="bi bi-chevron-right"></i>{" "}
                   <Link to="/codeofconduct" className="text-decoration-none">

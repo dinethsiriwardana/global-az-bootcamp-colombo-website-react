@@ -38,7 +38,7 @@ const Header = () => {
         <div id="logo" className="me-auto">
           <Link to="/" onClick={closeMobileNav}>
             <img
-              src="/assets/img/GlobalAzure2025-500.png"
+              src="/assets/img/globalazure2026.png"
               alt="Global Azure 2025 Logo"
               className="img-fluid"
             />
@@ -105,7 +105,7 @@ const Header = () => {
                 </Link>
               )}
             </li>
-            <li>
+            {/* <li>
               {isHomePage ? (
                 <a
                   className="nav-link scrollto"
@@ -123,8 +123,8 @@ const Header = () => {
                   Event Statistics
                 </Link>
               )}
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               {isHomePage ? (
                 <a
                   className="nav-link scrollto"
@@ -142,7 +142,7 @@ const Header = () => {
                   Gallery
                 </Link>
               )}
-            </li>
+            </li> */}
             {/* <li>
               {isHomePage ? (
                 <a
@@ -199,6 +199,15 @@ const Header = () => {
                   Contact
                 </Link>
               )}
+            </li>
+            <li>
+              <Link
+                className="nav-link"
+                to="/2025"
+                onClick={closeMobileNav}
+              >
+                2025
+              </Link>
             </li>
             <li>
               <Link

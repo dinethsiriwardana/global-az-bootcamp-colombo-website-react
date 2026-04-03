@@ -5,12 +5,9 @@ import Hero from "../components/sections/Hero";
 import About from "../components/sections/About";
 import Speakers from "../components/sections/Speakers";
 import Sponsors from "../components/sections/Sponsors";
-// import Contact from "../components/sections/Contact";
-import Faq from "../components/sections/FAQ";
 import Contact from "../components/sections/Contact";
-import Gallery from "../components/sections/Gallery";
-import Venue from "../components/sections/Venue";
 import CounterBanner from "../components/sections/CounterBanner";
+import CountdownBanner from "../components/sections/CountdownBanner";
 
 const HomePage = () => {
   return (
@@ -19,9 +16,10 @@ const HomePage = () => {
         <Hero />
         <About />
         <Speakers />
-        <CounterBanner />
+        <CountdownBanner />
+        {/* <CounterBanner /> */}
         {/* <Schedule /> */}
-        <Venue />
+        {/* <Gallery /> */}
         <Sponsors />
         {/* <Faq /> */}
         <Contact />
