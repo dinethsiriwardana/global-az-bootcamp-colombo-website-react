@@ -31,7 +31,7 @@ const Hero = () => {
           title="Global Azure Bootcamp Logo"
           className="img-fluid"
           loading="lazy"
-          style={{ maxWidth: '600px', height: 'auto' }}
+          style={{ maxWidth: '550px', height: 'auto' }}
         />
         <h1 className="mb-4 pb-0">
           <span>Colombo</span>
