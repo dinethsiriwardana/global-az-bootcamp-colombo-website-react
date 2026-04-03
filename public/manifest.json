@@ -1,6 +1,6 @@
 {
-  "short_name": "Global Azure Bootcamp 2025",
-  "name": "Global Azure Bootcamp 2025",
+  "short_name": "Global Azure Bootcamp 20`25",
+  "name": "Global Azure Bootcamp 2026",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "assets/img/GlobalAzure2025-500.png",
+      "src": "assets/img/globalazure2026.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "assets/img/GlobalAzure2025-500.png",
+      "src": "assets/img/GlobalAzure2026.png",
       "type": "image/png",
       "sizes": "512x512"
     }

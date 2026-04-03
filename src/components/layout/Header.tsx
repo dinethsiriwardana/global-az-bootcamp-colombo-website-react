@@ -39,7 +39,7 @@ const Header = () => {
           <Link to="/" onClick={closeMobileNav}>
             <img
               src="/assets/img/globalazure2026.png"
-              alt="Global Azure 2025 Logo"
+              alt="Global Azure 2026 Logo"
               className="img-fluid"
             />
           </Link>

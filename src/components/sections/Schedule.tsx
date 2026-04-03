@@ -39,7 +39,7 @@ const Schedule = () => {
   const [frozen, setFrozen] = useState<boolean>(false);
   const [frozenUntil, setFrozenUntil] = useState<number | null>(null);
 
-  // Format time from "2025-05-10T10:00:00" to "10:00 AM"
+  // Format time from "2026-05-10T10:00:00" to "10:00 AM"
   const formatTime = (dateTimeString: string): string => {
     const date = new Date(dateTimeString);
     return date.toLocaleTimeString("en-US", {
@@ -191,7 +191,7 @@ const Schedule = () => {
       <div className="container" data-aos="fade-up">
         <div className="section-header">
           <h2>Event Schedule</h2>
-          <p>Here is our event schedule for May 10, 2025</p>
+          <p>Here is our event schedule for May 10, 2026</p>
         </div>
 
         <ul className="nav nav-tabs" role="tablist">

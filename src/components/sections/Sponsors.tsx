@@ -178,15 +178,16 @@ const Sponsors = () => {
         >
           <div className="col-12">
             <p>
-              We extend our heartfelt thanks to all our sponsors for supporting
-              Global Azure 2025 in Sri Lanka. Your generosity and partnership
-              played a vital role in making this event a success, helping us
-              bring together a vibrant community of Azure enthusiasts and
-              professionals. Your support empowered us to deliver quality
-              sessions, offer meaningful engagement, and create a memorable
-              experience for all attendees. We deeply appreciate your commitment
-              to community growth and learning. Thank you once again for being
-              part of this journey!
+             {/* Invite to sponsor */}
+              Interested in sponsoring Global Azure 2026? Please reach out to us at{" "}
+              <a
+                href="mailto:info@globalazure.lk"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                info@globalazure.lk
+              </a>
+              . We have sponsorship opportunities available for organizations of all sizes and budgets, and we'd love to discuss how we can work together to make this event a success.
             </p>
           </div>
         </div>

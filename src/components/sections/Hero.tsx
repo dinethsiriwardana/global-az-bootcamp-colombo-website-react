@@ -36,7 +36,7 @@ const Hero = () => {
         <h1 className="mb-4 pb-0">
           <span>Colombo</span>
         </h1>
-        <p className="mb-4 pb-0">10th May, 2025</p>
+        <p className="mb-4 pb-0">26th April, 2026</p>
         {/* Replacing the anchor tag with a button to fix the accessibility warning */}
         {/* <Button
           className="about-btn buy-tickets scrollto"
@@ -73,7 +73,7 @@ const Hero = () => {
           }}
         >
           <Modal.Title style={{ textAlign: "center" }}>
-            Register for Global Azure Bootcamp 2025 <br /> Virtual Edition
+            Register for Global Azure Bootcamp 2026 <br /> Virtual Edition
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
