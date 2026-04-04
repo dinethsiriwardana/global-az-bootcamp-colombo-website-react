@@ -85,11 +85,11 @@ const Contact = () => {
         <div className="row contact-info">
           <div className="col-md-4">
             <div className="contact-address">
-              <i className="bi bi-geo-alt"></i>
+              <i className="bi bi-map"></i>
               <h3>Address</h3>
               <address>
-                Microsoft IT Pro Community,<br></br>
-                Colombo, Sri Lanka
+                Microsoft Sri Lanka,<br></br>
+                Access Towers 2, Union Place, Colombo 02
               </address>
             </div>
           </div>
@@ -139,9 +139,8 @@ const Contact = () => {
                 <div className="form-group col-md-6">
                   <input
                     type="text"
-                    className={`form-control ${
-                      errors.name ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.name ? "is-invalid" : ""
+                      }`}
                     placeholder="Your Name"
                     {...register("name", {
                       required: "Please enter your name",
@@ -156,9 +155,8 @@ const Contact = () => {
                 <div className="form-group col-md-6 mt-3 mt-md-0">
                   <input
                     type="email"
-                    className={`form-control ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.email ? "is-invalid" : ""
+                      }`}
                     placeholder="Your Email"
                     {...register("email", {
                       required: "Please enter your email",
@@ -178,9 +176,8 @@ const Contact = () => {
               <div className="form-group mt-3">
                 <input
                   type="text"
-                  className={`form-control ${
-                    errors.subject ? "is-invalid" : ""
-                  }`}
+                  className={`form-control ${errors.subject ? "is-invalid" : ""
+                    }`}
                   placeholder="Subject"
                   {...register("subject", {
                     required: "Please enter a subject",
@@ -194,9 +191,8 @@ const Contact = () => {
               </div>
               <div className="form-group mt-3">
                 <textarea
-                  className={`form-control ${
-                    errors.message ? "is-invalid" : ""
-                  }`}
+                  className={`form-control ${errors.message ? "is-invalid" : ""
+                    }`}
                   rows={5}
                   placeholder="Message"
                   {...register("message", {
