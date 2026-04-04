@@ -291,7 +291,7 @@ const EventRegistrationPage = () => {
         <div style={S.wrapper}>
           <div style={{ textAlign: "center", marginBottom: "1rem" }}>
             <img
-              src="assets/img/GlobalAzure2026.png"
+              src="assets/img/globalazure2026.png"
               alt="Global Azure Bootcamp Logo"
               style={{ maxWidth: 200 }}
             />
