@@ -8,19 +8,9 @@ const About = () => {
           <div className="col-lg-8 text-center text-lg-start">
             <h2>About The Event</h2>
             <p className="pe-lg-7">
-              Global Azure 2026 took place on April 26th, with communities
-              worldwide organizing localized hybrid events and live streams.
-              This global event brought together Azure enthusiasts, offering
-              everyone the opportunity to join and learn from top community
-              leaders.
+            Global Azure 2026 will take place on April 26th, bringing together Azure communities worldwide through expert-led sessions. The event will offer valuable opportunities to learn from industry experts, explore the latest technologies, and connect with the global tech community. In Sri Lanka, the Microsoft IT Pro Community will proudly contribute by bringing local professionals together to learn, connect, and empower the next generation of tech enthusiasts.
             </p>
-            <p>
-              In Sri Lanka, the Microsoft IT Pro Community proudly participated
-              in this movement. Participants connected with fellow Azure
-              professionals, engaged in insightful sessions, and enhanced their
-              Azure skills. Whether seasoned experts or beginners on their Azure
-              journey, attendees found something valuable at Global Azure 2026.
-            </p>
+            
           </div>
           <div className="col-lg-2 text-center text-lg-start">
             <h3 style={{marginTop: '2rem', marginBottom: '0.5rem', paddingLeft: '1.5rem'}}>Where</h3>
