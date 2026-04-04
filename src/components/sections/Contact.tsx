@@ -88,8 +88,8 @@ const Contact = () => {
               <i className="bi bi-map"></i>
               <h3>Address</h3>
               <address>
-                Microsoft Sri Lanka,<br></br>
-                Access Towers 2, Union Place, Colombo 02
+                <a href="https://maps.app.goo.gl/2rxigzutPERjmqWu5" target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>Microsoft Sri Lanka</a><br></br>
+
               </address>
             </div>
           </div>
