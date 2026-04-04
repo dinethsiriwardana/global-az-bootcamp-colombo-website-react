@@ -1,0 +1,188 @@
+{
+  "info": {
+    "_postman_id": "3a2d59f1-9c2c-43d3-9e92-08dd4e58b564",
+    "name": "Global Azure",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "26460626",
+    "_collection_link": "https://go.postman.co/collection/26460626-3a2d59f1-9c2c-43d3-9e92-08dd4e58b564?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "send-otp",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.*****.*****",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.*****.*****",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"dinethsiriwardana28@gmail.com\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://tojwhjrhimjvjpmougji.supabase.co/functions/v1/send-otp",
+          "protocol": "https",
+          "host": [
+            "tojwhjrhimjvjpmougji",
+            "supabase",
+            "co"
+          ],
+          "path": [
+            "functions",
+            "v1",
+            "send-otp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "verify-otp",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.*****.*****",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.*****.*****",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"dinethsiriwardana28@gmail.com\",\"otp\": \"268350\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://tojwhjrhimjvjpmougji.supabase.co/functions/v1/verify-otp",
+          "protocol": "https",
+          "host": [
+            "tojwhjrhimjvjpmougji",
+            "supabase",
+            "co"
+          ],
+          "path": [
+            "functions",
+            "v1",
+            "verify-otp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "submit-registration",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.*****.*****",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.*****.*****",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"user@example.com\",\n    \"name\": \"John Doe\",\n    \"phone_number\": \"+1234567890\",\n    \"id_number\": \"123456789\",\n    \"profession\": \"Software Engineer\",\n    \"organization\": \"Example Corp\",\n    \"designation\": \"Developer\",\n    \"current_year_of_study\": null,\n    \"linkedin_url\": \"https://linkedin.com/in/johndoe\",\n    \"food_preference\": \"veg\",\n    \"expectations\": \"Learn new skills\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://tojwhjrhimjvjpmougji.supabase.co/functions/v1/submit-registration",
+          "protocol": "https",
+          "host": [
+            "tojwhjrhimjvjpmougji",
+            "supabase",
+            "co"
+          ],
+          "path": [
+            "functions",
+            "v1",
+            "submit-registration"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "submit-registration Copy",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.*****.*****",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.*****.*****",
+            "type": "text"
+          },
+          {
+            "key": "x-admin-secret",
+            "value": "your-strong-admin-secret",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://tojwhjrhimjvjpmougji.supabase.co/functions/v1/list-registrations?status=pending",
+          "protocol": "https",
+          "host": [
+            "tojwhjrhimjvjpmougji",
+            "supabase",
+            "co"
+          ],
+          "path": [
+            "functions",
+            "v1",
+            "list-registrations"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "pending",
+              "description": "pending / approved"
+            },
+            {
+              "key": "is_confirmed",
+              "value": "true",
+              "description": "true/ false",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
