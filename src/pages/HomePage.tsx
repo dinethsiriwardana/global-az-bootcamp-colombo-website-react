@@ -11,7 +11,7 @@ import CountdownBanner from "../components/sections/CountdownBanner";
 
 const HomePage = () => {
   return (
-    <div className="home-page-container">
+    <div className="home-page-container" style={{ overflowX: "hidden" }}>
       <main id="main" className="main-content">
         <Hero />
         <About />
