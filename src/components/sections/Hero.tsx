@@ -23,16 +23,46 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero">
-      <div className="hero-container" data-aos="zoom-in" data-aos-delay="100">
-        <img
-          src="assets/img/globalazure2026.png"
-          alt="Global Azure Bootcamp Logo"
-          title="Global Azure Bootcamp Logo"
-          className="img-fluid"
-          loading="lazy"
-          style={{ maxWidth: '550px', height: 'auto' }}
-        />
+    <>
+      <style>
+        {`
+          @media (min-width: 320px) and (max-width: 768px) {
+            #hero,
+            #hero .hero-container {
+              overflow-x: hidden;
+            }
+
+            #hero .hero-logo-wrap {
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+
+            #hero .hero-main-logo {
+              width: 100%;
+              max-width: 320px;
+              height: auto !important;
+              object-fit: contain;
+              display: block;
+              margin: 0 auto;
+              transform: none !important;
+            }
+          }
+        `}
+      </style>
+      <section id="hero">
+        <div className="hero-container" data-aos="zoom-in" data-aos-delay="100">
+          <div className="hero-logo-wrap">
+            <img
+              src="assets/img/globalazure2026.png"
+              alt="Global Azure Bootcamp Logo"
+              title="Global Azure Bootcamp Logo"
+              className="img-fluid hero-main-logo"
+              loading="lazy"
+              style={{ maxWidth: '550px', height: 'auto' }}
+            />
+          </div>
         <h1 className="mb-4 pb-0">
           <span>Colombo</span>
         </h1>
@@ -61,26 +91,27 @@ const Hero = () => {
         <a href="#about" className="about-btn scrollto">
           Event Details
         </a> */}
-      </div>
+        </div>
 
-      {/* Registration Modal */}
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header
-          style={{
-            background: "#f82249",
-            color: "#fff",
-            justifyContent: "center",
-          }}
-        >
-          <Modal.Title style={{ textAlign: "center" }}>
-            Register for Global Azure Bootcamp 2026 <br /> Virtual Edition
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <RegistrationForm onClose={handleCloseModal} />
-        </Modal.Body>
-      </Modal>
-    </section>
+        {/* Registration Modal */}
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+          <Modal.Header
+            style={{
+              background: "#f82249",
+              color: "#fff",
+              justifyContent: "center",
+            }}
+          >
+            <Modal.Title style={{ textAlign: "center" }}>
+              Register for Global Azure Bootcamp 2026 <br /> Virtual Edition
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <RegistrationForm onClose={handleCloseModal} />
+          </Modal.Body>
+        </Modal>
+      </section>
+    </>
   );
 };
 
