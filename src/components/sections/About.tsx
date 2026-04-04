@@ -7,16 +7,16 @@ const About = () => {
         <div className="row">
           <div className="col-lg-8 text-center text-lg-start">
             <h2>About The Event</h2>
-            <p className="pe-lg-7">
+            <p className="pe-lg-7" style={{fontSize: '1.1em'}}>
             Global Azure 2026 will take place on April 26th, bringing together Azure communities worldwide through expert-led sessions. The event will offer valuable opportunities to learn from industry experts, explore the latest technologies, and connect with the global tech community. In Sri Lanka, the Microsoft IT Pro Community will proudly contribute by bringing local professionals together to learn, connect, and empower the next generation of tech enthusiasts.
             </p>
             
           </div>
           <div className="col-lg-2 text-center text-lg-start">
             <h3 style={{marginTop: '2rem', marginBottom: '0.5rem', paddingLeft: '1.5rem'}}>Where</h3>
-            <p style={{marginTop: '0.5rem', marginBottom: '0.5rem', paddingLeft: '1.5rem'}}>Microsoft Sri Lanka</p>
+            <p style={{marginTop: '0.5rem', marginBottom: '0.5rem', paddingLeft: '1.5rem', fontSize: '1.1em'}}>Microsoft Sri Lanka</p>
             <h3 style={{marginTop: '2rem', marginBottom: '0.5rem', paddingLeft: '1.5rem'}}>When</h3>
-            <p style={{marginTop: '0.5rem', marginBottom: '0.5rem', paddingLeft: '1.5rem'}}>Sunday 26th April</p>
+            <p style={{marginTop: '0.5rem', marginBottom: '0.5rem', paddingLeft: '1.5rem', fontSize: '1.1em'}}>Sunday 26th April</p>
           </div>
           <div className="col-lg-2 text-lg-start">
             <h3 style={{marginTop: '2rem', marginBottom: '0.5rem', paddingLeft: '1rem'}}>Hosted By</h3>
