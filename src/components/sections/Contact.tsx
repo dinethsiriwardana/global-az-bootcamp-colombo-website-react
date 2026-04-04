@@ -79,7 +79,7 @@ const Contact = () => {
       <div className="container" data-aos="fade-up">
         <div className="section-header">
           <h2>Contact Us</h2>
-          <p>Contact us for any inquiries about the Global Azure 2025 event</p>
+          <p>Contact us for any inquiries about the Global Azure 2026 event</p>
         </div>
 
         <div className="row contact-info">
