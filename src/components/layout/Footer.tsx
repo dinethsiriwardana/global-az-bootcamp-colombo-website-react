@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="footer-top">
         <div className="container">
           <div className="row">
-            <div className="col-lg-4 col-md-6 footer-info">
+            <div className="col-lg-4 col-md-6 footer-info" style={{marginLeft: '-20px'}}>
               <img
                 src="/assets/img/GlobalAzure2025-250.png"
                 alt="Global Azure 2025"
