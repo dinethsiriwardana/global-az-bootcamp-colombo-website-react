@@ -21,6 +21,7 @@ import FullGalleryPage from "./pages/FullGalleryPage";
 import AOS from "aos";
 import HomePage2025 from "./pages/homepage2025";
 import EventRegistrationPage from "./pages/EventRegistrationPage";
+import ItProAdminPage from "./pages/ItProAdminPage";
 
 // ScrollToTop component to handle anchor links
 const ScrollToTop = () => {
@@ -86,6 +87,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/codeofconduct" element={<CodeOfConductPage />} />
           <Route path="/registration" element={<EventRegistrationPage />} />
+          <Route path="/itproadmin" element={<ItProAdminPage />} />
           <Route path="/gallery" element={<FullGalleryPage />} />
           <Route path="/2025" element={<HomePage2025 />} />
         </Routes>
