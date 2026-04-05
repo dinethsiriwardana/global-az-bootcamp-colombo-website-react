@@ -11,4 +11,5 @@ export interface AdminRegistration {
   phone_number: string;
   profession: string;
   status: RegistrationStatus;
+  is_confirmed?: boolean;
 }

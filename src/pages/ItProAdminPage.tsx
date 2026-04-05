@@ -27,6 +27,7 @@ const ItProAdminPage = () => {
   const [statusFilter, setStatusFilter] = useState<AdminFilterStatus>("pending");
   const [searchTerm, setSearchTerm] = useState("");
   const [registrations, setRegistrations] = useState<AdminRegistration[]>([]);
+  const [allRegistrations, setAllRegistrations] = useState<AdminRegistration[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
@@ -78,6 +79,20 @@ const ItProAdminPage = () => {
     }
   }, [statusFilter]);
 
+  const fetchAllRegistrations = useCallback(async () => {
+    try {
+      const data = await listRegistrations();
+      setAllRegistrations(data);
+    } catch (fetchError) {
+      const message = getErrorMessage(
+        fetchError,
+        "Failed to load registration summary. Please try again.",
+      );
+      setError(message);
+      setAllRegistrations([]);
+    }
+  }, []);
+
   useEffect(() => {
     if (!adminSecretPresent) {
       return;
@@ -85,6 +100,14 @@ const ItProAdminPage = () => {
 
     void fetchRegistrations();
   }, [fetchRegistrations, adminSecretPresent]);
+
+  useEffect(() => {
+    if (!adminSecretPresent) {
+      return;
+    }
+
+    void fetchAllRegistrations();
+  }, [fetchAllRegistrations, adminSecretPresent]);
 
   useEffect(() => {
     if (!feedbackMessage) {
@@ -115,6 +138,34 @@ const ItProAdminPage = () => {
     });
   }, [registrations, searchTerm]);
 
+  const registrationSummary = useMemo(() => {
+    return allRegistrations.reduce(
+      (summary, registration) => {
+        const currentStatus = registration.status.toLowerCase();
+
+        if (currentStatus === "pending") {
+          summary.pending += 1;
+        } else if (currentStatus === "approved") {
+          summary.approved += 1;
+        } else if (currentStatus === "rejected") {
+          summary.rejected += 1;
+        }
+
+        if (registration.is_confirmed) {
+          summary.confirmed += 1;
+        }
+
+        return summary;
+      },
+      {
+        pending: 0,
+        approved: 0,
+        rejected: 0,
+        confirmed: 0,
+      },
+    );
+  }, [allRegistrations]);
+
   const handleAction = async (registrationId: string, action: AdminAction) => {
     const nextStatus = action;
     const currentSnapshot = registrations;
@@ -141,6 +192,7 @@ const ItProAdminPage = () => {
     try {
       await updateRegistrationStatus(registrationId, action);
       setFeedbackMessage(`Registration ${action} successfully.`);
+      void fetchAllRegistrations();
     } catch (actionError) {
       setRegistrations(currentSnapshot);
       setError(
@@ -252,6 +304,33 @@ const ItProAdminPage = () => {
                     onChange={setSearchTerm}
                     disabled={loading}
                   />
+                </section>
+
+                <section className="admin-summary" aria-label="Registration summary">
+                  <div className="admin-summary-card status-pending">
+                    <span className="admin-summary-label">Pending</span>
+                    <span className="admin-summary-value">
+                      {registrationSummary.pending}
+                    </span>
+                  </div>
+                  <div className="admin-summary-card status-approved">
+                    <span className="admin-summary-label">Approved</span>
+                    <span className="admin-summary-value">
+                      {registrationSummary.approved}
+                    </span>
+                  </div>
+                  <div className="admin-summary-card status-rejected">
+                    <span className="admin-summary-label">Rejected</span>
+                    <span className="admin-summary-value">
+                      {registrationSummary.rejected}
+                    </span>
+                  </div>
+                  <div className="admin-summary-card status-confirmed">
+                    <span className="admin-summary-label">Confirmed</span>
+                    <span className="admin-summary-value">
+                      {registrationSummary.confirmed}
+                    </span>
+                  </div>
                 </section>
 
                 {error ? (
