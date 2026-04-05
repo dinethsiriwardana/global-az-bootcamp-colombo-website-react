@@ -203,6 +203,8 @@ const S = {
     padding: "0.75rem 1rem 0.75rem 1rem",
     outline: "none",
     transition: "all 0.2s ease",
+    WebkitAppearance: "none" as const,
+    MozAppearance: "none" as const,
     appearance: "none" as const,
   },
   textarea: {
@@ -464,6 +466,9 @@ const EventRegistrationPage = () => {
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet"
       />
+      <style>{`#reg-page select { background-color: rgba(255,255,255,0.07) !important; color: #fff !important; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+      #reg-page select option { background-color: rgba(0,0,0,0.95) !important; color: #fff !important; }
+      #reg-page select::-ms-expand { display: none; }`}</style>
 
       <div id="reg-page" style={S.page}>
         <div style={S.orb1} />
