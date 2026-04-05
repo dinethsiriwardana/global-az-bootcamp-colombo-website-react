@@ -19,8 +19,8 @@ import FullGalleryPage from "./pages/FullGalleryPage";
 
 // Import AOS for animations
 import AOS from "aos";
-import RegistrationPage from "./pages/RegistrationPage";
 import HomePage2025 from "./pages/homepage2025";
+import EventRegistrationPage from "./pages/EventRegistrationPage";
 
 // ScrollToTop component to handle anchor links
 const ScrollToTop = () => {
@@ -50,7 +50,7 @@ const FooterWrapper = () => {
   const location = useLocation();
 
   // Don't render Footer on the registrations page
-  if (location.pathname === "/registrations") {
+  if (location.pathname === "/registrations" || location.pathname === "/registration") {
     return null;
   }
 
@@ -85,7 +85,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/codeofconduct" element={<CodeOfConductPage />} />
-          <Route path="/registrations" element={<RegistrationPage />} />
+          <Route path="/registration" element={<EventRegistrationPage />} />
           <Route path="/gallery" element={<FullGalleryPage />} />
           <Route path="/2025" element={<HomePage2025 />} />
         </Routes>
