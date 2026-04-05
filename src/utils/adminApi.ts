@@ -103,13 +103,17 @@ const normalizeRegistration = (item: unknown): AdminRegistration => {
   }
 
   const registration = item as Record<string, unknown>;
+  const profile =
+    registration.profiles && typeof registration.profiles === "object"
+      ? (registration.profiles as Record<string, unknown>)
+      : {};
 
   return {
     registration_id: getRegistrationId(registration),
-    name: asText(registration.name),
-    email: asText(registration.email),
-    phone_number: asText(registration.phone_number),
-    profession: asText(registration.profession),
+    name: asText(registration.name || profile.name),
+    email: asText(registration.email || profile.email),
+    phone_number: asText(registration.phone_number || profile.phone_number),
+    profession: asText(registration.profession || profile.profession),
     status: asText(registration.status || "pending").toLowerCase(),
   };
 };
