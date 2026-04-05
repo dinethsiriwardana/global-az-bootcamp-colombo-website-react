@@ -229,6 +229,7 @@ const S = {
   otpFieldRow: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "center",
     gap: "0.5rem",
     marginBottom: "1.1rem",
   },
@@ -584,6 +585,8 @@ const EventRegistrationPage = () => {
                       <input
                         style={{
                           ...S.input,
+                          width: 200,
+                          flexShrink: 0,
                           textAlign: "center" as const,
                           letterSpacing: "0.3em",
                           fontSize: "1.2rem",
@@ -597,14 +600,6 @@ const EventRegistrationPage = () => {
                         maxLength={6}
                         required
                       />
-                      <button
-                        type="button"
-                        style={S.otpIconButton}
-                        onClick={handleResendOtp}
-                        disabled={loading}
-                      >
-                        ↺
-                      </button>
                     </div>
                     <div style={S.btnRow}>
                       <button
@@ -613,6 +608,14 @@ const EventRegistrationPage = () => {
                         disabled={loading}
                       >
                         {loading ? "Verifying…" : "Verify OTP"} →
+                      </button>
+                      <button
+                        type="button"
+                        style={S.btnGhost}
+                        onClick={handleResendOtp}
+                        disabled={loading}
+                      >
+                        Resend OTP
                       </button>
                     </div>
                   </form>
