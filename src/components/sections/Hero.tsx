@@ -26,27 +26,49 @@ const Hero = () => {
     <>
       <style>
         {`
+          #hero .hero-main-logo {
+            width: 100%;
+            max-width: 550px;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+          }
+
           @media (min-width: 320px) and (max-width: 768px) {
             #hero,
             #hero .hero-container {
               overflow-x: hidden;
+              max-width: 100%;
+            }
+
+            #hero .hero-container {
+              padding-left: 16px;
+              padding-right: 16px;
+            }
+
+            #hero .hero-container[data-aos] {
+              transform: none !important;
             }
 
             #hero .hero-logo-wrap {
               width: 100%;
+              max-width: 320px;
               display: flex;
               justify-content: center;
               align-items: center;
+              margin: 0 auto;
             }
 
             #hero .hero-main-logo {
               width: 100%;
               max-width: 320px;
               height: auto !important;
+              transform: none !important;
+              scale: 1 !important;
               object-fit: contain;
               display: block;
               margin: 0 auto;
-              transform: none !important;
             }
           }
         `}
