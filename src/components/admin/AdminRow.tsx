@@ -107,7 +107,12 @@ const AdminRow = ({
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Registration Details</h2>
+              <div className="modal-title-wrapper">
+                <div className="modal-icon-bg">
+                  <FontAwesomeIcon icon={faEye} className="modal-title-icon" />
+                </div>
+                <h2>Registration Details</h2>
+              </div>
               <button
                 type="button"
                 className="modal-close-button"
@@ -119,109 +124,106 @@ const AdminRow = ({
             </div>
 
             <div className="modal-body">
-              <div className="detail-section">
-                <div className="detail-row">
-                  <span className="detail-label">Name:</span>
-                  <span className="detail-value">{toDisplayValue(registration.name)}</span>
+              <div className="detail-cards-container">
+                <div className="detail-card">
+                  <div className="detail-card-header">
+                    <h3>Personal Information</h3>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Full Name</span>
+                    <span className="detail-value highlight">{toDisplayValue(registration.name)}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Email Address</span>
+                    <span className="detail-value">{toDisplayValue(registration.email)}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Phone Number</span>
+                    <span className="detail-value">{toDisplayValue(registration.phone_number)}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">ID / Passport No</span>
+                    <span className="detail-value">{toDisplayValue(registration.id_number)}</span>
+                  </div>
                 </div>
-                <div className="detail-row">
-                  <span className="detail-label">Email:</span>
-                  <span className="detail-value">{toDisplayValue(registration.email)}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Phone:</span>
-                  <span className="detail-value">
-                    {toDisplayValue(registration.phone_number)}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Profession:</span>
-                  <span className="detail-value">
-                    {toDisplayValue(registration.profession)}
-                  </span>
-                </div>
-              </div>
 
-              <div className="detail-section">
-                <div className="detail-row">
-                  <span className="detail-label">ID Number:</span>
-                  <span className="detail-value">
-                    {toDisplayValue(registration.id_number)}
-                  </span>
+                <div className="detail-card">
+                  <div className="detail-card-header">
+                    <h3>Professional Details</h3>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Organization / Uni</span>
+                    <span className="detail-value">{toDisplayValue(registration.organization)}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Profession / Role</span>
+                    <span className="detail-value">{toDisplayValue(registration.profession)}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Designation</span>
+                    <span className="detail-value">{toDisplayValue(registration.designation)}</span>
+                  </div>
+                  {registration.current_year_of_study && (
+                    <div className="detail-row">
+                      <span className="detail-label">Year of Study</span>
+                      <span className="detail-value">{toDisplayValue(registration.current_year_of_study)}</span>
+                    </div>
+                  )}
                 </div>
-                <div className="detail-row">
-                  <span className="detail-label">Organization:</span>
-                  <span className="detail-value">
-                    {toDisplayValue(registration.organization)}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Designation:</span>
-                  <span className="detail-value">
-                    {toDisplayValue(registration.designation)}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Current Year of Study:</span>
-                  <span className="detail-value">
-                    {toDisplayValue(registration.current_year_of_study)}
-                  </span>
-                </div>
-              </div>
 
-              <div className="detail-section">
-                <div className="detail-row">
-                  <span className="detail-label">LinkedIn URL:</span>
-                  <span className="detail-value">
-                    {registration.linkedin_url ? (
-                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <a
-                          href={registration.linkedin_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {registration.linkedin_url}
-                        </a>
-                        <button
-                          type="button"
-                          className="linkedin-open-button"
-                          onClick={() => window.open(registration.linkedin_url, "_blank")}
-                          title="Open LinkedIn profile in new tab"
-                        >
-                          <FontAwesomeIcon icon={faLinkedin} />
-                        </button>
-                      </div>
-                    ) : (
-                      "N/A"
-                    )}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Food Preference:</span>
-                  <span className="detail-value">
-                    {toDisplayValue(registration.food_preference)}
-                  </span>
-                </div>
-              </div>
-
-              <div className="detail-section">
-                <div className="detail-row full-width">
-                  <span className="detail-label">Expectations:</span>
-                  <span className="detail-value expectations">
-                    {toDisplayValue(registration.expectations)}
-                  </span>
+                <div className="detail-card full-span">
+                  <div className="detail-card-header">
+                    <h3>Additional Info</h3>
+                  </div>
+                  <div className="detail-grid-2">
+                    <div className="detail-row">
+                      <span className="detail-label">LinkedIn</span>
+                      <span className="detail-value">
+                        {registration.linkedin_url ? (
+                          <div className="detail-link-wrap">
+                            <a href={registration.linkedin_url} target="_blank" rel="noopener noreferrer">
+                              {registration.linkedin_url}
+                            </a>
+                            <button
+                              type="button"
+                              className="linkedin-open-button"
+                              onClick={() => window.open(registration.linkedin_url, "_blank")}
+                              title="Open LinkedIn"
+                            >
+                              <FontAwesomeIcon icon={faLinkedin} />
+                            </button>
+                          </div>
+                        ) : (
+                          "Not provided"
+                        )}
+                      </span>
+                    </div>
+                    <div className="detail-row">
+                      <span className="detail-label">Food Preference</span>
+                      <span className="detail-value">
+                        <span className="pill-badge food-pill">{toDisplayValue(registration.food_preference)}</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="detail-row align-start expectations-row">
+                    <span className="detail-label">Expectations</span>
+                    <div className="detail-value expectations-box">
+                      {toDisplayValue(registration.expectations)}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="modal-footer">
-              <button
-                type="button"
-                className="modal-close-btn"
-                onClick={handleCloseModal}
-              >
-                Close
-              </button>
+              <div className="modal-status-indicator">
+                Current Status: <span className={`status-badge status-${currentStatus}`}>{currentStatus}</span>
+              </div>
+              <div className="modal-actions-right">
+                <button type="button" className="modal-btn-secondary" onClick={handleCloseModal}>
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
