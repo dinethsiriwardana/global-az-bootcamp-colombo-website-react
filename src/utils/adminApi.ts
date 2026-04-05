@@ -153,7 +153,6 @@ const normalizeRegistration = (item: unknown): AdminRegistration => {
     food_preference: asText(registration.food_preference || profile.food_preference),
     event_title: asText(event.title),
     registered_at: asText(registration.registered_at),
-    is_confirmed: Boolean(registration.is_confirmed),
   };
 };
 
