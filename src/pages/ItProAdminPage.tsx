@@ -58,8 +58,17 @@ const ItProAdminPage = () => {
     setError(null);
 
     try {
-      const data = await listRegistrations(statusFilter);
-      setRegistrations(data);
+      const data =
+        statusFilter === "confirmed"
+          ? await listRegistrations()
+          : await listRegistrations(statusFilter);
+
+      const filteredData =
+        statusFilter === "confirmed"
+          ? data.filter((registration) => registration.is_confirmed)
+          : data;
+
+      setRegistrations(filteredData);
     } catch (fetchError) {
       const message = getErrorMessage(
         fetchError,

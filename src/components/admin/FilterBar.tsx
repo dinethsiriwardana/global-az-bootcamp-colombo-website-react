@@ -10,7 +10,8 @@ interface FilterBarProps {
 const FILTER_OPTIONS: Array<{ label: string; value: AdminFilterStatus }> = [
   { label: "Pending", value: "pending" },
   { label: "Approved", value: "approved" },
-  { label: "Reject", value: "rejected" },
+  { label: "Rejected", value: "rejected" },
+  { label: "Confirmed", value: "confirmed" },
 ];
 
 const FilterBar = ({ status, onChange, disabled = false }: FilterBarProps) => {
