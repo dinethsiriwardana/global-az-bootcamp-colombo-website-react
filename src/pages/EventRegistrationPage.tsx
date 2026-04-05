@@ -445,7 +445,7 @@ const EventRegistrationPage = () => {
     setLoading(true);
     try {
       await submitRegistration(formData);
-      showMsg("success", "🎉 Registration successful! See you at the event.");
+      showMsg("success", "🎉 Registration successful!");
       setSubmissionComplete(true);
     } catch (error) {
       showMsg(
