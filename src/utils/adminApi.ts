@@ -135,6 +135,10 @@ const normalizeRegistration = (item: unknown): AdminRegistration => {
     registration.profiles && typeof registration.profiles === "object"
       ? (registration.profiles as Record<string, unknown>)
       : {};
+  const event =
+    registration.events && typeof registration.events === "object"
+      ? (registration.events as Record<string, unknown>)
+      : {};
 
   return {
     registration_id: getRegistrationId(registration),
@@ -144,6 +148,12 @@ const normalizeRegistration = (item: unknown): AdminRegistration => {
     profession: asText(registration.profession || profile.profession),
     status: asText(registration.status || "pending").toLowerCase(),
     is_confirmed: asBoolean(registration.is_confirmed ?? profile.is_confirmed),
+    organization: asText(registration.organization || profile.organization),
+    designation: asText(registration.designation || profile.designation),
+    food_preference: asText(registration.food_preference || profile.food_preference),
+    event_title: asText(event.title),
+    registered_at: asText(registration.registered_at),
+    is_confirmed: Boolean(registration.is_confirmed),
   };
 };
 
