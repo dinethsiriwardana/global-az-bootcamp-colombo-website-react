@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/autoplay";
 
 // Import speaker data
@@ -26,6 +25,8 @@ interface Speaker {
   track?: string;
   session?: string;
 }
+
+const MAX_HOME_SPEAKERS = 5;
 
 const Speakers: React.FC = () => {
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
@@ -65,7 +66,7 @@ const Speakers: React.FC = () => {
       );
 
       console.log("Reordered and processed speakers:", processedSpeakers);
-      setSpeakers(processedSpeakers);
+      setSpeakers(processedSpeakers.slice(0, MAX_HOME_SPEAKERS));
       setLoading(false);
     } catch (error) {
       setError("Error processing speaker data: " + error);
@@ -98,25 +99,20 @@ const Speakers: React.FC = () => {
       <Swiper
         className="gallery-slider"
         speed={400}
-        centeredSlides={true}
-        loop={true}
+        centeredSlides={false}
+        loop={false}
         autoplay={{
           delay: 5000,
           disableOnInteraction: false,
         }}
-        slidesPerView="auto"
-        pagination={{
-          el: ".swiper-pagination",
-          type: "bullets",
-          clickable: true,
-        }}
-        modules={[Autoplay, Pagination]}
+        slidesPerView={1}
+        spaceBetween={20}
         breakpoints={{
-          320: { slidesPerView: 1, spaceBetween: 20 },
-          575: { slidesPerView: 2, spaceBetween: 20 },
+          576: { slidesPerView: 2, spaceBetween: 20 },
           768: { slidesPerView: 3, spaceBetween: 20 },
           992: { slidesPerView: 5, spaceBetween: 20 },
         }}
+        modules={[Autoplay]}
       >
         {speakers.map((speaker) => {
           const linkedinProfile =
@@ -171,7 +167,6 @@ const Speakers: React.FC = () => {
           );
         })}
         <br></br>
-        <div className="swiper-pagination"></div>
       </Swiper>
     </section>
   );
