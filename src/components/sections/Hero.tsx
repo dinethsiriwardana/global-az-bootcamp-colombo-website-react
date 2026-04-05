@@ -66,6 +66,9 @@ const Hero = () => {
               height: auto !important;
               transform: none !important;
               scale: 1 !important;
+              object-fit: contain;
+              display: block;
+              margin: 0 auto;
             }
           }
         `}
@@ -79,6 +82,7 @@ const Hero = () => {
               title="Global Azure Bootcamp Logo"
               className="img-fluid hero-main-logo"
               loading="lazy"
+              style={{ maxWidth: '550px', height: 'auto' }}
             />
           </div>
         <h1 className="mb-4 pb-0">
