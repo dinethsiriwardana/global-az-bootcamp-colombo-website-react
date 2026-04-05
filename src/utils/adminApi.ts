@@ -100,6 +100,18 @@ const asText = (value: unknown): string => {
   return String(value);
 };
 
+const asBoolean = (value: unknown): boolean => {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    return value.toLowerCase() === "true";
+  }
+
+  return false;
+};
+
 const getRegistrationId = (item: Record<string, unknown>) => {
   return asText(item.registration_id ?? item.id ?? item._id ?? item.uuid);
 };
@@ -135,6 +147,7 @@ const normalizeRegistration = (item: unknown): AdminRegistration => {
     phone_number: asText(registration.phone_number || profile.phone_number),
     profession: asText(registration.profession || profile.profession),
     status: asText(registration.status || "pending").toLowerCase(),
+    is_confirmed: asBoolean(registration.is_confirmed ?? profile.is_confirmed),
     organization: asText(registration.organization || profile.organization),
     designation: asText(registration.designation || profile.designation),
     food_preference: asText(registration.food_preference || profile.food_preference),
@@ -171,16 +184,14 @@ const extractRegistrations = (payload: unknown): unknown[] => {
 };
 
 export const listRegistrations = async (
-  status: AdminFilterStatus,
+  status?: AdminFilterStatus,
 ): Promise<AdminRegistration[]> => {
   const baseUrl = getFunctionsBaseUrl();
-  const response = await fetch(
-    `${baseUrl}/list-registrations?status=${encodeURIComponent(status)}`,
-    {
-      method: "GET",
-      headers: buildHeaders(),
-    },
-  );
+  const query = status ? `?status=${encodeURIComponent(status)}` : "";
+  const response = await fetch(`${baseUrl}/list-registrations${query}`, {
+    method: "GET",
+    headers: buildHeaders(),
+  });
 
   if (!response.ok) {
     await parseApiError(response);
