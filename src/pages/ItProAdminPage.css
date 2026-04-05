@@ -140,35 +140,41 @@
   letter-spacing: 0.04em;
 }
 
-.admin-filter-toggle {
-  display: inline-flex;
-  width: 100%;
-  gap: 0.55rem;
-}
-
-.admin-filter-button {
-  flex: 1;
+.admin-filter-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   background: rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 12px;
-  padding: 0.64rem 0.7rem;
-  font-family: "DM Sans", sans-serif;
-  font-size: 0.86rem;
-  font-weight: 600;
-  transition: all 0.25s ease;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.72rem 0.85rem;
 }
 
-.admin-filter-button.active {
-  background: #f82249;
-  border-color: #f82249;
+.admin-filter-select-wrap i {
+  font-size: 0.9rem;
+}
+
+.admin-filter-select {
+  width: 100%;
+  border: none;
+  background: transparent;
   color: #ffffff;
-  box-shadow: 0 4px 20px rgba(248, 34, 73, 0.35);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
 }
 
-.admin-filter-button:disabled {
+.admin-filter-select:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.admin-filter-select option {
+  color: #0e1b4d;
 }
 
 .admin-search-wrap {
