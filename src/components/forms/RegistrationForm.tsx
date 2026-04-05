@@ -60,7 +60,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) => {
       let message = "";
       if (statusCode === 200) {
         message =
-          "Registration successful! We look forward to seeing you at the event.";
+          "Registration successful!";
       } else if (statusCode === 404) {
         message = "Registration failed. Please check your information.";
       } else {
