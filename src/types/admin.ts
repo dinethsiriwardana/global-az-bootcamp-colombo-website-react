@@ -1,6 +1,6 @@
 export type RegistrationStatus = "pending" | "approved" | "rejected" | string;
 
-export type AdminFilterStatus = "pending" | "approved";
+export type AdminFilterStatus = "pending" | "approved" | "rejected";
 
 export type AdminAction = "approved" | "rejected";
 
