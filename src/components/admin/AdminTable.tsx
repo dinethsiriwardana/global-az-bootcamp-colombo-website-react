@@ -37,7 +37,7 @@ const AdminTable = ({
       <div className="admin-table-head" role="row">
         <span>Name</span>
         <span>Email</span>
-        <span>Phone</span>
+        <span>Organization</span>
         <span>Profession</span>
         <span>Status</span>
         <span>Actions</span>
