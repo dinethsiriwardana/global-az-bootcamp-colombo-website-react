@@ -220,6 +220,64 @@
   color: #fca5a5;
 }
 
+.admin-secret-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  padding: 1.8rem;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.admin-secret-card h2 {
+  margin: 0 0 0.65rem;
+  color: #ffffff;
+  font-size: 1.5rem;
+}
+
+.admin-secret-card p {
+  margin: 0 0 1.35rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.6;
+}
+
+.admin-secret-form {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.admin-secret-input {
+  flex: 1 1 240px;
+  min-width: 220px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  padding: 0.95rem 1rem;
+  outline: none;
+}
+
+.admin-secret-input:focus {
+  border-color: rgba(248, 34, 73, 0.75);
+}
+
+.admin-secret-submit {
+  border: none;
+  border-radius: 14px;
+  padding: 0.95rem 1.3rem;
+  background: #f82249;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.admin-secret-submit:hover {
+  opacity: 0.95;
+}
+
 .admin-table {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 16px;

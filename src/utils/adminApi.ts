@@ -6,11 +6,27 @@ import {
 
 const SUPABASE_URL = (process.env.REACT_APP_SUPABASE_URL || "").trim();
 const SUPABASE_ANON_KEY = (process.env.REACT_APP_SUPABASE_ANON_KEY || "").trim();
-const ADMIN_SECRET = (
-  process.env.REACT_APP_ADMIN_SECRET || "your-strong-admin-secret"
-).trim();
+const LOCAL_STORAGE_ADMIN_SECRET_KEY = "REACT_APP_ADMIN_SECRET";
 
 const stripTrailingSlash = (value: string) => value.replace(/\/+$/, "");
+
+const getAdminSecret = (): string => {
+  if (typeof window !== "undefined") {
+    const storedSecret = window.localStorage.getItem(LOCAL_STORAGE_ADMIN_SECRET_KEY);
+    if (storedSecret?.trim()) {
+      return storedSecret.trim();
+    }
+  }
+
+  const envSecret = (process.env.REACT_APP_ADMIN_SECRET || "").trim();
+  if (envSecret) {
+    return envSecret;
+  }
+
+  throw new Error(
+    "Admin secret is not configured. Save REACT_APP_ADMIN_SECRET in localStorage to continue."
+  );
+};
 
 const getFunctionsBaseUrl = () => {
   const base = stripTrailingSlash(SUPABASE_URL);
@@ -35,7 +51,7 @@ const buildHeaders = (): HeadersInit => {
     "Content-Type": "application/json",
     Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
     apikey: SUPABASE_ANON_KEY,
-    "x-admin-secret": ADMIN_SECRET,
+    "x-admin-secret": getAdminSecret(),
   };
 };
 

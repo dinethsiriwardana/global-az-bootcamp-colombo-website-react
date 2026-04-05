@@ -21,14 +21,19 @@ const getErrorMessage = (error: unknown, fallback: string) => {
   return fallback;
 };
 
+const LOCAL_STORAGE_ADMIN_SECRET_KEY = "REACT_APP_ADMIN_SECRET";
+
 const ItProAdminPage = () => {
   const [statusFilter, setStatusFilter] = useState<AdminFilterStatus>("pending");
   const [searchTerm, setSearchTerm] = useState("");
   const [registrations, setRegistrations] = useState<AdminRegistration[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+  const [adminSecretPresent, setAdminSecretPresent] = useState(false);
+  const [secretInput, setSecretInput] = useState("");
+  const [secretError, setSecretError] = useState<string | null>(null);
 
   useEffect(() => {
     const images = ["bg.jpg", "bg2.png"];
@@ -40,6 +45,13 @@ const ItProAdminPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const storedSecret = window.localStorage.getItem(LOCAL_STORAGE_ADMIN_SECRET_KEY);
+    if (storedSecret?.trim()) {
+      setAdminSecretPresent(true);
+    }
+  }, []);
+
   const fetchRegistrations = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -48,12 +60,18 @@ const ItProAdminPage = () => {
       const data = await listRegistrations(statusFilter);
       setRegistrations(data);
     } catch (fetchError) {
-      setError(
-        getErrorMessage(
-          fetchError,
-          "Failed to load registrations. Please try again.",
-        ),
+      const message = getErrorMessage(
+        fetchError,
+        "Failed to load registrations. Please try again.",
       );
+
+      if (typeof message === "string" && message.toLowerCase().includes("forbidden")) {
+        window.localStorage.removeItem(LOCAL_STORAGE_ADMIN_SECRET_KEY);
+        setAdminSecretPresent(false);
+        setSecretError("Saved admin secret is invalid. Please enter it again.");
+      }
+
+      setError(message);
       setRegistrations([]);
     } finally {
       setLoading(false);
@@ -61,8 +79,12 @@ const ItProAdminPage = () => {
   }, [statusFilter]);
 
   useEffect(() => {
+    if (!adminSecretPresent) {
+      return;
+    }
+
     void fetchRegistrations();
-  }, [fetchRegistrations]);
+  }, [fetchRegistrations, adminSecretPresent]);
 
   useEffect(() => {
     if (!feedbackMessage) {
@@ -132,6 +154,25 @@ const ItProAdminPage = () => {
     }
   };
 
+  const handleSecretSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const trimmedSecret = secretInput.trim();
+    if (!trimmedSecret) {
+      setSecretError("Please enter the admin secret.");
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(LOCAL_STORAGE_ADMIN_SECRET_KEY, trimmedSecret);
+      setSecretError(null);
+      setSecretInput("");
+      setAdminSecretPresent(true);
+    } catch {
+      setSecretError("Unable to save admin secret to local storage.");
+    }
+  };
+
   return (
     <>
       <link
@@ -167,37 +208,72 @@ const ItProAdminPage = () => {
               </p>
             </header>
 
-            <section className="itpro-admin-toolbar" aria-label="Admin controls">
-              <FilterBar
-                status={statusFilter}
-                onChange={setStatusFilter}
-                disabled={loading || Boolean(actionLoadingId)}
-              />
-              <SearchInput
-                value={searchTerm}
-                onChange={setSearchTerm}
-                disabled={loading}
-              />
-            </section>
-
-            {error ? (
-              <div className="admin-alert error" role="alert">
-                {error}
+            {!adminSecretPresent ? (
+              <div className="admin-secret-card">
+                <h2>Enter admin secret</h2>
+                <p>
+                  To access the admin panel, enter your 
+                  <strong> Admin Key</strong> 
+                </p>
+                {secretError ? (
+                  <div className="admin-alert error" role="alert">
+                    {secretError}
+                  </div>
+                ) : null}
+                <form className="admin-secret-form" onSubmit={handleSecretSubmit}>
+                  <input
+                    className="admin-secret-input"
+                    type="password"
+                    value={secretInput}
+                    onChange={(event) => {
+                      setSecretInput(event.target.value);
+                      if (secretError) {
+                        setSecretError(null);
+                      }
+                    }}
+                    placeholder="Admin secret"
+                    aria-label="Admin secret"
+                  />
+                  <button className="admin-secret-submit" type="submit">
+                    Save secret
+                  </button>
+                </form>
               </div>
-            ) : null}
+            ) : (
+              <>
+                <section className="itpro-admin-toolbar" aria-label="Admin controls">
+                  <FilterBar
+                    status={statusFilter}
+                    onChange={setStatusFilter}
+                    disabled={loading || Boolean(actionLoadingId)}
+                  />
+                  <SearchInput
+                    value={searchTerm}
+                    onChange={setSearchTerm}
+                    disabled={loading}
+                  />
+                </section>
 
-            {feedbackMessage ? (
-              <div className="admin-alert success" role="status" aria-live="polite">
-                {feedbackMessage}
-              </div>
-            ) : null}
+                {error ? (
+                  <div className="admin-alert error" role="alert">
+                    {error}
+                  </div>
+                ) : null}
 
-            <AdminTable
-              registrations={filteredRegistrations}
-              loading={loading}
-              actionLoadingId={actionLoadingId}
-              onAction={handleAction}
-            />
+                {feedbackMessage ? (
+                  <div className="admin-alert success" role="status" aria-live="polite">
+                    {feedbackMessage}
+                  </div>
+                ) : null}
+
+                <AdminTable
+                  registrations={filteredRegistrations}
+                  loading={loading}
+                  actionLoadingId={actionLoadingId}
+                  onAction={handleAction}
+                />
+              </>
+            )}
           </section>
 
           <p className="itpro-admin-disclaimer">
