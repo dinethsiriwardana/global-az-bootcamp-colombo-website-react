@@ -6,7 +6,9 @@ import {
 
 const SUPABASE_URL = (process.env.REACT_APP_SUPABASE_URL || "").trim();
 const SUPABASE_ANON_KEY = (process.env.REACT_APP_SUPABASE_ANON_KEY || "").trim();
-const ADMIN_SECRET = "your-strong-admin-secret";
+const ADMIN_SECRET = (
+  process.env.REACT_APP_ADMIN_SECRET || "your-strong-admin-secret"
+).trim();
 
 const stripTrailingSlash = (value: string) => value.replace(/\/+$/, "");
 
