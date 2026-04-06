@@ -1,0 +1,223 @@
+.attendance-confirm-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7rem 1rem 2rem;
+  position: relative;
+  overflow: hidden;
+  font-family: "DM Sans", sans-serif;
+}
+
+.attendance-confirm-orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.attendance-confirm-orb-one {
+  width: 620px;
+  height: 620px;
+  top: -220px;
+  right: -220px;
+  background: radial-gradient(circle, rgba(248, 34, 73, 0.12) 0%, transparent 70%);
+}
+
+.attendance-confirm-orb-two {
+  width: 420px;
+  height: 420px;
+  bottom: -140px;
+  left: -130px;
+  background: radial-gradient(circle, rgba(14, 27, 77, 0.9) 0%, transparent 70%);
+}
+
+.attendance-confirm-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.62);
+  z-index: 0;
+}
+
+.attendance-confirm-shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 620px;
+}
+
+.attendance-confirm-logo-wrap {
+  text-align: center;
+  margin-bottom: 1.1rem;
+}
+
+.attendance-confirm-logo {
+  width: min(210px, 60vw);
+  max-width: 100%;
+  height: auto;
+}
+
+.attendance-confirm-card {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  padding: 2.1rem 1.6rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  animation: attendance-confirm-fade 0.65s ease;
+}
+
+.attendance-confirm-title {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  color: #ffffff;
+}
+
+.attendance-confirm-text {
+  margin: 0.95rem 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.attendance-confirm-success-copy {
+  margin-top: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.attendance-confirm-success-copy .attendance-confirm-text {
+  margin: 0;
+}
+
+.attendance-confirm-success-copy .attendance-confirm-text-highlight {
+  margin-top: 0.35rem;
+}
+
+.attendance-confirm-text-muted {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.attendance-confirm-text-highlight {
+  color: #ffffff;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.attendance-confirm-text-highlight span {
+  display: block;
+}
+
+.attendance-confirm-spinner {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 3px solid rgba(248, 34, 73, 0.25);
+  border-top-color: #f82249;
+  margin: 0 auto 1.1rem;
+  animation: attendance-confirm-spin 0.9s linear infinite;
+}
+
+.attendance-confirm-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  border: 1px solid transparent;
+  backdrop-filter: blur(8px);
+}
+
+.attendance-confirm-card-success .attendance-confirm-icon {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.38);
+  color: #86efac;
+}
+
+.attendance-confirm-card-error .attendance-confirm-icon {
+  background: rgba(248, 34, 73, 0.2);
+  border-color: rgba(248, 34, 73, 0.38);
+  color: #fda4af;
+}
+
+.attendance-confirm-button {
+  margin-top: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.8rem 1.6rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: #f82249;
+  box-shadow: 0 4px 20px rgba(248, 34, 73, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.attendance-confirm-button:hover,
+.attendance-confirm-button:focus {
+  transform: translateY(-1px);
+  background: #f9365a;
+  box-shadow: 0 8px 24px rgba(248, 34, 73, 0.42);
+  color: #ffffff;
+}
+
+@keyframes attendance-confirm-fade {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes attendance-confirm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 992px) {
+  .attendance-confirm-page {
+    padding-top: 6.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .attendance-confirm-page {
+    padding: 5.5rem 0.8rem 1.5rem;
+  }
+
+  .attendance-confirm-card {
+    border-radius: 20px;
+    padding: 1.75rem 1.15rem;
+  }
+
+  .attendance-confirm-title {
+    font-size: 1.45rem;
+  }
+
+  .attendance-confirm-text {
+    font-size: 0.92rem;
+  }
+
+  .attendance-confirm-button {
+    width: 100%;
+  }
+}
