@@ -802,6 +802,12 @@
   color: #fda4af;
 }
 
+.admin-action-button.linkedin {
+  background: rgba(0, 119, 181, 0.2);
+  border-color: rgba(0, 119, 181, 0.38);
+  color: #60a5fa;
+}
+
 .admin-action-button:not(:disabled):hover {
   transform: translateY(-1px);
 }

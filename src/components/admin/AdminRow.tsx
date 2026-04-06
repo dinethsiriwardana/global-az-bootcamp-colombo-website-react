@@ -100,6 +100,16 @@ const AdminRow = ({
           >
             <FontAwesomeIcon icon={faXmark} />
           </button>
+          {registration.linkedin_url && (
+            <button
+              type="button"
+              className="admin-action-button linkedin"
+              onClick={() => window.open(registration.linkedin_url, "_blank")}
+              title="Visit LinkedIn profile"
+            >
+              <FontAwesomeIcon icon={faLinkedin} />
+            </button>
+          )}
         </div>
       </article>
 
