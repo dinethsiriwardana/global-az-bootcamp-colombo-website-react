@@ -6,8 +6,81 @@ import {
 } from "../utils/api";
 import "./AttendanceConfirmationPage.css";
 
-type ConfirmState = "loading" | "success" | "error";
+type ConfirmState = "loading" | "success" | "already-confirmed" | "error";
 const LOADING_WINDOW_MS = 3000;
+const CONFIRMED_NAME_CACHE_KEY = "attendance-confirmed-name-cache-v1";
+const CONFIRMED_REGISTRATION_CACHE_KEY =
+  "attendance-confirmed-registration-cache-v1";
+
+const getConfirmedNameCache = (): Record<string, string> => {
+  if (typeof window === "undefined") {
+    return {};
+  }
+
+  try {
+    const raw = window.localStorage.getItem(CONFIRMED_NAME_CACHE_KEY);
+    if (!raw) {
+      return {};
+    }
+
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return {};
+    }
+
+    return Object.entries(parsed as Record<string, unknown>).reduce(
+      (acc, [id, name]) => {
+        if (typeof id !== "string" || typeof name !== "string") {
+          return acc;
+        }
+
+        const trimmedId = id.trim();
+        const trimmedName = name.trim();
+
+        if (!trimmedId || !trimmedName) {
+          return acc;
+        }
+
+        acc[trimmedId] = trimmedName;
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+  } catch {
+    return {};
+  }
+};
+
+const getConfirmedRegistrationCache = (): Record<string, true> => {
+  if (typeof window === "undefined") {
+    return {};
+  }
+
+  try {
+    const raw = window.localStorage.getItem(CONFIRMED_REGISTRATION_CACHE_KEY);
+    if (!raw) {
+      return {};
+    }
+
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return {};
+    }
+
+    return Object.keys(parsed as Record<string, unknown>).reduce(
+      (acc, id) => {
+        const trimmedId = id.trim();
+        if (trimmedId) {
+          acc[trimmedId] = true;
+        }
+        return acc;
+      },
+      {} as Record<string, true>,
+    );
+  } catch {
+    return {};
+  }
+};
 
 const asRecord = (value: unknown): Record<string, unknown> | null => {
   if (typeof value === "object" && value !== null) {
@@ -106,6 +179,56 @@ const asNameCandidate = (value: string | null): string | null => {
 
   const compact = value.replace(/\s+/g, " ").trim();
   return isLikelyPersonName(compact) ? compact : null;
+};
+
+const getCachedConfirmedName = (registrationId: string): string | null => {
+  const cache = getConfirmedNameCache();
+  return asNameCandidate(cache[registrationId] ?? null);
+};
+
+const cacheConfirmedName = (registrationId: string, name: string | null) => {
+  if (typeof window === "undefined" || !registrationId) {
+    return;
+  }
+
+  const safeName = asNameCandidate(name);
+  if (!safeName) {
+    return;
+  }
+
+  try {
+    const cache = getConfirmedNameCache();
+    cache[registrationId] = safeName;
+    window.localStorage.setItem(CONFIRMED_NAME_CACHE_KEY, JSON.stringify(cache));
+  } catch {
+    // Ignore localStorage write failures.
+  }
+};
+
+const isRegistrationMarkedConfirmed = (registrationId: string): boolean => {
+  if (!registrationId) {
+    return false;
+  }
+
+  const cache = getConfirmedRegistrationCache();
+  return Boolean(cache[registrationId]);
+};
+
+const markRegistrationConfirmed = (registrationId: string) => {
+  if (typeof window === "undefined" || !registrationId) {
+    return;
+  }
+
+  try {
+    const cache = getConfirmedRegistrationCache();
+    cache[registrationId] = true;
+    window.localStorage.setItem(
+      CONFIRMED_REGISTRATION_CACHE_KEY,
+      JSON.stringify(cache),
+    );
+  } catch {
+    // Ignore localStorage write failures.
+  }
 };
 
 const extractNameFromEmail = (value: string | null): string | null => {
@@ -317,6 +440,40 @@ const getErrorMessage = (error: unknown, fallback: string) => {
   return fallback;
 };
 
+const isAlreadyConfirmedMessage = (message: string | null): boolean => {
+  const normalized = asNonEmptyText(message)?.toLowerCase();
+  if (!normalized) {
+    return false;
+  }
+
+  const phrases = [
+    "already confirmed",
+    "already been confirmed",
+    "already marked",
+    "already validated",
+    "already completed",
+    "already checked",
+    "already used",
+    "already processed",
+    "already redeemed",
+    "already exists",
+  ];
+
+  return phrases.some((phrase) => normalized.includes(phrase));
+};
+
+const isRepeatIneligibleMessage = (message: string | null): boolean => {
+  const normalized = asNonEmptyText(message)?.toLowerCase();
+  if (!normalized) {
+    return false;
+  }
+
+  return (
+    normalized.includes("not found or not eligible") ||
+    normalized.includes("not eligible")
+  );
+};
+
 const isExplicitFailureResponse = (
   payload: ConfirmRegistrationResponse,
 ): boolean => {
@@ -362,7 +519,7 @@ const AttendanceConfirmationPage = () => {
   const [status, setStatus] = useState<ConfirmState>("loading");
   const [confirmedName, setConfirmedName] = useState<string | null>(null);
   const [errorText, setErrorText] = useState("");
-  const greetingName = confirmedName || "Participant";
+  const hasKnownName = Boolean(confirmedName);
 
   useEffect(() => {
     const images = ["bg.jpg", "bg2.png"];
@@ -399,18 +556,40 @@ const AttendanceConfirmationPage = () => {
           return;
         }
 
+        const payloadName = extractConfirmedName(response);
+        const cachedName = getCachedConfirmedName(registrationId);
+        const bestKnownName = payloadName || cachedName;
+        const wasPreviouslyConfirmed = isRegistrationMarkedConfirmed(registrationId);
+
         if (isExplicitFailureResponse(response)) {
-          throw new Error(
+          const failureMessage =
             asNonEmptyText(response.error) ||
-              asNonEmptyText(response.error_message) ||
-              asNonEmptyText(response.message) ||
-              "We could not confirm your attendance. Please try again later.",
-          );
+            asNonEmptyText(response.error_message) ||
+            asNonEmptyText(response.message) ||
+            "We could not confirm your attendance. Please try again later.";
+
+          if (
+            isAlreadyConfirmedMessage(failureMessage) ||
+              (isRepeatIneligibleMessage(failureMessage) && wasPreviouslyConfirmed)
+          ) {
+            setConfirmedName(bestKnownName);
+            markRegistrationConfirmed(registrationId);
+            if (bestKnownName) {
+              cacheConfirmedName(registrationId, bestKnownName);
+            }
+            setStatus("already-confirmed");
+            return;
+          }
+
+          throw new Error(failureMessage);
         }
 
-        const confirmedNameFromResponse = extractConfirmedName(response);
+        const confirmedNameFromResponse = payloadName;
         const elapsed = Date.now() - startedAt;
         const remaining = Math.max(0, LOADING_WINDOW_MS - elapsed);
+
+        cacheConfirmedName(registrationId, confirmedNameFromResponse);
+        markRegistrationConfirmed(registrationId);
 
         if (remaining === 0) {
           setConfirmedName(confirmedNameFromResponse);
@@ -431,14 +610,30 @@ const AttendanceConfirmationPage = () => {
           return;
         }
 
+        const resolvedErrorText = getErrorMessage(
+          error,
+          "We could not confirm your attendance. Please try again later.",
+        );
+        const cachedName = getCachedConfirmedName(registrationId);
+        const wasPreviouslyConfirmed = isRegistrationMarkedConfirmed(registrationId);
+
+        if (
+          isAlreadyConfirmedMessage(resolvedErrorText) ||
+          (isRepeatIneligibleMessage(resolvedErrorText) && wasPreviouslyConfirmed)
+        ) {
+          setConfirmedName(cachedName);
+          setErrorText("");
+          markRegistrationConfirmed(registrationId);
+          if (cachedName) {
+            cacheConfirmedName(registrationId, cachedName);
+          }
+          setStatus("already-confirmed");
+          return;
+        }
+
         setStatus("error");
         setConfirmedName(null);
-        setErrorText(
-          getErrorMessage(
-            error,
-            "We could not confirm your attendance. Please try again later.",
-          ),
-        );
+        setErrorText(resolvedErrorText);
       }
     };
 
@@ -501,13 +696,41 @@ const AttendanceConfirmationPage = () => {
                 <h1 className="attendance-confirm-title">Attendance Confirmed</h1>
                 <div className="attendance-confirm-success-copy">
                   <p className="attendance-confirm-text">
-                    {`Hi ${greetingName}, your attendance has been confirmed.`}
+                    {hasKnownName
+                      ? `Hi ${confirmedName}, your attendance has been confirmed.`
+                      : "Your attendance has been confirmed."}
                   </p>
                   <p className="attendance-confirm-text attendance-confirm-text-muted">
                     We look forward to seeing you.
                   </p>
                   <p className="attendance-confirm-text attendance-confirm-text-highlight">
                     <span>Your QR code and event details have been sent to your email.</span>
+                    <span>Please check your inbox.</span>
+                  </p>
+                </div>
+                <Link to="/" className="attendance-confirm-button">
+                  Back to Home
+                </Link>
+              </>
+            )}
+
+            {status === "already-confirmed" && (
+              <>
+                <div className="attendance-confirm-icon" aria-hidden="true">
+                  <i className="bi bi-check-lg" />
+                </div>
+                <h1 className="attendance-confirm-title">Already Confirmed</h1>
+                <div className="attendance-confirm-success-copy">
+                  <p className="attendance-confirm-text">
+                    {hasKnownName
+                      ? `Hi ${confirmedName}, your attendance is already confirmed.`
+                      : "Your attendance is already confirmed."}
+                  </p>
+                  <p className="attendance-confirm-text attendance-confirm-text-muted">
+                    No further action is needed.
+                  </p>
+                  <p className="attendance-confirm-text attendance-confirm-text-highlight">
+                    <span>Your QR code and event details are in your email.</span>
                     <span>Please check your inbox.</span>
                   </p>
                 </div>

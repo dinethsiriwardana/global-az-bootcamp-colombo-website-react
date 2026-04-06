@@ -143,6 +143,12 @@
   color: #86efac;
 }
 
+.attendance-confirm-card-already-confirmed .attendance-confirm-icon {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.38);
+  color: #86efac;
+}
+
 .attendance-confirm-card-error .attendance-confirm-icon {
   background: rgba(248, 34, 73, 0.2);
   border-color: rgba(248, 34, 73, 0.38);
