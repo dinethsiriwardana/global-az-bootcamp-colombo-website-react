@@ -40,7 +40,7 @@ const AdminTable = ({
         <span>Organization</span>
         <span>Profession</span>
         <span>Status</span>
-        <span>Actions</span>
+        <span className="text-center">Actions</span>
       </div>
 
       <div className="admin-table-body" role="rowgroup">
