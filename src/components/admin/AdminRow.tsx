@@ -36,6 +36,7 @@ const AdminRow = ({
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  console.log("Rendering AdminRow for registration ID:", registration);
 
   return (
     <>
@@ -63,6 +64,8 @@ const AdminRow = ({
             {toDisplayValue(registration.profession)}
           </span>
         </div>
+
+      
 
         <div className="admin-cell" role="cell">
           <span className="admin-cell-label">Status</span>
@@ -112,6 +115,10 @@ const AdminRow = ({
                   <FontAwesomeIcon icon={faEye} className="modal-title-icon" />
                 </div>
                 <h2>Registration Details</h2>
+                <span className={`status-badge status-${currentStatus}`}>{currentStatus}</span>
+
+
+                
               </div>
               <button
                 type="button"
@@ -159,6 +166,7 @@ const AdminRow = ({
                     <span className="detail-label">Profession / Role</span>
                     <span className="detail-value">{toDisplayValue(registration.profession)}</span>
                   </div>
+                 
                   <div className="detail-row">
                     <span className="detail-label">Designation</span>
                     <span className="detail-value">{toDisplayValue(registration.designation)}</span>
@@ -204,6 +212,12 @@ const AdminRow = ({
                         <span className="pill-badge food-pill">{toDisplayValue(registration.food_preference)}</span>
                       </span>
                     </div>
+                    <div className="detail-row">
+                      <span className="detail-label">T-Shirt Size</span>
+                      <span className="detail-value">
+                        <span className="pill-badge tshirt-pill">{toDisplayValue(registration.tshirt_size)}</span>
+                      </span>
+                    </div>
                   </div>
                   <div className="detail-row align-start expectations-row">
                     <span className="detail-label">Expectations</span>
@@ -211,20 +225,36 @@ const AdminRow = ({
                       {toDisplayValue(registration.expectations)}
                     </div>
                   </div>
+                  {/* Actions Buttons */}
+                  <div className="modal-actions">
+                    <button
+                      type="button"
+                      className="admin-action-button approve"
+                      onClick={() => {
+                        onAction(registration.registration_id, "approved");
+                        handleCloseModal();
+                      }}
+                      disabled={approveDisabled}
+                    >
+                      <FontAwesomeIcon icon={faCheck} /> Approve
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-action-button reject"
+                      onClick={() => {
+                        onAction(registration.registration_id, "rejected");
+                        handleCloseModal();
+                      }}
+                      disabled={rejectDisabled}
+                    >
+                      <FontAwesomeIcon icon={faXmark} /> Reject
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="modal-footer">
-              <div className="modal-status-indicator">
-                Current Status: <span className={`status-badge status-${currentStatus}`}>{currentStatus}</span>
-              </div>
-              <div className="modal-actions-right">
-                <button type="button" className="modal-btn-secondary" onClick={handleCloseModal}>
-                  Close
-                </button>
-              </div>
-            </div>
+           
           </div>
         </div>
       )}

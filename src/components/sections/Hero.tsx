@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import RegistrationForm from "../forms/RegistrationForm";
+import { Modal } from "react-bootstrap";
 
 const Hero = () => {
   const [showModal, setShowModal] = useState(false);
@@ -128,9 +127,7 @@ const Hero = () => {
               Register for Global Azure Bootcamp 2026 <br /> Virtual Edition
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <RegistrationForm onClose={handleCloseModal} />
-          </Modal.Body>
+          
         </Modal>
       </section>
     </>

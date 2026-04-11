@@ -811,6 +811,13 @@
   cursor: not-allowed;
 }
 
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
 .admin-table-state {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 14px;

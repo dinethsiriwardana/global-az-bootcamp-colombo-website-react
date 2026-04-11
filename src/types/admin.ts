@@ -14,6 +14,7 @@ export interface AdminRegistration {
   organization?: string;
   designation?: string;
   food_preference?: string;
+  tshirt_size?: string;
   id_number?: string;
   current_year_of_study?: string;
   linkedin_url?: string;
