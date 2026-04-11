@@ -22,9 +22,58 @@ const getErrorMessage = (error: unknown, fallback: string) => {
 };
 
 const LOCAL_STORAGE_ADMIN_SECRET_KEY = "REACT_APP_ADMIN_SECRET";
+const ALL_USER_TYPES = "all";
+const ALL_TSHIRT_SIZES = "all";
+const ALL_FOOD_PREFERENCES = "all";
+const USER_TYPE_OPTIONS = [
+  { label: "Undergraduate", value: "Undergraduate" },
+  { label: "Working Professional", value: "Working professional" },
+];
+const DEFAULT_TSHIRT_SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "XXL"];
+const DEFAULT_FOOD_PREFERENCE_OPTIONS = ["veg", "non-veg"];
+
+const sanitizeOptionalValue = (value: string | undefined) => {
+  return value?.trim() ?? "";
+};
+
+const buildFilterOptions = (values: Array<string | undefined>) => {
+  const optionSet = new Set<string>();
+
+  values.forEach((value) => {
+    const trimmed = sanitizeOptionalValue(value);
+    if (!trimmed) {
+      return;
+    }
+
+    optionSet.add(trimmed);
+  });
+
+  return Array.from(optionSet.values()).sort((left, right) => {
+    return left.localeCompare(right, undefined, { sensitivity: "base" });
+  });
+};
+
+const mergeFilterOptions = (defaults: string[], dynamic: string[]) => {
+  const merged = [...defaults, ...dynamic];
+  const mergedSet = new Set<string>();
+
+  return merged.filter((value) => {
+    const trimmed = sanitizeOptionalValue(value);
+    if (!trimmed || mergedSet.has(trimmed)) {
+      return false;
+    }
+
+    mergedSet.add(trimmed);
+    return true;
+  });
+};
 
 const ItProAdminPage = () => {
   const [statusFilter, setStatusFilter] = useState<AdminFilterStatus>("pending");
+  const [userTypeFilter, setUserTypeFilter] = useState<string>(ALL_USER_TYPES);
+  const [tshirtSizeFilter, setTshirtSizeFilter] = useState<string>(ALL_TSHIRT_SIZES);
+  const [foodPreferenceFilter, setFoodPreferenceFilter] =
+    useState<string>(ALL_FOOD_PREFERENCES);
   const [searchTerm, setSearchTerm] = useState("");
   const [registrations, setRegistrations] = useState<AdminRegistration[]>([]);
   const [allRegistrations, setAllRegistrations] = useState<AdminRegistration[]>([]);
@@ -132,20 +181,56 @@ const ItProAdminPage = () => {
     };
   }, [feedbackMessage]);
 
+  const tshirtSizeOptions = useMemo(() => {
+    return mergeFilterOptions(
+      DEFAULT_TSHIRT_SIZE_OPTIONS,
+      buildFilterOptions(
+        allRegistrations.map((registration) => registration.tshirt_size),
+      ),
+    );
+  }, [allRegistrations]);
+
+  const foodPreferenceOptions = useMemo(() => {
+    return mergeFilterOptions(
+      DEFAULT_FOOD_PREFERENCE_OPTIONS,
+      buildFilterOptions(
+        allRegistrations.map((registration) => registration.food_preference),
+      ),
+    );
+  }, [allRegistrations]);
+
   const filteredRegistrations = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
-
-    if (!normalizedSearch) {
-      return registrations;
-    }
+    const selectedUserType = sanitizeOptionalValue(userTypeFilter);
+    const selectedTshirtSize = sanitizeOptionalValue(tshirtSizeFilter);
+    const selectedFoodPreference = sanitizeOptionalValue(foodPreferenceFilter);
 
     return registrations.filter((registration) => {
-      return (
+      const matchesSearch =
+        !normalizedSearch ||
         registration.name.toLowerCase().includes(normalizedSearch) ||
-        registration.email.toLowerCase().includes(normalizedSearch)
+        registration.email.toLowerCase().includes(normalizedSearch);
+
+      const matchesTshirtSize =
+        tshirtSizeFilter === ALL_TSHIRT_SIZES ||
+        sanitizeOptionalValue(registration.tshirt_size) === selectedTshirtSize;
+
+      const matchesFoodPreference =
+        foodPreferenceFilter === ALL_FOOD_PREFERENCES ||
+        sanitizeOptionalValue(registration.food_preference) === selectedFoodPreference;
+
+      const matchesUserType =
+        userTypeFilter === ALL_USER_TYPES ||
+        sanitizeOptionalValue(registration.profession) === selectedUserType;
+
+      return (
+        matchesSearch &&
+        matchesUserType &&
+        matchesTshirtSize &&
+        matchesFoodPreference
       );
     });
-  }, [registrations, searchTerm]);
+  }, [registrations, searchTerm, userTypeFilter, tshirtSizeFilter, foodPreferenceFilter]);
 
   const registrationSummary = useMemo(() => {
     return allRegistrations.reduce(
@@ -303,15 +388,24 @@ const ItProAdminPage = () => {
             ) : (
               <>
                 <section className="itpro-admin-toolbar" aria-label="Admin controls">
-                  <FilterBar
-                    status={statusFilter}
-                    onChange={setStatusFilter}
-                    disabled={loading || Boolean(actionLoadingId)}
-                  />
                   <SearchInput
                     value={searchTerm}
                     onChange={setSearchTerm}
                     disabled={loading}
+                  />
+                  <FilterBar
+                    status={statusFilter}
+                    onChange={setStatusFilter}
+                    userType={userTypeFilter}
+                    onUserTypeChange={setUserTypeFilter}
+                    userTypeOptions={USER_TYPE_OPTIONS}
+                    tshirtSize={tshirtSizeFilter}
+                    onTshirtSizeChange={setTshirtSizeFilter}
+                    tshirtSizeOptions={tshirtSizeOptions}
+                    foodPreference={foodPreferenceFilter}
+                    onFoodPreferenceChange={setFoodPreferenceFilter}
+                    foodPreferenceOptions={foodPreferenceOptions}
+                    disabled={loading || Boolean(actionLoadingId)}
                   />
                 </section>
 
