@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import RegistrationForm from "../forms/RegistrationForm";
 
 const Hero = () => {
@@ -28,11 +28,69 @@ const Hero = () => {
         {`
           #hero .hero-main-logo {
             width: 100%;
-            max-width: 550px;
+            max-width: 530px;
             height: auto;
             object-fit: contain;
             display: block;
             margin: 0 auto;
+          }
+
+          #hero .hero-content-stack {
+            width: 100%;
+            max-width: 760px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin: 0 auto;
+            transform: translateY(-22px);
+          }
+
+          #hero .hero-logo-wrap {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 8px;
+            transform: translateY(16px);
+          }
+
+          #hero .hero-title,
+          #hero .hero-date {
+            margin: 0;
+          }
+
+          #hero .hero-date {
+            line-height: 1.35;
+          }
+
+          #hero .hero-register-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 12px 32px;
+            border-radius: 9999px;
+            color: #ffffff;
+            font-family: "Raleway", sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 1;
+            text-decoration: none;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25),
+              0 4px 6px -4px rgba(0, 0, 0, 0.3);
+            transition: transform 300ms ease, background 300ms ease,
+              box-shadow 300ms ease;
+          }
+
+          #hero .hero-register-btn:hover,
+          #hero .hero-register-btn:focus {
+            color: #ffffff;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            transform: scale(1.05);
+            box-shadow: 0 16px 25px -5px rgba(0, 0, 0, 0.3),
+              0 10px 10px -5px rgba(0, 0, 0, 0.28);
           }
 
           @media (min-width: 320px) and (max-width: 768px) {
@@ -47,6 +105,11 @@ const Hero = () => {
               padding-right: 16px;
             }
 
+            #hero .hero-content-stack {
+              gap: 14px;
+              transform: translateY(-12px);
+            }
+
             #hero .hero-container[data-aos] {
               transform: none !important;
             }
@@ -57,12 +120,13 @@ const Hero = () => {
               display: flex;
               justify-content: center;
               align-items: center;
-              margin: 0 auto;
+              margin: 6px auto 4px;
+              transform: translateY(14px);
             }
 
             #hero .hero-main-logo {
               width: 100%;
-              max-width: 320px;
+              max-width: 315px;
               height: auto !important;
               transform: none !important;
               scale: 1 !important;
@@ -70,25 +134,39 @@ const Hero = () => {
               display: block;
               margin: 0 auto;
             }
+
+            #hero .hero-register-btn {
+              font-size: 14px;
+              padding: 12px 24px;
+              margin-top: 6px;
+            }
           }
         `}
       </style>
       <section id="hero">
         <div className="hero-container" data-aos="zoom-in" data-aos-delay="100">
-          <div className="hero-logo-wrap">
-            <img
-              src="assets/img/globalazure2026.png"
-              alt="Global Azure Bootcamp Logo"
-              title="Global Azure Bootcamp Logo"
-              className="img-fluid hero-main-logo"
-              loading="lazy"
-              style={{ maxWidth: '550px', height: 'auto' }}
-            />
+          <div className="hero-content-stack">
+            <div className="hero-logo-wrap">
+              <img
+                src="assets/img/globalazure2026.png"
+                alt="Global Azure Bootcamp Logo"
+                title="Global Azure Bootcamp Logo"
+                className="img-fluid hero-main-logo"
+                loading="lazy"
+                style={{ maxWidth: "530px", height: "auto" }}
+              />
+            </div>
+            <h1 className="hero-title">
+              <span>Colombo</span>
+            </h1>
+            <p className="hero-date">26th April, 2026</p>
+            <a
+              href="/registration"
+              className="hero-register-btn"
+            >
+              Register Now
+            </a>
           </div>
-        <h1 className="mb-4 pb-0">
-          <span>Colombo</span>
-        </h1>
-        <p className="mb-4 pb-0">26th April, 2026</p>
         {/* Replacing the anchor tag with a button to fix the accessibility warning */}
         {/* <Button
           className="about-btn buy-tickets scrollto"
