@@ -152,7 +152,9 @@ const normalizeRegistration = (item: unknown): AdminRegistration => {
     designation: asText(registration.designation || profile.designation),
     food_preference: asText(registration.food_preference || profile.food_preference),
     event_title: asText(event.title),
+    linkedin_url: asText(profile.linkedin_url),
     registered_at: asText(registration.registered_at),
+      tshirt_size: asText(registration.tshirt_size || profile.tshirt_size),
   };
 };
 

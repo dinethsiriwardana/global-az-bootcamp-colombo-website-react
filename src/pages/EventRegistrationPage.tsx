@@ -306,6 +306,7 @@ const EventRegistrationPage = () => {
     current_year_of_study: "",
     linkedin_url: "",
     food_preference: "",
+    tshirt_size: "",
     expectations: "",
   });
   const [loading, setLoading] = useState(false);
@@ -433,6 +434,7 @@ const EventRegistrationPage = () => {
       return "Designation is required";
     if (!formData.organization.trim()) return "Organization is required";
     if (!formData.food_preference) return "Food preference is required";
+    if (!formData.tshirt_size) return "T-shirt size is required";
     if (!formData.linkedin_url.trim()) return "LinkedIn URL is required";
     if (!formData.expectations.trim()) return "Expectations are required";
     return null;
@@ -747,6 +749,27 @@ const EventRegistrationPage = () => {
                           <option value="">Select…</option>
                           <option value="veg">Vegetarian</option>
                           <option value="non-veg">Non-Vegetarian</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div style={S.grid2}>
+                      <div style={S.field}>
+                        <label style={S.label}>T-Shirt Size</label>
+                        <select
+                          style={S.input}
+                          name="tshirt_size"
+                          value={formData.tshirt_size}
+                          onChange={handleFormChange}
+                          required
+                        >
+                          <option value="">Select size…</option>
+                          <option value="XS">XS</option>
+                          <option value="S">S</option>
+                          <option value="M">M</option>
+                          <option value="L">L</option>
+                          <option value="XL">XL</option>
+                          <option value="XXL">XXL</option>
                         </select>
                       </div>
                     </div>
