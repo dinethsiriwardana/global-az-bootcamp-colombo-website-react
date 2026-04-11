@@ -462,9 +462,16 @@
 
 .itpro-admin-toolbar {
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
+  grid-template-columns: minmax(280px, 1fr) minmax(0, 3fr);
   gap: 1rem;
   margin-bottom: 1.3rem;
+}
+
+.admin-filter-group {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  min-width: 0;
 }
 
 .admin-summary {
@@ -880,6 +887,10 @@
     grid-template-columns: 1fr;
   }
 
+  .admin-filter-group {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .admin-table-head {
     display: none;
   }
@@ -912,6 +923,10 @@
 @media (max-width: 640px) {
   .itpro-admin-page {
     padding: 1rem 0.75rem;
+  }
+
+  .admin-filter-group {
+    grid-template-columns: 1fr;
   }
 
   .itpro-admin-shell {
