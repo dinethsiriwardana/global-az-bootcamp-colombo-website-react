@@ -73,13 +73,13 @@ const Sponsors = () => {
       //   url: "https://arinco.com.au",
       //   tier: "silver",
       // },
-      // {
-      //   id: 4,
-      //   name: "Dijital",
-      //   logo: "/assets/img/sponsors/dijital.png",
-      //   url: "https://dijital.ca",
-      //   tier: "silver",
-      // },
+      {
+        id: 4,
+        name: "Dijital",
+        logo: "/assets/img/sponsors/dijital.png",
+        url: "https://dijital.ca",
+        tier: "silver",
+      },
       // {
       //   id: 5,
       //   name: "Advania",
@@ -138,7 +138,7 @@ const Sponsors = () => {
         data-aos-delay={delay}
       >
         <h3 className="sponsor-category">
-          {capitalizedTier} {tierSponsors.length === 1 ? "Sponsor" : "Sponsors"}
+{tierSponsors.length === 1 ? "Sponsor" : "Sponsors"}
         </h3>
         {tierSponsors.map((sponsor) => (
           <div className={colClass} key={sponsor.id}>
