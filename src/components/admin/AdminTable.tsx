@@ -33,27 +33,29 @@ const AdminTable = ({
   }
 
   return (
-    <section className="admin-table" aria-label="Registration approval table">
-      <div className="admin-table-head" role="row">
-        <span>Name</span>
-        <span>Email</span>
-        <span>Organization</span>
-        <span>Profession</span>
-        <span>Status</span>
-        <span className="text-center">Actions</span>
-      </div>
+    <div className="admin-table-scroll">
+      <section className="admin-table" aria-label="Registration approval table">
+        <div className="admin-table-head" role="row">
+          <span>Name</span>
+          <span>Email</span>
+          <span>Organization</span>
+          <span>Profession</span>
+          <span>Status</span>
+          <span className="text-center">Actions</span>
+        </div>
 
-      <div className="admin-table-body" role="rowgroup">
-        {registrations.map((registration) => (
-          <AdminRow
-            key={registration.registration_id}
-            registration={registration}
-            isActionLoading={actionLoadingId === registration.registration_id}
-            onAction={onAction}
-          />
-        ))}
-      </div>
-    </section>
+        <div className="admin-table-body" role="rowgroup">
+          {registrations.map((registration) => (
+            <AdminRow
+              key={registration.registration_id}
+              registration={registration}
+              isActionLoading={actionLoadingId === registration.registration_id}
+              onAction={onAction}
+            />
+          ))}
+        </div>
+      </section>
+    </div>
   );
 };
 
