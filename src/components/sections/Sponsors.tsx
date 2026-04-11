@@ -179,7 +179,7 @@ const Sponsors = () => {
           <div className="col-12">
             <p>
              {/* Invite to sponsor */}
-              Interested in sponsoring Global Azure 2026? Please reach out to us at{" "}
+              Interested in sponsoring Global Azure 2026 - Colombo? Please reach out to us at{" "}
               <a
                 href="mailto:info@globalazure.lk"
                 target="_blank"
