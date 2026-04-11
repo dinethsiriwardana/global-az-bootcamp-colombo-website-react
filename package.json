@@ -58,6 +58,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@types/imagesloaded": "^4.1.6",
     "@types/masonry-layout": "^4.2.8"
   }
