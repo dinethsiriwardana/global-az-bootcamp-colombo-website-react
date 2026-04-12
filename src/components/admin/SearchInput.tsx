@@ -4,13 +4,21 @@ interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  label?: string;
+  placeholder?: string;
 }
 
-const SearchInput = ({ value, onChange, disabled = false }: SearchInputProps) => {
+const SearchInput = ({
+  value,
+  onChange,
+  disabled = false,
+  label = "Search registrations",
+  placeholder = "Search by name, email, or organization",
+}: SearchInputProps) => {
   return (
     <div className="admin-search-panel">
       <label htmlFor="admin-search" className="admin-control-label">
-        Search registrations
+        {label}
       </label>
       <div className="admin-search-wrap">
         <i className="bi bi-search" aria-hidden="true" />
@@ -21,7 +29,7 @@ const SearchInput = ({ value, onChange, disabled = false }: SearchInputProps) =>
           value={value}
           disabled={disabled}
           onChange={(event) => onChange(event.target.value)}
-          placeholder="Search by name or email"
+          placeholder={placeholder}
         />
       </div>
     </div>

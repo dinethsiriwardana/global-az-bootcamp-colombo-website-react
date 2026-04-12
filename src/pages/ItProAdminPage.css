@@ -840,6 +840,16 @@
   margin-top: 1.5rem;
 }
 
+.modal-actions .admin-action-button {
+  min-width: 110px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.95rem;
+}
+
+.modal-actions .admin-action-button svg {
+  margin-right: 0.45rem;
+}
+
 .admin-table-state {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 14px;

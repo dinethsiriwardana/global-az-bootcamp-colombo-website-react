@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
@@ -36,7 +37,6 @@ const AdminRow = ({
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  console.log("Rendering AdminRow for registration ID:", registration);
 
   return (
     <>
@@ -80,7 +80,10 @@ const AdminRow = ({
           <button
             type="button"
             className="admin-action-button view-details"
-            onClick={handleViewDetails}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleViewDetails();
+            }}
             title="View full registration details"
           >
             <FontAwesomeIcon icon={faEye} />
@@ -106,9 +109,10 @@ const AdminRow = ({
         </div>
       </article>
 
-      {isModalOpen && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      {isModalOpen &&
+        createPortal(
+          <div className="modal-overlay" onClick={handleCloseModal}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <div className="modal-title-wrapper">
                 <div className="modal-icon-bg">
@@ -225,13 +229,15 @@ const AdminRow = ({
                       {toDisplayValue(registration.expectations)}
                     </div>
                   </div>
+                
+                </div>
                   {/* Actions Buttons */}
-                  <div className="modal-actions">
+                  <div className="modal-actions pb-1">
                     <button
                       type="button"
                       className="admin-action-button approve"
-                      onClick={() => {
-                        onAction(registration.registration_id, "approved");
+                      onClick={async () => {
+                        await onAction(registration.registration_id, "approved");
                         handleCloseModal();
                       }}
                       disabled={approveDisabled}
@@ -241,8 +247,8 @@ const AdminRow = ({
                     <button
                       type="button"
                       className="admin-action-button reject"
-                      onClick={() => {
-                        onAction(registration.registration_id, "rejected");
+                      onClick={async () => {
+                        await onAction(registration.registration_id, "rejected");
                         handleCloseModal();
                       }}
                       disabled={rejectDisabled}
@@ -250,14 +256,14 @@ const AdminRow = ({
                       <FontAwesomeIcon icon={faXmark} /> Reject
                     </button>
                   </div>
-                </div>
               </div>
             </div>
 
            
-          </div>
-        </div>
-      )}
+            </div>
+          </div>,
+          document.body,
+        )}
     </>
   );
 };

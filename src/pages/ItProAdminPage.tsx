@@ -392,6 +392,7 @@ const ItProAdminPage = () => {
                     value={searchTerm}
                     onChange={setSearchTerm}
                     disabled={loading}
+                    placeholder="Search by email, name, or organization"
                   />
                   <FilterBar
                     status={statusFilter}
