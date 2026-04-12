@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { sendOtp, verifyOtp, submitRegistration } from "../utils/api";
+import {
+  sendOtp,
+  verifyOtp,
+  submitRegistration,
+  checkStatus,
+} from "../utils/api";
 
 // ─── Inline styles ────────────────────────────────────────────────────────────
 
@@ -314,6 +319,9 @@ const EventRegistrationPage = () => {
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [existingRegistration, setExistingRegistration] = useState<
+    Record<string, any> | null
+  >(null);
   const [submissionComplete, setSubmissionComplete] = useState(false);
 
   useEffect(() => {
@@ -337,10 +345,39 @@ const EventRegistrationPage = () => {
     return fallback;
   };
 
+  const resetExistingRegistration = () => {
+    setExistingRegistration(null);
+    setOtp("");
+    setEmail("");
+    setFormData((prev) => ({ ...prev, email: "" }));
+    setStep(0);
+  };
+
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
+      const statusResponse = await checkStatus(email.trim());
+
+      if (statusResponse?.registration) {
+        setExistingRegistration(statusResponse.registration);
+        showMsg(
+          "success",
+          "A registration already exists for this email.",
+        );
+        return;
+      }
+
+      if (
+        typeof statusResponse?.message === "string" &&
+        statusResponse.message.toLowerCase() === "no data"
+      ) {
+        await sendOtp(email);
+        showMsg("success", "OTP sent to your email!");
+        setTimeout(() => setStep(1), 600);
+        return;
+      }
+
       await sendOtp(email);
       showMsg("success", "OTP sent to your email!");
       setTimeout(() => setStep(1), 600);
@@ -544,32 +581,108 @@ const EventRegistrationPage = () => {
 
                 {/* Step 1: Email */}
                 {step === 0 && (
-                  <form onSubmit={handleEmailSubmit}>
-                    <h2 style={S.panelTitle}>Enter your email</h2>
-                    <p style={S.panelSub}>
-                      We'll send a one-time code to verify your identity.
-                    </p>
-                    <div style={S.field}>
-                      <label style={S.label}>Email Address</label>
-                      <input
-                        style={S.input}
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@example.com"
-                        required
-                      />
+                  existingRegistration ? (
+                    <div>
+                      <h2 style={S.panelTitle}>Registration found</h2>
+                      <p style={S.panelSub}>
+                        We found an existing registration for this email.
+                        No OTP is required.
+                      </p>
+                      <div style={{ display: "grid", gap: "1rem" }}>
+                        <div style={S.field}>
+                          <label style={S.label}>Name</label>
+                          <div style={{ color: "white" }}>
+                            {existingRegistration.profiles?.name ||
+                              existingRegistration.name ||
+                              "—"}
+                          </div>
+                        </div>
+                        <div style={S.field}>
+                          <label style={S.label}>Email</label>
+                          <div style={{ color: "white" }}>
+                            {existingRegistration.profiles?.email ||
+                              existingRegistration.email ||
+                              email}
+                          </div>
+                        </div>
+                        <div style={S.field}>
+                          <label style={S.label}>Phone</label>
+                          <div style={{ color: "white" }}>
+                            {existingRegistration.profiles?.phone_number ||
+                              existingRegistration.phone_number ||
+                              "—"}
+                          </div>
+                        </div>
+                        <div style={S.field}>
+                          <label style={S.label}>Organization</label>
+                          <div style={{ color: "white" }}>
+                            {existingRegistration.profiles?.organization ||
+                              existingRegistration.organization ||
+                              "—"}
+                          </div>
+                        </div>
+                        <div style={S.field}>
+                          <label style={S.label}>Profession</label>
+                          <div style={{ color: "white" }}>
+                            {existingRegistration.profiles?.profession ||
+                              existingRegistration.profession ||
+                              "—"}
+                          </div>
+                        </div>
+                        <div style={S.field}>
+                          <label style={S.label}>Registration status</label>
+                          <div style={{ color: "white" }}>
+                            {existingRegistration.status || "Unknown"}
+                          </div>
+                        </div>
+                        <div style={S.field}>
+                          <label style={S.label}>Attendance confirmed</label>
+                          <div style={{ color: "white" }}>
+                            {existingRegistration.is_confirmed
+                              ? "Yes"
+                              : "No"}
+                          </div>
+                        </div>
+                      </div>
+                      <div style={S.btnRow}>
+                        <button
+                          type="button"
+                          style={S.btnGhost}
+                          onClick={resetExistingRegistration}
+                          disabled={loading}
+                        >
+                          Use a different email
+                        </button>
+                      </div>
                     </div>
-                    <div style={S.btnRow}>
-                      <button
-                        type="submit"
-                        style={S.btnPrimary}
-                        disabled={loading}
-                      >
-                        {loading ? "Sending…" : "Send OTP"} →
-                      </button>
-                    </div>
-                  </form>
+                  ) : (
+                    <form onSubmit={handleEmailSubmit}>
+                      <h2 style={S.panelTitle}>Enter your email</h2>
+                      <p style={S.panelSub}>
+                        We'll send a one-time code to verify your identity.
+                      </p>
+                      <div style={S.field}>
+                        <label style={S.label}>Email Address</label>
+                        <input
+                          style={S.input}
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="you@example.com"
+                          required
+                        />
+                      </div>
+                      <div style={S.btnRow}>
+                        <button
+                          type="submit"
+                          style={S.btnPrimary}
+                          disabled={loading}
+                        >
+                          {loading ? "Sending…" : "Send OTP"} →
+                        </button>
+                      </div>
+                    </form>
+                  )
                 )}
 
                 {/* Step 2: OTP */}

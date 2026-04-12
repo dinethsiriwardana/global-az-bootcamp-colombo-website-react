@@ -77,6 +77,18 @@ export const sendOtp = async (email: string) => {
   return response.json();
 };
 
+export const checkStatus = async (email: string) => {
+  const response = await fetch(`${SUPABASE_URL}/check-status`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ email }),
+  });
+  if (!response.ok) {
+    await parseApiError(response);
+  }
+  return response.json();
+};
+
 export const verifyOtp = async (email: string, otp: string) => {
   const response = await fetch(`${SUPABASE_URL}/verify-otp`, {
     method: "POST",
