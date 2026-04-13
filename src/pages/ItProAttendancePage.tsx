@@ -23,7 +23,7 @@ type AttendanceUiState =
 
 type AttendanceResultState =
   | "success"
-  | "already-attended"
+  | "already_checked_in"
   | "not-found"
   | "api-error"
   | "invalid-qr"
@@ -61,8 +61,11 @@ const RECENT_DUPLICATE_WINDOW_MS = 5000;
 const SEARCH_DEBOUNCE_MS = 300;
 const MAX_RECENT_SCANS = 10;
 const MAX_SEARCH_RESULTS = 12;
+const INVALID_OR_NOT_FOUND_MESSAGE =
+  "Registration not found or not eligible for attendance marking.";
+const INVALID_OR_NOT_FOUND_HELPER = "Please try another QR code or use attendee search.";
 
-type RecentTrackableStatus = "success" | "already-attended" | "not-found" | "api-error";
+type RecentTrackableStatus = "success" | "already_checked_in" | "not-found" | "api-error";
 
 const STATUS_META: Record<
   AttendanceResultState,
@@ -73,8 +76,8 @@ const STATUS_META: Record<
     className: "attendance-result-success",
     icon: "bi-check-circle",
   },
-  "already-attended": {
-    label: "Already Attended",
+  already_checked_in: {
+    label: "Already Checked In",
     className: "attendance-result-already-attended",
     icon: "bi-person-check",
   },
@@ -135,38 +138,41 @@ const RESULT_CARD_META: Record<
   AttendanceResultState,
   {
     title: string;
-    subtitle: string;
+    defaultMessage: string;
+    helperText?: string;
     cardClassName: string;
   }
 > = {
   success: {
     title: "✅ Attendance Marked",
-    subtitle: "Successfully checked in",
+    defaultMessage: "Attendance marked successfully.",
     cardClassName: "attendance-result-card-success",
   },
-  "already-attended": {
+  already_checked_in: {
     title: "⚠️ Already Checked In",
-    subtitle: "This attendee has already been marked present",
+    defaultMessage: "This attendee has already been marked as attended.",
     cardClassName: "attendance-result-card-warning",
   },
   "not-found": {
     title: "❌ Invalid QR",
-    subtitle: "Registration not found or not eligible",
+    defaultMessage: INVALID_OR_NOT_FOUND_MESSAGE,
+    helperText: INVALID_OR_NOT_FOUND_HELPER,
     cardClassName: "attendance-result-card-error",
   },
   "api-error": {
-    title: "❌ Invalid QR",
-    subtitle: "Registration not found or not eligible",
+    title: "❌ API Error",
+    defaultMessage: "Unable to mark attendance right now. Please try again.",
     cardClassName: "attendance-result-card-error",
   },
   "invalid-qr": {
     title: "❌ Invalid QR",
-    subtitle: "Registration not found or not eligible",
+    defaultMessage: INVALID_OR_NOT_FOUND_MESSAGE,
+    helperText: INVALID_OR_NOT_FOUND_HELPER,
     cardClassName: "attendance-result-card-error",
   },
   "camera-permission-denied": {
     title: "❌ Camera Access Required",
-    subtitle: "Camera access is required to scan QR codes",
+    defaultMessage: "Camera access is required to scan QR codes",
     cardClassName: "attendance-result-card-error",
   },
 };
@@ -249,7 +255,7 @@ const toResultStatus = (
   }
 
   if (status === "already-attended") {
-    return "already-attended";
+    return "already_checked_in";
   }
 
   if (status === "not-found") {
@@ -266,7 +272,7 @@ const toUiState = (
     return "success";
   }
 
-  if (status === "already-attended") {
+  if (status === "already_checked_in") {
     return "warning";
   }
 
@@ -276,7 +282,7 @@ const toUiState = (
 const isTrackableRecentStatus = (
   status: AttendanceResultState,
 ): status is RecentTrackableStatus => {
-  return ["success", "already-attended", "not-found", "api-error"].includes(status);
+  return ["success", "already_checked_in", "not-found", "api-error"].includes(status);
 };
 
 const formatBoolean = (value: boolean | null | undefined) => {
@@ -335,6 +341,9 @@ const ItProAttendancePage = () => {
   const releaseLockTimeoutRef = useRef<number | null>(null);
   const lastQrValueRef = useRef<LastScanRecord | null>(null);
   const lastProcessedValueRef = useRef<LastScanRecord | null>(null);
+  const attendedRegistryRef = useRef<
+    Map<string, { attendee: ResultAttendeeInfo; attendedAt: string | null }>
+  >(new Map());
 
   useEffect(() => {
     const images = ["bg.jpg", "bg2.png"];
@@ -523,12 +532,13 @@ const ItProAttendancePage = () => {
       setScannerMessage(null);
 
       try {
+        const preScannedRegistration = registrationsById.get(normalizedRegistrationId);
         const apiResult = await markAttendance(normalizedRegistrationId);
-        const status = toResultStatus(apiResult.status);
+        let status = toResultStatus(apiResult.status);
         const resolvedRegistrationId =
           apiResult.registration?.id || apiResult.registrationId || normalizedRegistrationId;
         const resolvedRegistration = registrationsById.get(resolvedRegistrationId);
-        const resolvedAttendee: ResultAttendeeInfo = {
+        let resolvedAttendee: ResultAttendeeInfo = {
           name:
             preferredName?.trim() ||
             resolvedRegistration?.name.trim() ||
@@ -538,17 +548,88 @@ const ItProAttendancePage = () => {
           tshirtSize: resolvedRegistration?.tshirt_size?.trim() || null,
           foodPreference: resolvedRegistration?.food_preference?.trim() || null,
         };
-        const attended =
+        let attended =
           apiResult.registration?.attended ??
-          (status === "success" || status === "already-attended" ? true : null);
-        const attendedAt =
+          (status === "success" || status === "already_checked_in" ? true : null);
+        let attendedAt =
           apiResult.registration?.attended_at || resolvedRegistration?.attended_at || null;
+
+        const knownAttendee =
+          attendedRegistryRef.current.get(resolvedRegistrationId) ||
+          attendedRegistryRef.current.get(normalizedRegistrationId);
+
+        const hasKnownAttendedRecord =
+          Boolean(knownAttendee) ||
+          preScannedRegistration?.attended === true ||
+          resolvedRegistration?.attended === true;
+
+        const shouldMapToAlreadyCheckedIn =
+          hasKnownAttendedRecord &&
+          (status === "not-found" || status === "api-error") &&
+          (knownAttendee?.attendedAt !== undefined ||
+            preScannedRegistration?.attended_at !== undefined ||
+            resolvedRegistration?.attended_at !== undefined);
+
+        const shouldTreatSuccessAsAlreadyCheckedIn =
+          status === "success" &&
+          hasKnownAttendedRecord &&
+          preScannedRegistration?.attended === true;
+
+        if (shouldMapToAlreadyCheckedIn || shouldTreatSuccessAsAlreadyCheckedIn) {
+          status = "already_checked_in";
+          attended = true;
+          attendedAt =
+            attendedAt ||
+            knownAttendee?.attendedAt ||
+            preScannedRegistration?.attended_at ||
+            resolvedRegistration?.attended_at ||
+            null;
+          resolvedAttendee = {
+            name:
+              resolvedAttendee.name ||
+              knownAttendee?.attendee.name ||
+              preScannedRegistration?.name ||
+              resolvedRegistration?.name ||
+              null,
+            email:
+              resolvedAttendee.email ||
+              knownAttendee?.attendee.email ||
+              preScannedRegistration?.email ||
+              resolvedRegistration?.email ||
+              null,
+            profession:
+              resolvedAttendee.profession ||
+              knownAttendee?.attendee.profession ||
+              preScannedRegistration?.profession ||
+              resolvedRegistration?.profession ||
+              null,
+            tshirtSize:
+              resolvedAttendee.tshirtSize ||
+              knownAttendee?.attendee.tshirtSize ||
+              preScannedRegistration?.tshirt_size ||
+              resolvedRegistration?.tshirt_size ||
+              null,
+            foodPreference:
+              resolvedAttendee.foodPreference ||
+              knownAttendee?.attendee.foodPreference ||
+              preScannedRegistration?.food_preference ||
+              resolvedRegistration?.food_preference ||
+              null,
+          };
+        }
+
+        const resolvedMessage =
+          status === "already_checked_in"
+            ? "This attendee has already been marked as attended."
+            : status === "not-found"
+              ? INVALID_OR_NOT_FOUND_MESSAGE
+            : apiResult.message || "Attendance request finished.";
 
         const resultItem: AttendanceResultItem = {
           id: `${Date.now()}-${resolvedRegistrationId}`,
           status,
           registrationId: resolvedRegistrationId,
-          message: apiResult.message || "Attendance request finished.",
+          message: resolvedMessage,
           scannedAt: Date.now(),
           attended,
           attendedAt,
@@ -571,6 +652,16 @@ const ItProAttendancePage = () => {
 
         if (status === "api-error") {
           invalidateStoredSecret(resultItem.message);
+        }
+
+        if (status === "success" || status === "already_checked_in") {
+          const registryEntry = {
+            attendee: resultItem.attendee,
+            attendedAt: resultItem.attendedAt || formatDateTime(resultItem.scannedAt),
+          };
+
+          attendedRegistryRef.current.set(resolvedRegistrationId, registryEntry);
+          attendedRegistryRef.current.set(normalizedRegistrationId, registryEntry);
         }
 
         if (attended !== null) {
@@ -664,7 +755,7 @@ const ItProAttendancePage = () => {
           id: `${Date.now()}-invalid`,
           status: "invalid-qr",
           registrationId: null,
-          message: "Invalid QR payload. QR must contain a UUID or JSON with registration_id.",
+          message: INVALID_OR_NOT_FOUND_MESSAGE,
           scannedAt: Date.now(),
           attended: null,
           attendedAt: null,
@@ -755,21 +846,28 @@ const ItProAttendancePage = () => {
     }
   }, []);
 
-  const handleStartScanner = useCallback(() => {
+  const handleScannerToggle = useCallback(() => {
     setScannerMessage(null);
-    setUiState("scanner-starting");
-    setIsScannerActive(true);
-  }, []);
+    setIsScannerActive((current) => {
+      const next = !current;
 
-  const handleStopScanner = useCallback(() => {
-    setIsScannerActive(false);
+      if (next) {
+        setUiState("scanner-starting");
+      } else if (!isProcessing) {
+        setUiState("idle");
+      }
 
-    if (!isProcessing) {
-      setUiState("idle");
-    }
+      return next;
+    });
   }, [isProcessing]);
 
   const currentResultMeta = currentResult ? RESULT_CARD_META[currentResult.status] : null;
+  const currentResultMessage =
+    currentResult && currentResultMeta
+      ? (currentResult.status === "invalid-qr" || currentResult.status === "not-found"
+          ? currentResultMeta.defaultMessage
+          : currentResult.message || currentResultMeta.defaultMessage)
+      : null;
   const uiMeta = UI_STATE_META[uiState];
 
   const searchHintText = debouncedSearchTerm
@@ -853,31 +951,25 @@ const ItProAttendancePage = () => {
                     <div className="attendance-panel-header">
                       <h2>Scanner</h2>
                       <div className="attendance-panel-controls">
-                        <div className="attendance-panel-actions">
-                          <button
-                            type="button"
-                            className="attendance-action-button attendance-action-start"
-                            onClick={handleStartScanner}
-                            disabled={isScannerActive || isProcessing}
-                          >
-                            <i className="bi bi-play-fill" aria-hidden="true" /> Start Scanner
-                          </button>
-                          <button
-                            type="button"
-                            className="attendance-action-button attendance-action-stop"
-                            onClick={handleStopScanner}
-                            disabled={!isScannerActive || isProcessing}
-                          >
-                            <i className="bi bi-stop-fill" aria-hidden="true" /> Stop Scanner
-                          </button>
-                        </div>
+                        <span className="attendance-live-pill">
+                          <span className="attendance-live-dot" aria-hidden="true" />
+                          {isScannerActive ? "active" : "inactive"}
+                        </span>
+                        <button
+                          type="button"
+                          className={`attendance-action-button ${
+                            isScannerActive ? "attendance-action-stop" : "attendance-action-start"
+                          }`}
+                          onClick={handleScannerToggle}
+                        >
+                          {isScannerActive ? "Stop" : "Start"}
+                        </button>
                       </div>
                     </div>
 
                     <p className="attendance-helper-text">
-                      Click Start Scanner, then point the camera at the attendee QR code.
-                      Detection and attendance marking happen automatically with duplicate
-                      protection.
+                      Use Start to enable camera scanning. Detection and attendance marking happen
+                      automatically with duplicate protection.
                     </p>
 
                     <QrScanner
@@ -967,7 +1059,10 @@ const ItProAttendancePage = () => {
                     </section>
                   </section>
 
-                  <section className="attendance-panel" aria-label="Attendance results panel">
+                  <section
+                    className="attendance-panel attendance-results-panel"
+                    aria-label="Attendance results panel"
+                  >
                     <div className="attendance-panel-header attendance-panel-header-tight">
                       <h2>Scan result</h2>
                       <Link to="/itproadmin" className="attendance-back-link">
@@ -979,11 +1074,20 @@ const ItProAttendancePage = () => {
                       <article className={`attendance-result-card ${currentResultMeta.cardClassName}`}>
                         <header className="attendance-result-header">
                           <h3>{currentResultMeta.title}</h3>
-                          <p>{currentResultMeta.subtitle}</p>
                         </header>
 
+                        {currentResultMessage ? (
+                          <p className="attendance-result-message">{currentResultMessage}</p>
+                        ) : null}
+
+                        {currentResultMeta.helperText ? (
+                          <p className="attendance-result-helper-text">
+                            {currentResultMeta.helperText}
+                          </p>
+                        ) : null}
+
                         {currentResult.status === "success" ||
-                        currentResult.status === "already-attended" ? (
+                        currentResult.status === "already_checked_in" ? (
                           <>
                             <p className="attendance-result-name-primary">
                               {currentResult.attendee.name || "-"}
@@ -1009,7 +1113,7 @@ const ItProAttendancePage = () => {
                             </dl>
 
                             <p className="attendance-result-time-line">
-                              {currentResult.status === "already-attended"
+                              {currentResult.status === "already_checked_in"
                                 ? "Previously checked in at:"
                                 : "Checked in at:"}{" "}
                               <strong>
@@ -1017,11 +1121,7 @@ const ItProAttendancePage = () => {
                               </strong>
                             </p>
                           </>
-                        ) : (
-                          <p className="attendance-result-time-line">
-                            {currentResultMeta.subtitle}
-                          </p>
-                        )}
+                        ) : null}
                       </article>
                     ) : (
                       <div className="admin-table-state attendance-empty-result" role="status">

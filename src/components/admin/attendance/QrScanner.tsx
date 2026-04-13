@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import { Html5Qrcode, Html5QrcodeCameraScanConfig } from "html5-qrcode";
+import QrScannerLib from "qr-scanner";
 
 interface QrScannerProps {
   isRunning: boolean;
@@ -27,10 +27,8 @@ const QrScanner = ({
   onScannerError,
   onScannerStarted,
 }: QrScannerProps) => {
-  const scannerElementIdRef = useRef(
-    `attendance-scanner-${Math.random().toString(36).slice(2, 11)}`,
-  );
-  const scannerRef = useRef<Html5Qrcode | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const scannerRef = useRef<QrScannerLib | null>(null);
   const isStartingRef = useRef(false);
 
   const stopScanner = useCallback(async () => {
@@ -40,18 +38,12 @@ const QrScanner = ({
     }
 
     try {
-      if (scanner.isScanning) {
-        await scanner.stop();
-      }
+      await Promise.resolve(scanner.stop());
     } catch {
       // Ignore stop errors because scanner state can race while tearing down.
     }
 
-    try {
-      await scanner.clear();
-    } catch {
-      // Ignore clear errors when scanner container is already removed.
-    }
+    scanner.destroy();
 
     scannerRef.current = null;
     isStartingRef.current = false;
@@ -73,35 +65,36 @@ const QrScanner = ({
       return;
     }
 
-    const scanner = new Html5Qrcode(scannerElementIdRef.current, {
-      verbose: false,
-    });
+    const videoElement = videoRef.current;
+    if (!videoElement) {
+      return;
+    }
 
-    const scannerConfig: Html5QrcodeCameraScanConfig = {
-      fps: 10,
-      qrbox: { width: 260, height: 260 },
-      aspectRatio: 16 / 9,
-    };
+    const scanner = new QrScannerLib(
+      videoElement,
+      (scanResult: string | QrScannerLib.ScanResult) => {
+        const decodedText = typeof scanResult === "string" ? scanResult : scanResult.data;
+        onDetected(decodedText);
+      },
+      {
+        preferredCamera: "environment",
+        returnDetailedScanResult: true,
+        maxScansPerSecond: 10,
+        highlightScanRegion: false,
+        highlightCodeOutline: false,
+      },
+    );
 
     scannerRef.current = scanner;
     isStartingRef.current = true;
 
     void scanner
-      .start(
-        { facingMode: "environment" },
-        scannerConfig,
-        (decodedText) => {
-          onDetected(decodedText);
-        },
-        () => {
-          // Ignore per-frame decode errors while camera keeps scanning.
-        },
-      )
+      .start()
       .then(() => {
         onScannerError("");
         onScannerStarted?.();
       })
-      .catch(async (error) => {
+      .catch(async (error: unknown) => {
         const message = getErrorMessage(error);
 
         if (CAMERA_PERMISSION_ERROR_PATTERN.test(message)) {
@@ -128,7 +121,7 @@ const QrScanner = ({
 
   return (
     <div className="attendance-scanner-preview-wrap">
-      <div id={scannerElementIdRef.current} className="attendance-scanner-preview" />
+      <video ref={videoRef} className="attendance-scanner-preview" muted playsInline />
       <div
         className={`attendance-scanner-overlay ${
           isRunning ? "attendance-scanner-overlay-live" : ""

@@ -261,12 +261,73 @@ const isAlreadyAttendedMessage = (message: string) => {
 
   return [
     "already attended",
+    "already checked in",
     "already been marked",
+    "already been checked in",
+    "already marked as attended",
     "already marked",
     "already checked",
+    "already present",
     "already processed",
     "already exists",
   ].some((phrase) => normalized.includes(phrase));
+};
+
+const isAlreadyAttendedStatusToken = (value: string) => {
+  const normalized = value.trim().toLowerCase();
+
+  return [
+    "already_attended",
+    "already-attended",
+    "already checked in",
+    "already_checked_in",
+    "already-checked-in",
+    "already_marked",
+    "already-marked",
+  ].includes(normalized);
+};
+
+const isAlreadyAttendedPayload = (payload: unknown): boolean => {
+  const record = asRecord(payload);
+  if (!record) {
+    return false;
+  }
+
+  const booleanIndicators = [
+    record.already_attended,
+    record.already_checked_in,
+    record.alreadyCheckedIn,
+    record.already_marked,
+    record.alreadyMarked,
+    record.attendance_already_marked,
+  ];
+
+  if (booleanIndicators.some((value) => asNullableBoolean(value) === true)) {
+    return true;
+  }
+
+  const topLevelStatusValues = [record.status, record.code, record.result]
+    .map((value) => asOptionalText(value))
+    .filter((value): value is string => Boolean(value));
+
+  if (topLevelStatusValues.some((value) => isAlreadyAttendedStatusToken(value))) {
+    return true;
+  }
+
+  const nestedRegistration =
+    asRecord(record.registration) ||
+    asRecord(record.registration_data) ||
+    asRecord(record.data);
+
+  if (!nestedRegistration) {
+    return false;
+  }
+
+  const nestedStatusValues = [nestedRegistration.status, nestedRegistration.code]
+    .map((value) => asOptionalText(value))
+    .filter((value): value is string => Boolean(value));
+
+  return nestedStatusValues.some((value) => isAlreadyAttendedStatusToken(value));
 };
 
 const isNotFoundMessage = (message: string) => {
@@ -284,8 +345,14 @@ const isNotFoundMessage = (message: string) => {
 const resolveMarkAttendanceStatus = (
   response: Response,
   message: string,
+  payload: unknown,
+  registration: AttendanceRegistration | null,
 ): MarkAttendanceStatus => {
-  if (isAlreadyAttendedMessage(message)) {
+  if (isAlreadyAttendedMessage(message) || isAlreadyAttendedPayload(payload)) {
+    return "already-attended";
+  }
+
+  if (!response.ok && registration?.attended === true) {
     return "already-attended";
   }
 
@@ -438,8 +505,8 @@ export const markAttendance = async (
 
   const payload = await parseResponsePayload(response);
   const message = getPayloadMessage(payload);
-  const status = resolveMarkAttendanceStatus(response, message);
   const registration = extractAttendanceRegistration(payload);
+  const status = resolveMarkAttendanceStatus(response, message, payload, registration);
 
   const fallbackMessage =
     status === "success"
