@@ -66,13 +66,7 @@ const Sponsors = () => {
       //   url: "https://toothfairy.ai",
       //   tier: "silver",
       // },
-       {
-         id: 4,
-         name: "nextgen",
-         logo: "/assets/img/sponsors/nextgen.png",
-         url: "https://nextgencampus.lk/",
-         tier: "silver",
-       },
+     
       {
         id: 3,
         name: "Dijital",
@@ -80,6 +74,13 @@ const Sponsors = () => {
         url: "https://dijital.ca",
         tier: "silver",
       },
+       {
+         id: 4,
+         name: "nextgen",
+         logo: "/assets/img/sponsors/nextgen.png",
+         url: "https://nextgencampus.lk/",
+         tier: "silver",
+       },
       // {
       //   id: 5,
       //   name: "Advania",
