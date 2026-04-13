@@ -66,15 +66,15 @@ const Sponsors = () => {
       //   url: "https://toothfairy.ai",
       //   tier: "silver",
       // },
-      // {
-      //   id: 3,
-      //   name: "Arinco",
-      //   logo: "/assets/img/sponsors/arinco.png",
-      //   url: "https://arinco.com.au",
-      //   tier: "silver",
-      // },
+       {
+         id: 4,
+         name: "nextgen",
+         logo: "/assets/img/sponsors/nextgen.png",
+         url: "https://nextgencampus.lk/",
+         tier: "silver",
+       },
       {
-        id: 4,
+        id: 3,
         name: "Dijital",
         logo: "/assets/img/sponsors/dijital.png",
         url: "https://dijital.ca",
