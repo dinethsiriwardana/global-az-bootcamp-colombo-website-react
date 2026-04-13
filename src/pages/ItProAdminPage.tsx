@@ -394,20 +394,7 @@ const ItProAdminPage = () => {
                     disabled={loading}
                     placeholder="Search by email, name, or organization"
                   />
-                  <FilterBar
-                    status={statusFilter}
-                    onChange={setStatusFilter}
-                    userType={userTypeFilter}
-                    onUserTypeChange={setUserTypeFilter}
-                    userTypeOptions={USER_TYPE_OPTIONS}
-                    tshirtSize={tshirtSizeFilter}
-                    onTshirtSizeChange={setTshirtSizeFilter}
-                    tshirtSizeOptions={tshirtSizeOptions}
-                    foodPreference={foodPreferenceFilter}
-                    onFoodPreferenceChange={setFoodPreferenceFilter}
-                    foodPreferenceOptions={foodPreferenceOptions}
-                    disabled={loading || Boolean(actionLoadingId)}
-                  />
+                 
                   <FilterBar
                     status={statusFilter}
                     onChange={setStatusFilter}
