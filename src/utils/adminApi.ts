@@ -6,7 +6,34 @@ import {
 
 const SUPABASE_URL = (process.env.REACT_APP_SUPABASE_URL || "").trim();
 const SUPABASE_ANON_KEY = (process.env.REACT_APP_SUPABASE_ANON_KEY || "").trim();
-const LOCAL_STORAGE_ADMIN_SECRET_KEY = "REACT_APP_ADMIN_SECRET";
+export const LOCAL_STORAGE_ADMIN_SECRET_KEY = "REACT_APP_ADMIN_SECRET";
+
+export type MarkAttendanceStatus =
+  | "success"
+  | "already-attended"
+  | "not-found"
+  | "api-error";
+
+export interface AttendanceRegistration {
+  id: string;
+  event_id: string | null;
+  status: string | null;
+  is_confirmed: boolean | null;
+  attended: boolean | null;
+  attended_at: string | null;
+  profile_id: string | null;
+  approved_at: string | null;
+  confirmed_at: string | null;
+  registered_at: string | null;
+}
+
+export interface MarkAttendanceResult {
+  status: MarkAttendanceStatus;
+  message: string;
+  registrationId: string;
+  registration: AttendanceRegistration | null;
+  payload: unknown;
+}
 
 const stripTrailingSlash = (value: string) => value.replace(/\/+$/, "");
 
@@ -112,6 +139,167 @@ const asBoolean = (value: unknown): boolean => {
   return false;
 };
 
+const asNullableBoolean = (value: unknown): boolean | null => {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+
+    if (normalized === "true") {
+      return true;
+    }
+
+    if (normalized === "false") {
+      return false;
+    }
+  }
+
+  return null;
+};
+
+const asRecord = (value: unknown): Record<string, unknown> | null => {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  return value as Record<string, unknown>;
+};
+
+const asOptionalText = (value: unknown): string | null => {
+  const text = asText(value).trim();
+  return text || null;
+};
+
+const parseResponsePayload = async (response: Response): Promise<unknown> => {
+  const contentType = response.headers.get("content-type") || "";
+
+  try {
+    if (contentType.includes("application/json")) {
+      return await response.json();
+    }
+
+    const text = await response.text();
+    if (!text.trim()) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(text);
+    } catch {
+      return text;
+    }
+  } catch {
+    return null;
+  }
+};
+
+const getPayloadMessage = (payload: unknown): string => {
+  if (typeof payload === "string") {
+    return payload.trim();
+  }
+
+  const record = asRecord(payload);
+  if (!record) {
+    return "";
+  }
+
+  const message =
+    asOptionalText(record.message) ||
+    asOptionalText(record.error) ||
+    asOptionalText(record.error_message) ||
+    asOptionalText(record.detail);
+
+  return message || "";
+};
+
+const extractAttendanceRegistration = (
+  payload: unknown,
+): AttendanceRegistration | null => {
+  const record = asRecord(payload);
+  if (!record) {
+    return null;
+  }
+
+  const candidate =
+    asRecord(record.registration) ||
+    asRecord(record.data) ||
+    asRecord(record.registration_data) ||
+    null;
+
+  if (!candidate) {
+    return null;
+  }
+
+  const id = asOptionalText(candidate.id ?? candidate.registration_id ?? candidate.uuid);
+
+  if (!id) {
+    return null;
+  }
+
+  return {
+    id,
+    event_id: asOptionalText(candidate.event_id),
+    status: asOptionalText(candidate.status),
+    is_confirmed: asNullableBoolean(candidate.is_confirmed),
+    attended: asNullableBoolean(candidate.attended),
+    attended_at: asOptionalText(candidate.attended_at),
+    profile_id: asOptionalText(candidate.profile_id),
+    approved_at: asOptionalText(candidate.approved_at),
+    confirmed_at: asOptionalText(candidate.confirmed_at),
+    registered_at: asOptionalText(candidate.registered_at),
+  };
+};
+
+const isAlreadyAttendedMessage = (message: string) => {
+  const normalized = message.toLowerCase();
+
+  return [
+    "already attended",
+    "already been marked",
+    "already marked",
+    "already checked",
+    "already processed",
+    "already exists",
+  ].some((phrase) => normalized.includes(phrase));
+};
+
+const isNotFoundMessage = (message: string) => {
+  const normalized = message.toLowerCase();
+
+  return [
+    "not found",
+    "does not exist",
+    "unknown registration",
+    "invalid registration",
+    "not eligible",
+  ].some((phrase) => normalized.includes(phrase));
+};
+
+const resolveMarkAttendanceStatus = (
+  response: Response,
+  message: string,
+): MarkAttendanceStatus => {
+  if (isAlreadyAttendedMessage(message)) {
+    return "already-attended";
+  }
+
+  if (response.status === 404 || isNotFoundMessage(message)) {
+    return "not-found";
+  }
+
+  if (response.ok) {
+    return "success";
+  }
+
+  return "api-error";
+};
+
 const getRegistrationId = (item: Record<string, unknown>) => {
   return asText(item.registration_id ?? item.id ?? item._id ?? item.uuid);
 };
@@ -154,7 +342,9 @@ const normalizeRegistration = (item: unknown): AdminRegistration => {
     event_title: asText(event.title),
     linkedin_url: asText(profile.linkedin_url),
     registered_at: asText(registration.registered_at),
-      tshirt_size: asText(registration.tshirt_size || profile.tshirt_size),
+    tshirt_size: asText(registration.tshirt_size || profile.tshirt_size),
+    attended: asNullableBoolean(registration.attended ?? profile.attended),
+    attended_at: asText(registration.attended_at ?? profile.attended_at),
   };
 };
 
@@ -226,4 +416,45 @@ export const updateRegistrationStatus = async (
   if (!response.ok) {
     await parseApiError(response);
   }
+};
+
+export const markAttendance = async (
+  registrationId: string,
+): Promise<MarkAttendanceResult> => {
+  const trimmedRegistrationId = registrationId.trim();
+
+  if (!trimmedRegistrationId) {
+    throw new Error("Registration id is required.");
+  }
+
+  const baseUrl = getFunctionsBaseUrl();
+  const response = await fetch(`${baseUrl}/mark-attendance`, {
+    method: "POST",
+    headers: buildHeaders(),
+    body: JSON.stringify({
+      registration_id: trimmedRegistrationId,
+    }),
+  });
+
+  const payload = await parseResponsePayload(response);
+  const message = getPayloadMessage(payload);
+  const status = resolveMarkAttendanceStatus(response, message);
+  const registration = extractAttendanceRegistration(payload);
+
+  const fallbackMessage =
+    status === "success"
+      ? "Attendance marked successfully."
+      : status === "already-attended"
+        ? "This attendee has already been marked attended."
+        : status === "not-found"
+          ? "Registration was not found."
+          : message || `${response.status} ${response.statusText}`;
+
+  return {
+    status,
+    message: message || fallbackMessage,
+    registrationId: registration?.id || trimmedRegistrationId,
+    registration,
+    payload,
+  };
 };

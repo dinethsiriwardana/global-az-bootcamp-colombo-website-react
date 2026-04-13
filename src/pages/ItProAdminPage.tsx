@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import AdminTable from "../components/admin/AdminTable";
 import FilterBar from "../components/admin/FilterBar";
 import SearchInput from "../components/admin/SearchInput";
@@ -387,6 +388,13 @@ const ItProAdminPage = () => {
               </div>
             ) : (
               <>
+                <section className="itpro-admin-top-actions" aria-label="Attendance actions">
+                  <Link to="/itproadmin/attendance" className="itpro-admin-attendance-button">
+                    <i className="bi bi-qr-code-scan" aria-hidden="true" />
+                    Scan QR / Mark Attendance
+                  </Link>
+                </section>
+
                 <section className="itpro-admin-toolbar" aria-label="Admin controls">
                   <SearchInput
                     value={searchTerm}
