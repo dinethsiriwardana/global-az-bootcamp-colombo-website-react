@@ -35,6 +35,16 @@ export interface MarkAttendanceResult {
   payload: unknown;
 }
 
+export interface MarkAttendanceOptions {
+  source?: "qr" | "manual-search";
+  autoApprovePending?: boolean;
+  autoConfirmPending?: boolean;
+  skipConfirmationEmail?: boolean;
+  skipAttendanceEmail?: boolean;
+  suppressAllEmails?: boolean;
+  sendAttendanceEmailOnly?: boolean;
+}
+
 const stripTrailingSlash = (value: string) => value.replace(/\/+$/, "");
 
 const getAdminSecret = (): string => {
@@ -352,6 +362,10 @@ const resolveMarkAttendanceStatus = (
     return "already-attended";
   }
 
+  if (response.status === 409) {
+    return "already-attended";
+  }
+
   if (!response.ok && registration?.attended === true) {
     return "already-attended";
   }
@@ -487,6 +501,7 @@ export const updateRegistrationStatus = async (
 
 export const markAttendance = async (
   registrationId: string,
+  options?: MarkAttendanceOptions,
 ): Promise<MarkAttendanceResult> => {
   const trimmedRegistrationId = registrationId.trim();
 
@@ -495,12 +510,42 @@ export const markAttendance = async (
   }
 
   const baseUrl = getFunctionsBaseUrl();
+  const requestPayload: Record<string, unknown> = {
+    registration_id: trimmedRegistrationId,
+  };
+
+  if (options?.source) {
+    requestPayload.source = options.source;
+  }
+
+  if (options?.autoApprovePending) {
+    requestPayload.auto_approve_pending = true;
+  }
+
+  if (options?.autoConfirmPending) {
+    requestPayload.auto_confirm_pending = true;
+  }
+
+  if (options?.skipConfirmationEmail) {
+    requestPayload.skip_confirmation_email = true;
+  }
+
+  if (options?.skipAttendanceEmail) {
+    requestPayload.skip_attendance_email = true;
+  }
+
+  if (options?.suppressAllEmails) {
+    requestPayload.skip_all_emails = true;
+  }
+
+  if (options?.sendAttendanceEmailOnly) {
+    requestPayload.send_attendance_email_only = true;
+  }
+
   const response = await fetch(`${baseUrl}/mark-attendance`, {
     method: "POST",
     headers: buildHeaders(),
-    body: JSON.stringify({
-      registration_id: trimmedRegistrationId,
-    }),
+    body: JSON.stringify(requestPayload),
   });
 
   const payload = await parseResponsePayload(response);

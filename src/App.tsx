@@ -49,6 +49,17 @@ const ScrollToTop = () => {
 };
 
 // FooterWrapper component to conditionally render Footer
+const HeaderWrapper = () => {
+  const location = useLocation();
+
+  if (location.pathname.startsWith("/itproadmin")) {
+    return null;
+  }
+
+  return <Header />;
+};
+
+// FooterWrapper component to conditionally render Footer
 const FooterWrapper = () => {
   const location = useLocation();
 
@@ -56,7 +67,8 @@ const FooterWrapper = () => {
   if (
     location.pathname === "/registrations" ||
     location.pathname === "/registration" ||
-    location.pathname === "/confirm"
+    location.pathname === "/confirm" ||
+    location.pathname.startsWith("/itproadmin")
   ) {
     return null;
   }
@@ -88,7 +100,7 @@ function App() {
     >
       <ScrollToTop />
       <div className="App">
-        <Header />
+        <HeaderWrapper />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/codeofconduct" element={<CodeOfConductPage />} />
