@@ -75,7 +75,7 @@ const About = () => {
               <h3 className="about-meta-title" style={{marginTop: '2rem', marginBottom: '0.5rem', paddingLeft: '1.5rem'}}>Where</h3>
               <p className="about-meta-text" style={{marginTop: '0.5rem', marginBottom: '0.5rem', paddingLeft: '1.5rem', fontSize: '1.1em'}}>Microsoft Sri Lanka</p>
               <h3 className="about-meta-title" style={{marginTop: '2rem', marginBottom: '0.5rem', paddingLeft: '1.5rem'}}>When</h3>
-              <p className="about-meta-text" style={{marginTop: '0.5rem', marginBottom: '0.5rem', paddingLeft: '1.5rem', fontSize: '1.1em'}}>Sunday 26th April</p>
+              <p className="about-meta-text" style={{marginTop: '0.5rem', marginBottom: '0.5rem', paddingLeft: '1.5rem', fontSize: '1.1em'}}>Saturday 09th of May</p>
             </div>
             <div className="col-lg-2 text-center text-lg-start about-hosted-column">
               <h3 className="about-hosted-title" style={{marginTop: '2rem', marginBottom: '0.5rem', paddingLeft: '1rem'}}>Hosted By</h3>
