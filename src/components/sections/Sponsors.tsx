@@ -5,7 +5,7 @@ interface Sponsor {
   name: string;
   logo: string;
   url: string;
-  tier: "platinum" | "gold" | "silver" | "bronze" | "venue";
+  tier: "platinum" | "gold" | "silver" | "bronze" | "venue" | "event";
 }
 
 interface SponsorsByTier {
@@ -14,6 +14,7 @@ interface SponsorsByTier {
   silver: Sponsor[];
   bronze: Sponsor[];
   venue: Sponsor[];
+  event: Sponsor[];
 }
 
 const TIER_CONFIG = {
@@ -30,6 +31,12 @@ const TIER_CONFIG = {
     logoHeight: 150,
   },
   silver: {
+    colClass: "col-lg-2 col-md-3 col-4",
+    delay: 300,
+    logoWidth: 180,
+    logoHeight: 120,
+  },
+  event: {
     colClass: "col-lg-2 col-md-3 col-4",
     delay: 300,
     logoWidth: 180,
@@ -72,14 +79,14 @@ const Sponsors = () => {
         name: "Dijital",
         logo: "/assets/img/sponsors/dijital.png",
         url: "https://dijital.ca",
-        tier: "silver",
+        tier: "event",
       },
        {
          id: 4,
          name: "nextgen",
          logo: "/assets/img/sponsors/nextgen.png",
          url: "https://nextgencampus.lk/",
-         tier: "silver",
+         tier: "event",
        },
       // {
       //   id: 5,
@@ -118,6 +125,7 @@ const Sponsors = () => {
         gold: [],
         silver: [],
         bronze: [],
+        event: [],
         venue: [],
       } as SponsorsByTier
     );
@@ -139,7 +147,7 @@ const Sponsors = () => {
         data-aos-delay={delay}
       >
         <h3 className="sponsor-category">
-{tierSponsors.length === 1 ? "Sponsor" : "Sponsors"}
+{tierSponsors.length === 1 ? " " + capitalizedTier + " Sponsor" : " " + capitalizedTier + " Sponsors"}
         </h3>
         {tierSponsors.map((sponsor) => (
           <div className={colClass} key={sponsor.id}>
@@ -171,6 +179,7 @@ const Sponsors = () => {
         {renderSponsorTier("gold")}
         {renderSponsorTier("silver")}
         {renderSponsorTier("bronze")}
+        {renderSponsorTier("event")}
         {renderSponsorTier("venue")}
 
         <div

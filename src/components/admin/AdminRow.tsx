@@ -232,30 +232,7 @@ const AdminRow = ({
                   </div>
                 
                   {/* Actions Buttons */}
-                  <div className="modal-actions">
-                    <button
-                      type="button"
-                      className="admin-action-button approve"
-                      onClick={() => {
-                        onAction(registration.registration_id, "approved");
-                        handleCloseModal();
-                      }}
-                      disabled={approveDisabled}
-                    >
-                      <FontAwesomeIcon icon={faCheck} /> Approve
-                    </button>
-                    <button
-                      type="button"
-                      className="admin-action-button reject"
-                      onClick={() => {
-                        onAction(registration.registration_id, "rejected");
-                        handleCloseModal();
-                      }}
-                      disabled={rejectDisabled}
-                    >
-                      <FontAwesomeIcon icon={faXmark} /> Reject
-                    </button>
-                  </div>
+                  
                 </div>
                   {/* Actions Buttons */}
                   <div className="modal-actions pb-1">
