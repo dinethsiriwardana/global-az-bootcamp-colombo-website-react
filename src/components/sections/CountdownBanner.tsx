@@ -9,8 +9,8 @@ interface CounterItem {
 }
 
 const CountdownBanner: React.FC = () => {
-  // Target date: April 26, 2026
-  const targetDate = useMemo(() => new Date(2026, 3, 26), []); // Month is 0-indexed, so 3 = April
+  // Target date: 09th of May, 2026
+  const targetDate = useMemo(() => new Date(2026, 4, 9), []); // Month is 0-indexed, so 4 = May
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -59,7 +59,7 @@ const CountdownBanner: React.FC = () => {
       <div className="container" data-aos="fade-up">
         <div className="section-header">
           <h2>Are you ready ?</h2>
-          {/* <p>April 26, 2026</p> */}
+          {/* <p>09th of May, 2026</p> */}
         </div>
         <div className="row counter-row justify-content-center">
           {counters.map((counter, index) => (

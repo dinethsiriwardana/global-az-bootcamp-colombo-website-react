@@ -158,7 +158,7 @@ const Hero = () => {
             <h1 className="hero-title">
               <span>Colombo</span>
             </h1>
-            <p className="hero-date">26th April, 2026</p>
+            <p className="hero-date">09th of May, 2026</p>
             <a
               href="/registration"
               className="hero-register-btn"
