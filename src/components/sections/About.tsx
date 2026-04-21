@@ -67,7 +67,7 @@ const About = () => {
             <div className="col-lg-8 text-center text-lg-start">
               <h2>About The Event</h2>
               <p className="pe-lg-7 about-main-text" style={{fontSize: '1.1em'}}>
-              Global Azure 2026 - Colombo will take place on April 26th, bringing together Azure communities worldwide through expert-led sessions. The event will offer valuable opportunities to learn from industry experts, explore the latest technologies, and connect with the global tech community. In Sri Lanka, the Microsoft IT Pro Community will proudly contribute by bringing local professionals together to learn, connect, and empower the next generation of tech enthusiasts.
+              Global Azure 2026 - Colombo will take place on 09th May, bringing together Azure communities worldwide through expert-led sessions. The event will offer valuable opportunities to learn from industry experts, explore the latest technologies, and connect with the global tech community. In Sri Lanka, the Microsoft IT Pro Community will proudly contribute by bringing local professionals together to learn, connect, and empower the next generation of tech enthusiasts.
               </p>
               
             </div>
