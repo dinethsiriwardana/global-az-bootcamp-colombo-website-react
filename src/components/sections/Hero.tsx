@@ -159,9 +159,12 @@ const Hero = () => {
               <span>Colombo</span>
             </h1>
             <p className="hero-date">09th of May, 2026</p>
-            
+            <a
+             
+              className="hero-register-btn"
+            >
               Registraion Closed
-            
+            </a>
           </div>
         {/* Replacing the anchor tag with a button to fix the accessibility warning */}
         {/* <Button
