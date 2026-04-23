@@ -22,4 +22,6 @@ export interface AdminRegistration {
   event_title?: string;
   registered_at?: string;
   is_confirmed?: boolean;
+  attended?: boolean | null;
+  attended_at?: string;
 }

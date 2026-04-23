@@ -258,6 +258,31 @@ const AdminRow = ({
                     >
                       <FontAwesomeIcon icon={faXmark} /> Reject
                     </button>
+                </div>
+                  {/* Actions Buttons */}
+                  <div className="modal-actions pb-1">
+                    <button
+                      type="button"
+                      className="admin-action-button approve"
+                      onClick={async () => {
+                        await onAction(registration.registration_id, "approved");
+                        handleCloseModal();
+                      }}
+                      disabled={approveDisabled}
+                    >
+                      <FontAwesomeIcon icon={faCheck} /> Approve
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-action-button reject"
+                      onClick={async () => {
+                        await onAction(registration.registration_id, "rejected");
+                        handleCloseModal();
+                      }}
+                      disabled={rejectDisabled}
+                    >
+                      <FontAwesomeIcon icon={faXmark} /> Reject
+                    </button>
                   </div>
               </div>
             </div>

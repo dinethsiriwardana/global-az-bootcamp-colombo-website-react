@@ -460,6 +460,34 @@
   max-width: 680px;
 }
 
+.itpro-admin-top-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.itpro-admin-attendance-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.72rem 1.05rem;
+  background: rgba(59, 130, 246, 0.22);
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  color: #dbeafe;
+  font-weight: 700;
+  font-size: 0.84rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.itpro-admin-attendance-button:hover {
+  transform: translateY(-1px);
+  color: #eff6ff;
+}
+
 .itpro-admin-toolbar {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(0, 3fr);
@@ -933,6 +961,14 @@
 @media (max-width: 640px) {
   .itpro-admin-page {
     padding: 1rem 0.75rem;
+  }
+
+  .itpro-admin-top-actions {
+    justify-content: stretch;
+  }
+
+  .itpro-admin-attendance-button {
+    width: 100%;
   }
 
   .admin-filter-group {
