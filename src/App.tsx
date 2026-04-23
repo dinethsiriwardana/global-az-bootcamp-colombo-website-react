@@ -104,7 +104,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/codeofconduct" element={<CodeOfConductPage />} />
-          <Route path="/registration" element={<EventRegistrationPage />} />
+          {/* <Route path="/registration" element={<EventRegistrationPage />} /> */}
           <Route path="/confirm" element={<AttendanceConfirmationPage />} />
           <Route path="/itproadmin" element={<ItProAdminPage />} />
           <Route path="/itproadmin/attendance" element={<ItProAttendancePage />} />

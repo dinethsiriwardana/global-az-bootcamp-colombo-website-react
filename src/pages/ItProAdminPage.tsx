@@ -416,20 +416,6 @@ const ItProAdminPage = () => {
                     foodPreferenceOptions={foodPreferenceOptions}
                     disabled={loading || Boolean(actionLoadingId)}
                   />
-                  <FilterBar
-                    status={statusFilter}
-                    onChange={setStatusFilter}
-                    userType={userTypeFilter}
-                    onUserTypeChange={setUserTypeFilter}
-                    userTypeOptions={USER_TYPE_OPTIONS}
-                    tshirtSize={tshirtSizeFilter}
-                    onTshirtSizeChange={setTshirtSizeFilter}
-                    tshirtSizeOptions={tshirtSizeOptions}
-                    foodPreference={foodPreferenceFilter}
-                    onFoodPreferenceChange={setFoodPreferenceFilter}
-                    foodPreferenceOptions={foodPreferenceOptions}
-                    disabled={loading || Boolean(actionLoadingId)}
-                  />
                 </section>
 
                 <section className="admin-summary" aria-label="Registration summary">
