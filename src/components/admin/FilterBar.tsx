@@ -55,7 +55,7 @@ const FilterBar = ({
 }: FilterBarProps) => {
   return (
     <div className="admin-filter-group">
-      <div className="admin-filter-panel">
+      <div className="admin-filter-panel admin-filter-panel-status">
         <label htmlFor="admin-status-filter" className="admin-control-label">
           Filter by status
         </label>
@@ -86,7 +86,8 @@ const FilterBar = ({
             disabled={isDownloadDisabled}
             title={downloadTitle}
           >
-            Download CSV
+            <i className="bi bi-download" aria-hidden="true" />
+            <span>Download CSV</span>
           </button>
         </div>
       </div>
