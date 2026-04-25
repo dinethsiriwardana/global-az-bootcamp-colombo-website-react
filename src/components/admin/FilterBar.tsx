@@ -4,6 +4,7 @@ import { AdminFilterStatus } from "../../types/admin";
 interface FilterBarProps {
   status: AdminFilterStatus;
   onChange: (status: AdminFilterStatus) => void;
+  onDownloadCsv: () => void;
   userType: string;
   onUserTypeChange: (value: string) => void;
   userTypeOptions: Array<{ label: string; value: string }>;
@@ -13,10 +14,13 @@ interface FilterBarProps {
   foodPreference: string;
   onFoodPreferenceChange: (value: string) => void;
   foodPreferenceOptions: string[];
+  isDownloadDisabled?: boolean;
+  downloadTitle?: string;
   disabled?: boolean;
 }
 
 const FILTER_OPTIONS: Array<{ label: string; value: AdminFilterStatus }> = [
+  { label: "All", value: "all" },
   { label: "Pending", value: "pending" },
   { label: "Approved", value: "approved" },
   { label: "Rejected", value: "rejected" },
@@ -35,6 +39,7 @@ const getFoodPreferenceLabel = (value: string) => {
 const FilterBar = ({
   status,
   onChange,
+  onDownloadCsv,
   userType,
   onUserTypeChange,
   userTypeOptions,
@@ -44,6 +49,8 @@ const FilterBar = ({
   foodPreference,
   onFoodPreferenceChange,
   foodPreferenceOptions,
+  isDownloadDisabled = false,
+  downloadTitle = "Download CSV",
   disabled = false,
 }: FilterBarProps) => {
   return (
@@ -52,24 +59,35 @@ const FilterBar = ({
         <label htmlFor="admin-status-filter" className="admin-control-label">
           Filter by status
         </label>
-        <div className="admin-filter-select-wrap">
-          <i className="bi bi-funnel" aria-hidden="true" />
-          <select
-            id="admin-status-filter"
-            className="admin-filter-select"
-            value={status}
-            disabled={disabled}
-            onChange={(event) => onChange(event.target.value as AdminFilterStatus)}
-            aria-label="Status filter"
+        <div className="admin-status-filter-row">
+          <div className="admin-filter-select-wrap">
+            <i className="bi bi-funnel" aria-hidden="true" />
+            <select
+              id="admin-status-filter"
+              className="admin-filter-select"
+              value={status}
+              disabled={disabled}
+              onChange={(event) => onChange(event.target.value as AdminFilterStatus)}
+              aria-label="Status filter"
+            >
+              {FILTER_OPTIONS.map((option) => {
+                return (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <button
+            type="button"
+            className="admin-download-csv-button"
+            onClick={onDownloadCsv}
+            disabled={isDownloadDisabled}
+            title={downloadTitle}
           >
-            {FILTER_OPTIONS.map((option) => {
-              return (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              );
-            })}
-          </select>
+            Download CSV
+          </button>
         </div>
       </div>
 
