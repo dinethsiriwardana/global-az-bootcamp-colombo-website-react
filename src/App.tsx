@@ -67,6 +67,7 @@ const FooterWrapper = () => {
   if (
     location.pathname === "/registrations" ||
     location.pathname === "/registration" ||
+    location.pathname === "/reregistration" ||
     location.pathname === "/confirm" ||
     location.pathname.startsWith("/itproadmin")
   ) {
@@ -105,6 +106,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/codeofconduct" element={<CodeOfConductPage />} />
           {/* <Route path="/registration" element={<EventRegistrationPage />} /> */}
+          <Route path="/reregistration" element={<EventRegistrationPage />} />
           <Route path="/confirm" element={<AttendanceConfirmationPage />} />
           <Route path="/itproadmin" element={<ItProAdminPage />} />
           <Route path="/itproadmin/attendance" element={<ItProAttendancePage />} />
