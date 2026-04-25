@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import AdminTable from "../components/admin/AdminTable";
 import FilterBar from "../components/admin/FilterBar";
 import SearchInput from "../components/admin/SearchInput";
@@ -31,6 +32,16 @@ const USER_TYPE_OPTIONS = [
 ];
 const DEFAULT_TSHIRT_SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "XXL"];
 const DEFAULT_FOOD_PREFERENCE_OPTIONS = ["veg", "non-veg"];
+const CSV_EXPORT_HEADERS = [
+  "Name",
+  "Email",
+  "Profession",
+  "Organization",
+  "T-shirt size",
+  "Food preference",
+  "Approval Status",
+  "Confirmation Status",
+];
 
 const sanitizeOptionalValue = (value: string | undefined) => {
   return value?.trim() ?? "";
@@ -66,6 +77,42 @@ const mergeFilterOptions = (defaults: string[], dynamic: string[]) => {
     mergedSet.add(trimmed);
     return true;
   });
+};
+
+const formatCsvValue = (value: unknown) => {
+  if (value === undefined || value === null) {
+    return '""';
+  }
+
+  const escapedValue = String(value).replace(/"/g, '""');
+  return `"${escapedValue}"`;
+};
+
+const toSentenceCase = (value: string | undefined) => {
+  const normalizedValue = sanitizeOptionalValue(value);
+  if (!normalizedValue) {
+    return "";
+  }
+
+  return (
+    normalizedValue.charAt(0).toUpperCase() +
+    normalizedValue.slice(1).toLowerCase()
+  );
+};
+
+const registrationMatchesStatus = (
+  registration: AdminRegistration,
+  status: AdminFilterStatus,
+) => {
+  if (status === "all") {
+    return true;
+  }
+
+  if (status === "confirmed") {
+    return Boolean(registration.is_confirmed);
+  }
+
+  return registration.status.toLowerCase() === status;
 };
 
 const ItProAdminPage = () => {
@@ -108,7 +155,7 @@ const ItProAdminPage = () => {
 
     try {
       const data =
-        statusFilter === "confirmed"
+        statusFilter === "confirmed" || statusFilter === "all"
           ? await listRegistrations()
           : await listRegistrations(statusFilter);
 
@@ -280,7 +327,7 @@ const ItProAdminPage = () => {
             status: nextStatus,
           };
         })
-        .filter((registration) => registration.status.toLowerCase() === statusFilter);
+        .filter((registration) => registrationMatchesStatus(registration, statusFilter));
     });
 
     try {
@@ -318,6 +365,45 @@ const ItProAdminPage = () => {
       setSecretError("Unable to save admin secret to local storage.");
     }
   };
+
+  const hasRegistrationsForExport = filteredRegistrations.length > 0;
+
+  const handleDownloadCsv = useCallback(() => {
+    if (!hasRegistrationsForExport) {
+      setFeedbackMessage("No registered members available for export.");
+      return;
+    }
+
+    const csvRows = filteredRegistrations.map((registration) => {
+      return [
+        registration.name,
+        registration.email,
+        registration.profession,
+        registration.organization,
+        registration.tshirt_size,
+        registration.food_preference,
+        toSentenceCase(registration.status),
+        registration.is_confirmed ? "Confirmed" : "Not Confirmed",
+      ];
+    });
+
+    const csvData = [CSV_EXPORT_HEADERS, ...csvRows]
+      .map((row) => row.map((value) => formatCsvValue(value)).join(","))
+      .join("\n");
+
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `${statusFilter}_registered_members.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  }, [filteredRegistrations, hasRegistrationsForExport, statusFilter]);
 
   return (
     <>
@@ -387,6 +473,13 @@ const ItProAdminPage = () => {
               </div>
             ) : (
               <>
+                <section className="itpro-admin-top-actions" aria-label="Attendance actions">
+                  <Link to="/itproadmin/attendance" className="itpro-admin-attendance-button">
+                    <i className="bi bi-qr-code-scan" aria-hidden="true" />
+                    Scan QR / Mark Attendance
+                  </Link>
+                </section>
+
                 <section className="itpro-admin-toolbar" aria-label="Admin controls">
                   <SearchInput
                     value={searchTerm}
@@ -394,10 +487,10 @@ const ItProAdminPage = () => {
                     disabled={loading}
                     placeholder="Search by email, name, or organization"
                   />
-                 
                   <FilterBar
                     status={statusFilter}
                     onChange={setStatusFilter}
+                    onDownloadCsv={handleDownloadCsv}
                     userType={userTypeFilter}
                     onUserTypeChange={setUserTypeFilter}
                     userTypeOptions={USER_TYPE_OPTIONS}
@@ -407,6 +500,14 @@ const ItProAdminPage = () => {
                     foodPreference={foodPreferenceFilter}
                     onFoodPreferenceChange={setFoodPreferenceFilter}
                     foodPreferenceOptions={foodPreferenceOptions}
+                    isDownloadDisabled={
+                      loading || Boolean(actionLoadingId) || !hasRegistrationsForExport
+                    }
+                    downloadTitle={
+                      hasRegistrationsForExport
+                        ? "Download registered members as CSV"
+                        : "No registered members available for export"
+                    }
                     disabled={loading || Boolean(actionLoadingId)}
                   />
                 </section>

@@ -22,6 +22,7 @@
     "imagesloaded": "^5.0.0",
     "lightgallery": "^2.8.3",
     "masonry-layout": "^4.2.2",
+    "qr-scanner": "^1.4.2",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.1.0",

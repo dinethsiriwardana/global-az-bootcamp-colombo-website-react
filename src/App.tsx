@@ -22,6 +22,7 @@ import AOS from "aos";
 import HomePage2025 from "./pages/homepage2025";
 import EventRegistrationPage from "./pages/EventRegistrationPage";
 import ItProAdminPage from "./pages/ItProAdminPage";
+import ItProAttendancePage from "./pages/ItProAttendancePage";
 import AttendanceConfirmationPage from "./pages/AttendanceConfirmationPage";
 
 // ScrollToTop component to handle anchor links
@@ -48,6 +49,17 @@ const ScrollToTop = () => {
 };
 
 // FooterWrapper component to conditionally render Footer
+const HeaderWrapper = () => {
+  const location = useLocation();
+
+  if (location.pathname.startsWith("/itproadmin")) {
+    return null;
+  }
+
+  return <Header />;
+};
+
+// FooterWrapper component to conditionally render Footer
 const FooterWrapper = () => {
   const location = useLocation();
 
@@ -55,7 +67,9 @@ const FooterWrapper = () => {
   if (
     location.pathname === "/registrations" ||
     location.pathname === "/registration" ||
-    location.pathname === "/confirm"
+    location.pathname === "/reregistration" ||
+    location.pathname === "/confirm" ||
+    location.pathname.startsWith("/itproadmin")
   ) {
     return null;
   }
@@ -87,13 +101,15 @@ function App() {
     >
       <ScrollToTop />
       <div className="App">
-        <Header />
+        <HeaderWrapper />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/codeofconduct" element={<CodeOfConductPage />} />
           {/* <Route path="/registration" element={<EventRegistrationPage />} /> */}
+          <Route path="/reregistration" element={<EventRegistrationPage />} />
           <Route path="/confirm" element={<AttendanceConfirmationPage />} />
           <Route path="/itproadmin" element={<ItProAdminPage />} />
+          <Route path="/itproadmin/attendance" element={<ItProAttendancePage />} />
           <Route path="/gallery" element={<FullGalleryPage />} />
           <Route path="/2025" element={<HomePage2025 />} />
         </Routes>

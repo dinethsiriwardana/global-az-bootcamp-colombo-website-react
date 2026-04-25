@@ -1,6 +1,11 @@
 export type RegistrationStatus = "pending" | "approved" | "rejected" | string;
 
-export type AdminFilterStatus = "pending" | "approved" | "rejected" | "confirmed";
+export type AdminFilterStatus =
+  | "pending"
+  | "approved"
+  | "rejected"
+  | "confirmed"
+  | "all";
 
 export type AdminAction = "approved" | "rejected";
 
@@ -22,4 +27,6 @@ export interface AdminRegistration {
   event_title?: string;
   registered_at?: string;
   is_confirmed?: boolean;
+  attended?: boolean | null;
+  attended_at?: string;
 }
