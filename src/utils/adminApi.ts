@@ -422,6 +422,7 @@ const normalizeRegistration = (item: unknown): AdminRegistration => {
     food_preference: asText(registration.food_preference || profile.food_preference),
     event_title: asText(event.title),
     linkedin_url: asText(profile.linkedin_url),
+    id_number: asText(registration.id_number || profile.id_number),
     registered_at: asText(registration.registered_at),
     tshirt_size: asText(registration.tshirt_size || profile.tshirt_size),
     attended: asNullableBoolean(registration.attended ?? profile.attended),
