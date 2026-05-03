@@ -34,9 +34,9 @@ export const organizingCommittee: CommitteeMember[] = [
 
   {
     id: "5",
-    fullName: "Sanduni Rupasinghe",
-    role: "Event Coordinator",
-    profilePicture: "/assets/img/organizing-committee/sandunir.jpeg",
+    fullName: "Dineth Siriwardana",
+    role: "Community Lead",
+    profilePicture: "/assets/img/organizing-committee/dineth.png",
   },
 
   {
@@ -75,11 +75,12 @@ export const organizingCommittee: CommitteeMember[] = [
     role: "Community Lead",
     profilePicture: "/assets/img/organizing-committee/roshan.jpg",
   },
-  {
+
+    {
     id: "12",
-    fullName: "Dineth Siriwardana",
-    role: "Community Lead",
-    profilePicture: "/assets/img/organizing-committee/dineth.jpg",
+    fullName: "Sanduni Rupasinghe",
+    role: "Event Coordinator",
+    profilePicture: "/assets/img/organizing-committee/sandunir.jpeg",
   },
     {
     id: "13",
