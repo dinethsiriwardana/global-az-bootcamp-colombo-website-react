@@ -16,6 +16,20 @@
       font-size: 1.1rem;
       color: #666;
     }
+    @media (min-width: 992px) {
+      // Desktop
+    h2 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    p {
+      font-size: 0.5rem;
+      color: #666;
+    }
+    }
   }
 
 .hexagon-gallery {
@@ -25,8 +39,16 @@
     // We use 10 columns to allow for the half-hex offsets
     grid-template-columns: repeat(10, 1fr); 
     // Reduced row height + negative margin creates the nesting effect
-    grid-auto-rows: 110px; 
-    grid-gap: 25px;
+    // Mobile
+    grid-auto-rows: 60px; 
+    grid-gap: 5px;
+
+    @media (min-width: 992px) {
+      // Desktop
+      grid-auto-rows: 110px;
+      grid-gap: 25px;
+    }
+
     padding-bottom: 150px;
   }
 
