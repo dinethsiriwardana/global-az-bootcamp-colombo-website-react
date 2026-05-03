@@ -34,10 +34,14 @@ type AttendanceSource = "qr" | "search";
 interface ResultAttendeeInfo {
   name: string | null;
   email: string | null;
+  phoneNumber: string | null;
   profession: string | null;
   organization: string | null;
+  designation: string | null;
+  linkedinUrl: string | null;
   tshirtSize: string | null;
   foodPreference: string | null;
+  nic: string | null;
 }
 
 interface ResultRegistrationInfo {
@@ -71,6 +75,30 @@ const MAX_SEARCH_RESULTS = 12;
 const INVALID_OR_NOT_FOUND_MESSAGE =
   "Registration not found or not eligible for attendance marking.";
 const INVALID_OR_NOT_FOUND_HELPER = "Please try another QR code or use attendee search.";
+const ALL_TSHIRT_SIZES = "all";
+const ALL_FOOD_PREFERENCES = "all";
+const DEFAULT_TSHIRT_SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "XXL"];
+const DEFAULT_FOOD_PREFERENCE_OPTIONS = ["veg", "non-veg"];
+const FOOD_PREFERENCE_LABELS: Record<string, string> = {
+  veg: "Vegetarian",
+  "non-veg": "Non-Vegetarian",
+};
+const GUEST_CSV_EXPORT_HEADERS = [
+  "Name",
+  "Email",
+  "Phone Number",
+  "Approval Status",
+  "Confirmation Status",
+  "Check-in Time",
+  "Attendance Status",
+  "T-shirt size",
+  "Food Preference",
+  "NIC",
+  "Profession",
+  "Organization",
+  "Designation",
+  "LinkedIn Profile URL",
+];
 
 const getPublicAssetPath = (relativePath: string) => {
   const basePath = (process.env.PUBLIC_URL || "").replace(/\/+$/, "");
@@ -438,6 +466,114 @@ const formatAttendanceStatus = (value: boolean | null | undefined) => {
   return "Unknown";
 };
 
+const normalizeTshirtSize = (value: string | null | undefined) => {
+  const trimmed = asOptionalTrimmedText(value);
+  if (!trimmed) {
+    return "";
+  }
+
+  return trimmed.toUpperCase();
+};
+
+const normalizeFoodPreference = (value: string | null | undefined) => {
+  const trimmed = asOptionalTrimmedText(value);
+  if (!trimmed) {
+    return "";
+  }
+
+  const normalized = trimmed.toLowerCase().replace(/[_\s]+/g, "-");
+
+  if (normalized.includes("non") && normalized.includes("veg")) {
+    return "non-veg";
+  }
+
+  if (normalized.includes("veg")) {
+    return "veg";
+  }
+
+  return normalized;
+};
+
+const buildGuestFilterOptions = (values: Array<string | null | undefined>) => {
+  const optionSet = new Set<string>();
+
+  values.forEach((value) => {
+    const normalized = normalizeFoodPreference(value);
+    if (!normalized) {
+      return;
+    }
+
+    optionSet.add(normalized);
+  });
+
+  return Array.from(optionSet).sort((left, right) => {
+    return left.localeCompare(right, undefined, { sensitivity: "base" });
+  });
+};
+
+const mergeFilterOptions = (defaults: string[], dynamic: string[]) => {
+  const merged = [...defaults, ...dynamic];
+  const mergedSet = new Set<string>();
+
+  return merged.filter((value) => {
+    const normalized = asOptionalTrimmedText(value);
+    if (!normalized || mergedSet.has(normalized)) {
+      return false;
+    }
+
+    mergedSet.add(normalized);
+    return true;
+  });
+};
+
+const formatFoodPreference = (value: string | null | undefined) => {
+  const normalized = normalizeFoodPreference(value);
+
+  if (!normalized) {
+    return "-";
+  }
+
+  return FOOD_PREFERENCE_LABELS[normalized] || normalized;
+};
+
+const formatSriLankaTimeForCsv = (value: string | number | null | undefined) => {
+  const formatted = formatSriLankaTime(value);
+  return formatted === "-" ? "" : formatted;
+};
+
+const formatRegistrationStatusForCsv = (value: string | null | undefined) => {
+  if (!asOptionalTrimmedText(value)) {
+    return "";
+  }
+
+  return formatRegistrationStatus(value);
+};
+
+const formatConfirmationStatusForCsv = (value: boolean | null | undefined) => {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return formatConfirmationStatus(value);
+};
+
+const formatAttendanceStatusForCsv = (value: boolean | null | undefined) => {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return formatAttendanceStatus(value);
+};
+
+const formatCsvValue = (value: unknown) => {
+  if (value === undefined || value === null) {
+    return '""';
+  }
+
+  const escapedValue = String(value).replace(/"/g, '""');
+  return `"${escapedValue}"`;
+};
+
 const ItProAttendancePage = () => {
   const [adminSecretPresent, setAdminSecretPresent] = useState(false);
   const [secretInput, setSecretInput] = useState("");
@@ -454,6 +590,9 @@ const ItProAttendancePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [guestSearchTerm, setGuestSearchTerm] = useState("");
+  const [guestTshirtFilter, setGuestTshirtFilter] = useState(ALL_TSHIRT_SIZES);
+  const [guestFoodPreferenceFilter, setGuestFoodPreferenceFilter] =
+    useState(ALL_FOOD_PREFERENCES);
   const [searchActionRegistrationId, setSearchActionRegistrationId] = useState<
     string | null
   >(null);
@@ -727,12 +866,16 @@ const ItProAttendancePage = () => {
             resolvedRegistration?.name.trim() ||
             findNameInPayload(apiResult.payload),
           email: resolvedRegistration?.email?.trim() || null,
+          phoneNumber: resolvedRegistration?.phone_number?.trim() || null,
           profession: resolvedRegistration?.profession?.trim() || null,
           organization:
             resolvedRegistration?.organization?.trim() ||
             findOrganizationInPayload(apiResult.payload),
+          designation: resolvedRegistration?.designation?.trim() || null,
+          linkedinUrl: resolvedRegistration?.linkedin_url?.trim() || null,
           tshirtSize: resolvedRegistration?.tshirt_size?.trim() || null,
           foodPreference: resolvedRegistration?.food_preference?.trim() || null,
+          nic: resolvedRegistration?.id_number?.trim() || null,
         };
         let resolvedRegistrationInfo: ResultRegistrationInfo = {
           registrationStatus:
@@ -799,6 +942,12 @@ const ItProAttendancePage = () => {
               preScannedRegistration?.email ||
               resolvedRegistration?.email ||
               null,
+            phoneNumber:
+              resolvedAttendee.phoneNumber ||
+              knownAttendee?.attendee.phoneNumber ||
+              preScannedRegistration?.phone_number ||
+              resolvedRegistration?.phone_number ||
+              null,
             profession:
               resolvedAttendee.profession ||
               knownAttendee?.attendee.profession ||
@@ -811,6 +960,18 @@ const ItProAttendancePage = () => {
               preScannedRegistration?.organization ||
               resolvedRegistration?.organization ||
               null,
+            designation:
+              resolvedAttendee.designation ||
+              knownAttendee?.attendee.designation ||
+              preScannedRegistration?.designation ||
+              resolvedRegistration?.designation ||
+              null,
+            linkedinUrl:
+              resolvedAttendee.linkedinUrl ||
+              knownAttendee?.attendee.linkedinUrl ||
+              preScannedRegistration?.linkedin_url ||
+              resolvedRegistration?.linkedin_url ||
+              null,
             tshirtSize:
               resolvedAttendee.tshirtSize ||
               knownAttendee?.attendee.tshirtSize ||
@@ -822,6 +983,12 @@ const ItProAttendancePage = () => {
               knownAttendee?.attendee.foodPreference ||
               preScannedRegistration?.food_preference ||
               resolvedRegistration?.food_preference ||
+              null,
+            nic:
+              resolvedAttendee.nic ||
+              knownAttendee?.attendee.nic ||
+              preScannedRegistration?.id_number ||
+              resolvedRegistration?.id_number ||
               null,
           };
 
@@ -868,10 +1035,14 @@ const ItProAttendancePage = () => {
           attendee: {
             name: resolvedAttendee.name || null,
             email: resolvedAttendee.email,
+            phoneNumber: resolvedAttendee.phoneNumber,
             profession: resolvedAttendee.profession,
             organization: resolvedAttendee.organization,
+            designation: resolvedAttendee.designation,
+            linkedinUrl: resolvedAttendee.linkedinUrl,
             tshirtSize: resolvedAttendee.tshirtSize,
             foodPreference: resolvedAttendee.foodPreference,
+            nic: resolvedAttendee.nic,
           },
           registration: resolvedRegistrationInfo,
         };
@@ -891,7 +1062,7 @@ const ItProAttendancePage = () => {
         if (status === "success" || status === "already_checked_in") {
           const registryEntry = {
             attendee: resultItem.attendee,
-            attendedAt: resultItem.attendedAt || formatSriLankaTime(resultItem.scannedAt),
+            attendedAt: resultItem.attendedAt || new Date(resultItem.scannedAt).toISOString(),
             registration: resultItem.registration,
             registrationId: resultItem.registrationId,
           };
@@ -956,10 +1127,14 @@ const ItProAttendancePage = () => {
           attendee: {
             name: preferredName?.trim() || resolvedRegistration?.name.trim() || null,
             email: resolvedRegistration?.email?.trim() || null,
+            phoneNumber: resolvedRegistration?.phone_number?.trim() || null,
             profession: resolvedRegistration?.profession?.trim() || null,
             organization: resolvedRegistration?.organization?.trim() || null,
+            designation: resolvedRegistration?.designation?.trim() || null,
+            linkedinUrl: resolvedRegistration?.linkedin_url?.trim() || null,
             tshirtSize: resolvedRegistration?.tshirt_size?.trim() || null,
             foodPreference: resolvedRegistration?.food_preference?.trim() || null,
+            nic: resolvedRegistration?.id_number?.trim() || null,
           },
           registration: {
             registrationStatus: asOptionalTrimmedText(resolvedRegistration?.status),
@@ -1028,10 +1203,14 @@ const ItProAttendancePage = () => {
           attendee: {
             name: null,
             email: null,
+            phoneNumber: null,
             profession: null,
             organization: null,
+            designation: null,
+            linkedinUrl: null,
             tshirtSize: null,
             foodPreference: null,
+            nic: null,
           },
           registration: {
             registrationStatus: null,
@@ -1103,10 +1282,14 @@ const ItProAttendancePage = () => {
         attendee: {
           name: null,
           email: null,
+          phoneNumber: null,
           profession: null,
           organization: null,
+          designation: null,
+          linkedinUrl: null,
           tshirtSize: null,
           foodPreference: null,
+          nic: null,
         },
         registration: {
           registrationStatus: null,
@@ -1183,10 +1366,14 @@ const ItProAttendancePage = () => {
           attendee: {
             name: registration.name || null,
             email: registration.email || null,
+            phoneNumber: registration.phone_number || null,
             profession: registration.profession || null,
             organization: registration.organization || null,
+            designation: registration.designation || null,
+            linkedinUrl: registration.linkedin_url || null,
             tshirtSize: registration.tshirt_size || null,
             foodPreference: registration.food_preference || null,
+            nic: registration.id_number || null,
           },
           registration: {
             registrationStatus: asOptionalTrimmedText(registration.status),
@@ -1234,18 +1421,99 @@ const ItProAttendancePage = () => {
     });
   }, [allRegistrations, recentScans]);
 
-  const filteredGuestListRows = useMemo(() => {
-    const normalized = guestSearchTerm.trim().toLowerCase();
+  const guestTshirtSizeOptions = useMemo(() => {
+    const dynamicOptions = Array.from(
+      new Set(
+        allRegistrations
+          .map((registration) => normalizeTshirtSize(registration.tshirt_size))
+          .filter((value) => Boolean(value)),
+      ),
+    ).sort((left, right) => {
+      return left.localeCompare(right, undefined, { sensitivity: "base" });
+    });
 
-    if (!normalized) {
-      return guestListRows;
-    }
+    return mergeFilterOptions(DEFAULT_TSHIRT_SIZE_OPTIONS, dynamicOptions);
+  }, [allRegistrations]);
+
+  const guestFoodPreferenceOptions = useMemo(() => {
+    const dynamicOptions = buildGuestFilterOptions(
+      allRegistrations.map((registration) => registration.food_preference),
+    );
+
+    return mergeFilterOptions(DEFAULT_FOOD_PREFERENCE_OPTIONS, dynamicOptions);
+  }, [allRegistrations]);
+
+  const filteredGuestListRows = useMemo(() => {
+    const normalizedSearchTerm = guestSearchTerm.trim().toLowerCase();
+    const normalizedTshirtFilter = normalizeTshirtSize(guestTshirtFilter);
+    const normalizedFoodPreferenceFilter = normalizeFoodPreference(guestFoodPreferenceFilter);
 
     return guestListRows.filter((scan) => {
-      const name = scan.attendee.name || "";
-      return name.toLowerCase().includes(normalized);
+      const name = (scan.attendee.name || "").toLowerCase();
+      const tshirtSize = normalizeTshirtSize(scan.attendee.tshirtSize);
+      const foodPreference = normalizeFoodPreference(scan.attendee.foodPreference);
+
+      const matchesSearch = !normalizedSearchTerm || name.includes(normalizedSearchTerm);
+      const matchesTshirt =
+        guestTshirtFilter === ALL_TSHIRT_SIZES || tshirtSize === normalizedTshirtFilter;
+      const matchesFoodPreference =
+        guestFoodPreferenceFilter === ALL_FOOD_PREFERENCES ||
+        foodPreference === normalizedFoodPreferenceFilter;
+
+      return matchesSearch && matchesTshirt && matchesFoodPreference;
     });
-  }, [guestListRows, guestSearchTerm]);
+  }, [guestFoodPreferenceFilter, guestListRows, guestSearchTerm, guestTshirtFilter]);
+
+  const hasActiveGuestFilters =
+    Boolean(guestSearchTerm.trim()) ||
+    guestTshirtFilter !== ALL_TSHIRT_SIZES ||
+    guestFoodPreferenceFilter !== ALL_FOOD_PREFERENCES;
+
+  const hasFilteredGuestRowsForExport = filteredGuestListRows.length > 0;
+
+  const handleDownloadGuestListCsv = useCallback(() => {
+    if (!hasFilteredGuestRowsForExport) {
+      return;
+    }
+
+    const csvRows = filteredGuestListRows.map((scan) => {
+      const formattedFoodPreference = formatFoodPreference(scan.attendee.foodPreference);
+
+      return [
+        scan.attendee.name || "",
+        scan.attendee.email || "",
+        scan.attendee.phoneNumber || "",
+        formatRegistrationStatusForCsv(scan.registration.registrationStatus),
+        formatConfirmationStatusForCsv(scan.registration.isConfirmed),
+        formatSriLankaTimeForCsv(scan.attendedAt || scan.scannedAt),
+        formatAttendanceStatusForCsv(scan.attended),
+        scan.attendee.tshirtSize || "",
+        formattedFoodPreference === "-" ? "" : formattedFoodPreference,
+        scan.attendee.nic || "",
+        scan.attendee.profession || "",
+        scan.attendee.organization || "",
+        scan.attendee.designation || "",
+        scan.attendee.linkedinUrl || "",
+      ];
+    });
+
+    const csvData = [GUEST_CSV_EXPORT_HEADERS, ...csvRows]
+      .map((row) => row.map((value) => formatCsvValue(value)).join(","))
+      .join("\n");
+
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "attended_guest_list.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  }, [filteredGuestListRows, hasFilteredGuestRowsForExport]);
 
   return (
     <>
@@ -1573,39 +1841,123 @@ const ItProAttendancePage = () => {
                     <h2>Guest List</h2>
                   </div>
 
-                  <div className="attendance-guest-search-wrap">
-                    <i className="bi bi-search" aria-hidden="true" />
-                    <input
-                      className="attendance-guest-search-input"
-                      type="text"
-                      value={guestSearchTerm}
-                      onChange={(event) => setGuestSearchTerm(event.target.value)}
-                      placeholder="Search guest by name"
-                    />
+                  <div className="attendance-guest-toolbar">
+                    <div className="attendance-guest-search-wrap">
+                      <i className="bi bi-search" aria-hidden="true" />
+                      <input
+                        className="attendance-guest-search-input"
+                        type="text"
+                        value={guestSearchTerm}
+                        onChange={(event) => setGuestSearchTerm(event.target.value)}
+                        placeholder="Search guest by name"
+                        aria-label="Search guest by name"
+                      />
+                    </div>
+
+                    <div className="attendance-guest-filter-control">
+                      <label
+                        className="attendance-guest-control-label"
+                        htmlFor="attendance-guest-tshirt-filter"
+                      >
+                        T-shirt size
+                      </label>
+                      <div className="admin-filter-select-wrap attendance-guest-select-wrap">
+                        <i className="bi bi-funnel" aria-hidden="true" />
+                        <select
+                          id="attendance-guest-tshirt-filter"
+                          className="admin-filter-select"
+                          value={guestTshirtFilter}
+                          onChange={(event) => setGuestTshirtFilter(event.target.value)}
+                          aria-label="Filter guest list by T-shirt size"
+                        >
+                          <option value={ALL_TSHIRT_SIZES}>All T-shirt sizes</option>
+                          {guestTshirtSizeOptions.map((option) => {
+                            return (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="attendance-guest-filter-control">
+                      <label
+                        className="attendance-guest-control-label"
+                        htmlFor="attendance-guest-food-preference-filter"
+                      >
+                        Food Preference
+                      </label>
+                      <div className="admin-filter-select-wrap attendance-guest-select-wrap">
+                        <i className="bi bi-funnel" aria-hidden="true" />
+                        <select
+                          id="attendance-guest-food-preference-filter"
+                          className="admin-filter-select"
+                          value={guestFoodPreferenceFilter}
+                          onChange={(event) => setGuestFoodPreferenceFilter(event.target.value)}
+                          aria-label="Filter guest list by food preference"
+                        >
+                          <option value={ALL_FOOD_PREFERENCES}>All Food Preferences</option>
+                          {guestFoodPreferenceOptions.map((option) => {
+                            return (
+                              <option key={option} value={option}>
+                                {formatFoodPreference(option)}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="attendance-guest-toolbar-actions">
+                      <button
+                        type="button"
+                        className="admin-download-csv-button attendance-guest-download-button"
+                        onClick={handleDownloadGuestListCsv}
+                        disabled={!hasFilteredGuestRowsForExport}
+                        title={
+                          hasFilteredGuestRowsForExport
+                            ? "Download filtered guest list as CSV"
+                            : "No attended participants available for export."
+                        }
+                      >
+                        <i className="bi bi-download" aria-hidden="true" />
+                        <span>Download CSV</span>
+                      </button>
+                    </div>
                   </div>
 
                   <div className="attendance-recent">
                     {!guestListRows.length ? (
                       <p className="attendance-recent-empty">No checked-in attendees yet.</p>
                     ) : !filteredGuestListRows.length ? (
-                      <p className="attendance-recent-empty">No guests match that name.</p>
+                      <p className="attendance-recent-empty">
+                        {hasActiveGuestFilters
+                          ? "No guests match current search or filters."
+                          : "No checked-in attendees yet."}
+                      </p>
                     ) : (
                       <div className="attendance-recent-table-wrap">
                         <table className="attendance-recent-table">
                           <thead>
                             <tr>
+                              <th>#</th>
                               <th>Name</th>
                               <th>Email</th>
                               <th>Approval Status</th>
                               <th>Confirmation Status</th>
                               <th>Check-in Time</th>
                               <th>Attendance Status</th>
+                              <th>T-shirt size</th>
+                              <th>Food Preference</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {filteredGuestListRows.map((scan) => {
+                            {filteredGuestListRows.map((scan, index) => {
                               return (
                                 <tr key={scan.id}>
+                                  <td className="attendance-recent-index">{index + 1}</td>
                                   <td className="attendance-recent-name">{scan.attendee.name || "-"}</td>
                                   <td className="attendance-recent-email">{scan.attendee.email || "-"}</td>
                                   <td>
@@ -1614,6 +1966,8 @@ const ItProAttendancePage = () => {
                                   <td>{formatConfirmationStatus(scan.registration.isConfirmed)}</td>
                                   <td>{formatSriLankaTime(scan.attendedAt || scan.scannedAt)}</td>
                                   <td>{formatAttendanceStatus(scan.attended)}</td>
+                                  <td>{scan.attendee.tshirtSize || "-"}</td>
+                                  <td>{formatFoodPreference(scan.attendee.foodPreference)}</td>
                                 </tr>
                               );
                             })}
