@@ -848,9 +848,17 @@
   font-size: 0.85rem;
 }
 
-.attendance-guest-search-wrap {
+.attendance-guest-toolbar {
   margin-top: 0.15rem;
   margin-bottom: 0.72rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 0.62rem;
+  align-items: end;
+}
+
+.attendance-guest-search-wrap {
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -875,6 +883,38 @@
   color: rgba(255, 255, 255, 0.45);
 }
 
+.attendance-guest-filter-control {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.34rem;
+}
+
+.attendance-guest-control-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.76rem;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.attendance-guest-select-wrap {
+  min-height: 39px;
+}
+
+.attendance-guest-toolbar-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.attendance-guest-download-button {
+  min-height: 39px;
+  white-space: nowrap;
+}
+
 .attendance-recent-table-wrap {
   margin-top: 0.75rem;
   width: 100%;
@@ -889,7 +929,7 @@
 
 .attendance-recent-table {
   width: 100%;
-  min-width: 920px;
+  min-width: 1320px;
   border-collapse: collapse;
 }
 
@@ -932,6 +972,13 @@
 }
 
 .attendance-recent-name {
+  font-weight: 600;
+}
+
+.attendance-recent-index {
+  width: 54px;
+  text-align: center !important;
+  color: rgba(255, 255, 255, 0.82);
   font-weight: 600;
 }
 
@@ -1052,6 +1099,15 @@
   .attendance-admin-grid {
     grid-template-columns: 1fr;
   }
+
+  .attendance-guest-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .attendance-guest-toolbar-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1126,6 +1182,19 @@
     width: 44px;
     min-width: 44px;
     flex: 0 0 44px;
+  }
+
+  .attendance-guest-toolbar {
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+  }
+
+  .attendance-guest-toolbar-actions {
+    grid-column: 1;
+  }
+
+  .attendance-guest-download-button {
+    width: 100%;
   }
 
   .attendance-guest-search-wrap {
