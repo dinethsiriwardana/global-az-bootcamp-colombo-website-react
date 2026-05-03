@@ -5,6 +5,7 @@ import React from "react";
 import Hero from "../components/sections/Hero";
 import About from "../components/sections/About";
 import Speakers from "../components/sections/Speakers";
+import OrganizingCommittee from "../components/sections/OrganizingCommittee";
 import Sponsors from "../components/sections/Sponsors";
 import Contact from "../components/sections/Contact";
 import CounterBanner from "../components/sections/CounterBanner";
@@ -17,6 +18,7 @@ const HomePage = () => {
         <Hero />
         <About />
         <Speakers />
+        <OrganizingCommittee />
         <CountdownBanner />
         {/* <CounterBanner /> */}
         {/* <Schedule /> */}
