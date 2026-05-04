@@ -24,6 +24,7 @@ import EventRegistrationPage from "./pages/EventRegistrationPage";
 import ItProAdminPage from "./pages/ItProAdminPage";
 import ItProAttendancePage from "./pages/ItProAttendancePage";
 import AttendanceConfirmationPage from "./pages/AttendanceConfirmationPage";
+import JoinOnlinePage from "./pages/JoinOnlinePage";
 
 // ScrollToTop component to handle anchor links
 const ScrollToTop = () => {
@@ -108,6 +109,7 @@ function App() {
           {/* <Route path="/registration" element={<EventRegistrationPage />} /> */}
           <Route path="/reregistration" element={<EventRegistrationPage />} />
           <Route path="/confirm" element={<AttendanceConfirmationPage />} />
+          <Route path="/join-online" element={<JoinOnlinePage />} />
           <Route path="/itproadmin" element={<ItProAdminPage />} />
           <Route path="/itproadmin/attendance" element={<ItProAttendancePage />} />
           <Route path="/gallery" element={<FullGalleryPage />} />
