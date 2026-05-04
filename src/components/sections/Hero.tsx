@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [showModal, setShowModal] = useState(false);
@@ -159,12 +160,12 @@ const Hero = () => {
               <span>Colombo</span>
             </h1>
             <p className="hero-date">09th of May, 2026</p>
-            <a
-             
+            <Link
+              to="/join-online"
               className="hero-register-btn"
             >
-              Registraion Closed
-            </a>
+              Join Online
+            </Link>
           </div>
         {/* Replacing the anchor tag with a button to fix the accessibility warning */}
         {/* <Button
