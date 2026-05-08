@@ -78,8 +78,8 @@ export const organizingCommittee: CommitteeMember[] = [
 
     {
     id: "12",
-    fullName: "Sanduni Rupasinghe",
-    role: "Event Coordinator",
+    fullName: "Sanduni Ranasinghe",
+    role: "Community Lead",
     profilePicture: "/assets/img/organizing-committee/sandunir.jpeg",
   },
     {
@@ -90,7 +90,7 @@ export const organizingCommittee: CommitteeMember[] = [
   },
   {
     id: "14",
-    fullName: "Sanduni Ranasinghe",
+    fullName: "Sanduni Rupasinghe",
     role: "Event Coordinator",
     profilePicture: "/assets/img/organizing-committee/sanduni.jpeg",
   },
