@@ -158,7 +158,7 @@ const Footer = () => {
             className="text-decoration-none"
             style={{ color: "#f82249" }}
           >
-            Dineth Siriwardana
+            Dineth | Kavindu | Dewmini
           </a>
         </div>
       </div>
