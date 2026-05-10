@@ -113,6 +113,90 @@ export const submitRegistration = async (data: any) => {
   return response.json();
 };
 
+export type FeedbackPayload = {
+  feedback: string;
+  stars: number;
+  name?: string;
+};
+
+export type FeedbackItem = {
+  id?: string | number;
+  name?: string;
+  feedback: string;
+  stars: number;
+  created_at?: string;
+};
+
+export async function createFeedback(payload: FeedbackPayload) {
+  const response = await fetch(`${getFunctionsBaseUrl()}/feedback`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload),
+  });
+
+  const text = await response.text();
+  try {
+    const json = text ? JSON.parse(text) : {};
+    if (!response.ok) {
+      return { error: json?.error || json?.message || `HTTP ${response.status}` };
+    }
+    return json;
+  } catch (err) {
+    if (!response.ok) return { error: `HTTP ${response.status}` };
+    return { data: text };
+  }
+}
+
+const parseFeedbackListPayload = (payload: any): FeedbackItem[] => {
+  if (Array.isArray(payload)) {
+    return payload as FeedbackItem[];
+  }
+
+  if (Array.isArray(payload?.data)) {
+    return payload.data as FeedbackItem[];
+  }
+
+  if (Array.isArray(payload?.feedbacks)) {
+    return payload.feedbacks as FeedbackItem[];
+  }
+
+  if (Array.isArray(payload?.items)) {
+    return payload.items as FeedbackItem[];
+  }
+
+  return [];
+};
+
+export async function getFeedbacks(): Promise<FeedbackItem[]> {
+  const response = await fetch(`${getFunctionsBaseUrl()}/feedback`, {
+    method: "GET",
+    headers,
+  });
+
+  if (!response.ok) {
+    await parseApiError(response);
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    const json = await response.json();
+    return parseFeedbackListPayload(json);
+  }
+
+  const text = await response.text();
+  if (!text.trim()) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(text);
+    return parseFeedbackListPayload(parsed);
+  } catch {
+    return [];
+  }
+}
+
 export type ConfirmRegistrationResponse = Record<string, unknown>;
 
 const parseSuccessPayload = async (

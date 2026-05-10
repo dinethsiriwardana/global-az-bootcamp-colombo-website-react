@@ -10,6 +10,7 @@ import Sponsors from "../components/sections/Sponsors";
 import Contact from "../components/sections/Contact";
 import CounterBanner from "../components/sections/CounterBanner";
 import CountdownBanner from "../components/sections/CountdownBanner";
+import ShowFeedback from "../components/sections/ShowFeedback";
 
 const HomePage = () => {
   return (
@@ -17,7 +18,9 @@ const HomePage = () => {
       <main id="main" className="main-content">
         <Hero />
         <About />
+        <ShowFeedback />
         <Speakers />
+
         <CountdownBanner />
         {/* <CounterBanner /> */}
         {/* <Schedule /> */}

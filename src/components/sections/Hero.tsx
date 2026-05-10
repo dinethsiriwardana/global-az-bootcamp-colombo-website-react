@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import FeedbackModal from "../FeedbackModal";
 
 const Hero = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   // Randomly select a background image when the component mounts
   useEffect(() => {
@@ -18,9 +17,7 @@ const Hero = () => {
     }
   }, []);
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  const handleCloseFeedbackModal = () => setShowFeedbackModal(false);
 
   return (
     <>
@@ -71,6 +68,7 @@ const Hero = () => {
             margin-top: 8px;
             padding: 12px 32px;
             border-radius: 9999px;
+            border: none;
             color: #ffffff;
             font-family: "Raleway", sans-serif;
             font-weight: 600;
@@ -160,54 +158,12 @@ const Hero = () => {
               <span>Colombo</span>
             </h1>
             <p className="hero-date">09th of May, 2026</p>
-            <Link
-              to="/join-online"
-              className="hero-register-btn"
-            >
-              Join Online
-            </Link>
+            <button className="hero-register-btn" onClick={() => setShowFeedbackModal(true)}>
+              Add a Feedback
+            </button>
           </div>
-        {/* Replacing the anchor tag with a button to fix the accessibility warning */}
-        {/* <Button
-          className="about-btn buy-tickets scrollto"
-          onClick={() => setShowModal(true)}
-          style={{
-            background: "#f82249",
-            color: "#fff",
-            fontFamily: "'Raleway', sans-serif",
-            fontWeight: 500,
-            fontSize: "14px",
-            letterSpacing: "1px",
-            padding: "12px 32px",
-            borderRadius: "50px",
-            transition: "0.5s",
-            lineHeight: 1,
-            border: "2px solid #f82249",
-          }}
-        >
-          Go Virtual
-        </Button>
-
-        <a href="#about" className="about-btn scrollto">
-          Event Details
-        </a> */}
         </div>
-
-        {/* Registration Modal */}
-        <Modal show={showModal} onHide={handleCloseModal} centered>
-          <Modal.Header
-            style={{
-              background: "#f82249",
-              color: "#fff",
-              justifyContent: "center",
-            }}
-          >
-            <Modal.Title style={{ textAlign: "center" }}>
-              Register for Global Azure Bootcamp 2026 <br /> Virtual Edition
-            </Modal.Title>
-          </Modal.Header>
-          
-        </Modal>
+        <FeedbackModal show={showFeedbackModal} onHide={handleCloseFeedbackModal} />
       </section>
     </>
   );
