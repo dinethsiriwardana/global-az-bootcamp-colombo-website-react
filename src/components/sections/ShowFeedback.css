@@ -1,0 +1,39 @@
+#show-feedback .feedback-cards-page {
+  animation: feedback-page-enter 420ms ease;
+}
+
+#show-feedback .feedback-page-dots {
+  gap: 8px;
+}
+
+#show-feedback .feedback-page-dots button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+#show-feedback .feedback-page-dots button:focus-visible {
+  outline: 2px solid #0e1b4d;
+  outline-offset: 2px;
+}
+
+@keyframes feedback-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #show-feedback .feedback-cards-page {
+    animation: none;
+  }
+}
