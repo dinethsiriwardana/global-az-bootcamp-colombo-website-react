@@ -1,10 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import FeedbackModal from "../FeedbackModal";
 import { FeedbackItem, getFeedbacks } from "../../utils/api";
+import "./ShowFeedback.css";
+
+const FEEDBACK_PREVIEW_CHAR_LIMIT = 180;
+const FEEDBACK_PAGE_SIZE = 6;
+const FEEDBACK_AUTO_ROTATE_MS = 4500;
 
 const ShowFeedback = () => {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [feedbacks, setFeedbacks] = useState<FeedbackItem[]>([]);
+  const [expandedFeedbackCards, setExpandedFeedbackCards] = useState<Record<string, boolean>>({});
+  const [activeFeedbackPage, setActiveFeedbackPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,6 +21,8 @@ const ShowFeedback = () => {
     try {
       const list = await getFeedbacks();
       setFeedbacks(list);
+      setExpandedFeedbackCards({});
+      setActiveFeedbackPage(0);
     } catch (err: any) {
       setError(err?.message || "Failed to load feedbacks.");
     } finally {
@@ -34,6 +43,47 @@ const ShowFeedback = () => {
     setShowFeedbackModal(false);
     await loadFeedbacks();
   };
+
+  const getCardKey = (item: FeedbackItem, index: number) =>
+    String(item.id ?? `${item.name || "anonymous"}-${index}`);
+
+  const getFeedbackText = (item: FeedbackItem) =>
+    typeof item.feedback === "string" && item.feedback.trim().length > 0
+      ? item.feedback.trim()
+      : "No feedback message provided.";
+
+  const toggleExpandFeedback = (cardKey: string) => {
+    setExpandedFeedbackCards((prev) => ({
+      ...prev,
+      [cardKey]: !prev[cardKey],
+    }));
+  };
+
+  const feedbackPages = useMemo(() => {
+    if (feedbacks.length === 0) {
+      return [];
+    }
+
+    const pages: FeedbackItem[][] = [];
+    for (let i = 0; i < feedbacks.length; i += FEEDBACK_PAGE_SIZE) {
+      pages.push(feedbacks.slice(i, i + FEEDBACK_PAGE_SIZE));
+    }
+    return pages;
+  }, [feedbacks]);
+
+  useEffect(() => {
+    if (feedbackPages.length <= 1) {
+      return;
+    }
+
+    const autoRotateTimer = window.setInterval(() => {
+      setActiveFeedbackPage((currentPage) => (currentPage + 1) % feedbackPages.length);
+    }, FEEDBACK_AUTO_ROTATE_MS);
+
+    return () => window.clearInterval(autoRotateTimer);
+  }, [feedbackPages.length]);
+
+  const visibleFeedbacks = feedbackPages[activeFeedbackPage] || [];
 
   return (
     <section id="show-feedback" className="py-5" style={{ background: "#f6f7fd" }}>
@@ -70,40 +120,103 @@ const ShowFeedback = () => {
             )}
 
             {!loading && !error && feedbacks.length > 0 && (
-              <div className="row g-3">
-                {feedbacks.map((item, index) => (
-                  <div
-                    className=" col-md-6 col-lg-4"
-                    key={String(item.id ?? `${item.name || "anonymous"}-${index}`)}
-                  >
-                    <div
-                      style={{
-                        background: "#fff",
-                        borderRadius: "12px",
-                        border: "1px solid #e5e7eb",
-                        padding: "16px",
-                        height: "100%",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          gap: "12px",
-                          marginBottom: "8px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <strong style={{ color: "#0e1b4d" }}>{item.name?.trim() || "Anonymous"}</strong>
-                        <span style={{ color: "#f59e0b", whiteSpace: "nowrap" }}>
-                          {renderStars(Number(item.stars))}
-                        </span>
+              <>
+                <div key={`feedback-page-${activeFeedbackPage}`} className="row g-3 feedback-cards-page">
+                  {visibleFeedbacks.map((item, index) => {
+                    const absoluteIndex = activeFeedbackPage * FEEDBACK_PAGE_SIZE + index;
+                    const cardKey = getCardKey(item, absoluteIndex);
+                    const feedbackText = getFeedbackText(item);
+                    const shouldTruncate = feedbackText.length > FEEDBACK_PREVIEW_CHAR_LIMIT;
+                    const isExpanded = Boolean(expandedFeedbackCards[cardKey]);
+                    const previewText = shouldTruncate
+                      ? `${feedbackText.slice(0, FEEDBACK_PREVIEW_CHAR_LIMIT).trimEnd()}...`
+                      : feedbackText;
+                    const displayedText = isExpanded ? feedbackText : previewText;
+                    const feedbackTextId = `feedback-text-${cardKey}`;
+
+                    return (
+                      <div className=" col-md-6 col-lg-4" key={cardKey}>
+                        <div
+                          style={{
+                            background: "#fff",
+                            borderRadius: "12px",
+                            border: "1px solid #e5e7eb",
+                            padding: "16px",
+                            height: "100%",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              gap: "12px",
+                              marginBottom: "8px",
+                              alignItems: "center",
+                            }}
+                          >
+                            <strong style={{ color: "#0e1b4d" }}>{item.name?.trim() || "Anonymous"}</strong>
+                            <span style={{ color: "#f59e0b", whiteSpace: "nowrap" }}>
+                              {renderStars(Number(item.stars))}
+                            </span>
+                          </div>
+                          <p id={feedbackTextId} style={{ marginBottom: shouldTruncate ? "8px" : 0, color: "#334155" }}>
+                            {displayedText}
+                          </p>
+                          {shouldTruncate && (
+                            <button
+                              type="button"
+                              onClick={() => toggleExpandFeedback(cardKey)}
+                              aria-expanded={isExpanded}
+                              aria-controls={feedbackTextId}
+                              style={{
+                                border: "none",
+                                background: "transparent",
+                                color: "#f82249",
+                                padding: 0,
+                                fontWeight: 700,
+                                fontSize: "0.9rem",
+                              }}
+                            >
+                              {isExpanded ? "See less" : "See more"}
+                            </button>
+                          )}
+                        </div>
                       </div>
-                      <p style={{ marginBottom: 0, color: "#334155" }}>{item.feedback}</p>
-                    </div>
+                    );
+                  })}
+                </div>
+
+                {feedbackPages.length > 1 && (
+                  <div
+                    className="d-flex justify-content-center align-items-center mt-4 feedback-page-dots"
+                    role="tablist"
+                    aria-label="Feedback pages"
+                  >
+                    {feedbackPages.map((_, pageIndex) => {
+                      const isActive = pageIndex === activeFeedbackPage;
+                      return (
+                        <button
+                          key={`feedback-page-dot-${pageIndex}`}
+                          type="button"
+                          onClick={() => setActiveFeedbackPage(pageIndex)}
+                          aria-label={`Show feedback page ${pageIndex + 1}`}
+                          aria-current={isActive ? "page" : undefined}
+                          style={{
+                            width: "10px",
+                            height: "10px",
+                            borderRadius: "50%",
+                            border: "none",
+                            padding: 0,
+                            background: isActive ? "#f82249" : "#cbd5e1",
+                            transform: isActive ? "scale(1.18)" : "scale(1)",
+                            transition: "all 180ms ease",
+                          }}
+                        />
+                      );
+                    })}
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
         </div>

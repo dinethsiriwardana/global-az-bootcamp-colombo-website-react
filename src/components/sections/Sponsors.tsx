@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import "./Sponsors.scss";
 
 interface Sponsor {
   id: number;
@@ -142,7 +143,7 @@ const Sponsors = () => {
 
     return (
       <div
-        className={`row ${tierName}-sponsors justify-content-center  align-items-center`}
+        className={`row sponsor-tier-row ${tierName}-sponsors justify-content-center align-items-stretch`}
         data-aos="zoom-in"
         data-aos-delay={delay}
       >
@@ -150,16 +151,25 @@ const Sponsors = () => {
 {tierSponsors.length === 1 ? " " + capitalizedTier + " Sponsor" : " " + capitalizedTier + " Sponsors"}
         </h3>
         {tierSponsors.map((sponsor) => (
-          <div className={colClass} key={sponsor.id}>
-            <a href={sponsor.url} target="_blank" rel="noopener noreferrer">
+          <div className={`${colClass} sponsor-col`} key={sponsor.id}>
+            <a
+              href={sponsor.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sponsor-logo-link"
+              aria-label={`Visit ${sponsor.name}`}
+            >
+              <div className="sponsor-logo-frame">
               <img
                 src={sponsor.logo}
-                className="img-fluid"
+                className="img-fluid sponsor-logo-image"
                 alt={sponsor.name}
                 width={logoWidth}
                 height={logoHeight}
                 style={{ objectFit: "contain" }}
+                loading="lazy"
               />
+              </div>
             </a>
           </div>
         ))}
