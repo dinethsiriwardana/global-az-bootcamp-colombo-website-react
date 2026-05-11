@@ -1,0 +1,143 @@
+#sponsors {
+  padding-top: 4.25rem;
+  padding-bottom: 3.5rem;
+}
+
+#sponsors .section-header {
+  margin-bottom: 2.35rem;
+}
+
+#sponsors .sponsor-tier-row {
+  margin-bottom: 2rem;
+  row-gap: 1rem;
+}
+
+#sponsors .sponsor-tier-row:last-of-type {
+  margin-bottom: 0;
+}
+
+#sponsors .sponsor-category {
+  margin: 0 0 1.1rem;
+  color: #0e1b4d;
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+#sponsors .event-sponsors .sponsor-category,
+#sponsors .venue-sponsors .sponsor-category {
+  font-size: clamp(1.38rem, 2.45vw, 1.8rem);
+  font-family: "Raleway", sans-serif;
+  font-weight: 400;
+  line-height: 1.12;
+  color: #17255a;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 0.6rem;
+}
+
+#sponsors .event-sponsors,
+#sponsors .venue-sponsors {
+  row-gap: 0.55rem;
+}
+
+#sponsors .sponsor-col {
+  display: flex;
+}
+
+#sponsors .sponsor-logo-link {
+  display: block;
+  width: 100%;
+  color: inherit;
+}
+
+#sponsors .sponsor-logo-frame {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem 0.6rem;
+  transition: opacity 0.24s ease;
+}
+
+#sponsors .sponsor-logo-link:hover .sponsor-logo-frame {
+  opacity: 0.9;
+}
+
+#sponsors .sponsor-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#sponsors .event-sponsors .sponsor-logo-frame {
+  height: 174px;
+  padding: 0.12rem 0.35rem;
+}
+
+#sponsors .venue-sponsors .sponsor-logo-frame {
+  height: 120px;
+}
+
+#sponsors .sponsors-call-to-action {
+  margin-top: 2rem;
+  padding: 1.2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(14, 27, 77, 0.08);
+  background-color: #f6f7fd;
+}
+
+@media (max-width: 991px) {
+  #sponsors {
+    padding-top: 3.5rem;
+    padding-bottom: 3rem;
+  }
+
+  #sponsors .sponsor-tier-row {
+    margin-bottom: 1.6rem;
+  }
+
+  #sponsors .sponsor-logo-frame {
+    height: 132px;
+  }
+
+  #sponsors .event-sponsors .sponsor-logo-frame {
+    height: 158px;
+  }
+}
+
+@media (max-width: 575px) {
+  #sponsors .section-header {
+    margin-bottom: 1.9rem;
+  }
+
+  #sponsors .sponsor-category {
+    margin-bottom: 0.85rem;
+    font-size: 0.98rem;
+  }
+
+  #sponsors .event-sponsors .sponsor-category,
+  #sponsors .venue-sponsors .sponsor-category {
+    font-size: 1.24rem;
+  }
+
+  #sponsors .sponsor-tier-row {
+    row-gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  #sponsors .sponsor-logo-frame {
+    height: 112px;
+    padding: 0.3rem 0.45rem;
+  }
+
+  #sponsors .event-sponsors .sponsor-logo-frame {
+    height: 132px;
+  }
+
+  #sponsors .sponsors-call-to-action {
+    margin-top: 1.4rem;
+  }
+}
